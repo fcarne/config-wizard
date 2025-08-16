@@ -19,11 +19,15 @@ repos:
     hooks:
       - id: ruff-format # formatter
         types_or: [python, pyi, jupyter, toml]
-      - id: ruff # linter
+      - id: ruff-check # linter
         types_or: [python, pyi, jupyter, toml]
         args: [--fix]
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.17.0
     hooks:
-    -   id: mypy
+      - id: mypy
+        additional_dependencies:
+        - pydantic[email]
+        - pydantic-extra-types
+        - openapi-pydantic

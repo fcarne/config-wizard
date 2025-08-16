@@ -9,6 +9,7 @@ NC := \033[0m
 POETRY := poetry
 PYTHON := poetry run python
 PRE_COMMIT := pre-commit
+SRC_DIR := config_wizard
 
 # List all targets when running `make` or `make help`
 .PHONY: help
@@ -39,12 +40,12 @@ format: ## Format code using Ruff
 .PHONY: lint
 lint: ## Lint code using Ruff
 	@echo "${GREEN}Linting code...${NC}"
-	@${PRE_COMMIT} run --all-files ruff-lint mypy
+	@${PRE_COMMIT} run --all-files ruff-check mypy
 
 .PHONY: test
-test: ## Run tests using pytest
+test: ## Run tests using pytest with coverage
 	@echo "${GREEN}Running tests...${NC}"
-	$(PYTHON) -m pytest --tb=short --disable-warnings -p no:warnings
+	$(PYTHON) -m pytest tests/ --tb=short --disable-warnings -p no:warning --cov=${SRC_DIR} --cov-report=term-missing --cov-report=html --cov-branch
 
 .PHONY: docs
 docs: ## Build documentation using mkdocs
