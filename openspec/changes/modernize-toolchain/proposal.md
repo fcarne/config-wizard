@@ -29,6 +29,6 @@ None. No requirement in `openspec/specs/` mentions the toolchain.
 ## Impact
 
 - Configuration: `pyproject.toml`, `.gitignore`, newly tracked `poetry.lock`, `.pre-commit-config.yaml`, new `.github/dependabot.yml`.
-- Documents: `CONSTITUTION.md`, `AGENTS.md`, `openspec/config.yaml`; `ROADMAP.md` loses item 1 when the change is archived.
+- Documents: `CONSTITUTION.md`, `AGENTS.md`, `openspec/config.yaml`, and the coverage badge in `README.md`; `ROADMAP.md` loses item 1 when the change is archived.
 - Code: import order, equivalent simplifications and one `StrEnum` conversion in `config_wizard/` and `tests/`; one duplicate test case removed, taking the suite from 98 to 97 cases.
 - Out of scope, each its own change on `ROADMAP.md`: replacing mypy with ty (`migrate-to-ty`), CI (`add-ci-pipeline`) and fixes for the known Streamlit defects. Also out of scope: raising the `openapi-pydantic` and `textual` bounds, the unused `docs` extra, strict mypy, running hooks from the project environment, and adding a Python 3.14 classifier before anything tests it.

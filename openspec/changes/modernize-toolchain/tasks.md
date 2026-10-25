@@ -39,8 +39,8 @@
 
 - [x] 7.1 Delete item 1 from `ROADMAP.md` and renumber the rest. Verify the numbering is consecutive from 1 and the `migrate-to-ty` item is now first.
 - [x] 7.2 Run `openspec validate modernize-toolchain --strict`. Verify it reports the change as valid.
-- [ ] 7.3 Clone the branch into a new empty directory under the session scratchpad and run `make install` followed by `make test` there. Verify pytest runs and reports 97 passed, which confirms a fresh clone is a working development environment.
-- [ ] 7.4 Run `git status` and verify the only changes are `pyproject.toml`, `poetry.lock`, `.gitignore`, `.pre-commit-config.yaml`, `.github/dependabot.yml`, `CONSTITUTION.md`, `AGENTS.md`, `ROADMAP.md`, `openspec/config.yaml`, the change directory, and the source and test edits from group 5.
+- [x] 7.3 Clone the branch into a new empty directory under the session scratchpad and run `make install` followed by `make test` there. Verify pytest runs and reports 97 passed, which confirms a fresh clone is a working development environment.
+- [x] 7.4 Run `git status` and verify the only changes are `pyproject.toml`, `poetry.lock`, `.gitignore`, `.pre-commit-config.yaml`, `.github/dependabot.yml`, `CONSTITUTION.md`, `AGENTS.md`, `ROADMAP.md`, `README.md` (the coverage badge, which the simplifications moved from 30% to 31%), `openspec/config.yaml`, the change directory, and the source and test edits from group 5.
 
 ## Workflow follow-up
 
