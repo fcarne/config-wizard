@@ -29,7 +29,7 @@
 
 ## 6. Retire DESIGN.md
 
-- [ ] 6.1 Delete `DESIGN.md` and remove any references to it. Verify `grep -rn "DESIGN.md" --exclude-dir=openspec --exclude-dir=.git .` returns nothing and `git show <commit from 1.1>:DESIGN.md` still prints the file.
+- [x] 6.1 Delete `DESIGN.md` and remove any references to it. Verify `grep -rn "DESIGN.md" --exclude-dir=openspec --exclude-dir=.git .` returns nothing and `git show <commit from 1.1>:DESIGN.md` still prints the file.
 
 ## 7. Integration checks
 
