@@ -59,6 +59,11 @@ Alternatives: `uv audit --no-dev`, rejected for that reason; leaving auditing to
 
 Alternatives: `--ignore PYSEC-2026-1845`, rejected because a fix is available and ignoring needs your explicit approval; `--ignore-until-fixed`, which does not apply once a fix exists.
 
+### Existing hooks are adjusted for the lock
+`uv.lock` is 518 KB, over the 500 KB default of `check-added-large-files`, so that hook excludes `uv.lock` only; the limit stays for every other file. This exclusion was approved explicitly. The ruff hooks listed `toml` among their file types, which hands every TOML file to a Python parser; `poetry.lock` passed only because its syntax happens to be valid Python, while `uv.lock` is not. `toml` is dropped from their `types_or`, so ruff keeps covering all Python, stub and notebook files.
+
+Alternative for the size check: raise the limit with `--maxkb=1024`, rejected because it loosens the check for every file and needs another bump as the lock grows.
+
 ### Commands keep their meaning
 `make install` runs `uv sync`, which installs the core dependencies and the `dev` group, as `poetry install` did. Extras come from `uv sync --all-extras`. `make update` runs `uv lock --upgrade` then `uv sync`. `uv sync` is exact, so it removes packages outside the selected groups and extras, as Poetry's update did.
 
@@ -75,6 +80,7 @@ Alternatives: a community devcontainer feature, rejected because I could not ver
 - [`uv audit` is experimental and may change] -> The hook revision is pinned and moves only through a reviewed Dependabot pre-commit pull request.
 - [The audit needs the network when `uv.lock` or `pyproject.toml` change] -> Ordinary commits do not trigger it; a lock change made offline fails the hook and is retried online.
 - [A new advisory can fail the hook on an unrelated lock change] -> Treated as signal. Ignoring an advisory needs your approval each time.
+- [A lock-sized exclusion could hide a different oversized `uv.lock`] -> The exclusion is by exact path, and the lock is reviewed in every pull request that changes it.
 - [Existing clones hold a Poetry `.venv`] -> Documented in the pull request: `rm -rf .venv && uv sync`, and uv must be installed locally.
 - [The `uv.lock` format can change across uv versions] -> uv is pinned in the hook revision and in the devcontainer install.
 - [The devcontainer cannot be rebuilt in this sandbox] -> The JSON files are validated, the script is syntax-checked, and its uv commands run in a scratch clone; a rebuild on your machine is the remaining check.

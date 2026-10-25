@@ -2,8 +2,10 @@
 
 ## 1. uv lock and parity
 
-- [ ] 1.1 Run `uv lock` to create `uv.lock` with `pyproject.toml` untouched, and add it, leaving `poetry.lock` in place for now. Verify `uv lock --check` passes, `git diff pyproject.toml` is empty, and pydantic, pydantic-core, streamlit, pytest, ruff, mypy, jsonschema, typing-extensions, openapi-pydantic, textual and typer have the same versions in `uv.lock` and `poetry.lock`.
-- [ ] 1.2 Recreate the project environment with `uv sync --all-extras` after removing `.venv`, which `poetry install` can rebuild from `poetry.lock` until task 3.3. Verify `uv run pytest tests` reports 97 passed and the README example under Streamlit's `AppTest` returns `{"host": "127.0.0.1", "port": 8000, "debug": false}`.
+- [x] 1.1 Run `uv lock` to create `uv.lock` with `pyproject.toml` untouched, and add it, leaving `poetry.lock` in place for now. Verify `uv lock --check` passes, `git diff pyproject.toml` is empty, and pydantic, pydantic-core, streamlit, pytest, ruff, mypy, jsonschema, typing-extensions, openapi-pydantic, textual and typer have the same versions in `uv.lock` and `poetry.lock`.
+- [x] 1.2 Recreate the project environment with `uv sync --all-extras` after removing `.venv`, which `poetry install` can rebuild from `poetry.lock` until task 3.3. Verify `uv run pytest tests` reports 97 passed and the README example under Streamlit's `AppTest` returns `{"host": "127.0.0.1", "port": 8000, "debug": false}`.
+
+- [x] 1.3 In `.pre-commit-config.yaml`, exclude `uv.lock` from `check-added-large-files` (approved explicitly) and remove `toml` from the `types_or` of both ruff hooks. Verify committing `uv.lock` passes every hook, `uv run ruff check pyproject.toml` still passes, and the large-file check still rejects a 600 KB scratch file.
 
 ## 2. Dependency bounds for the audit
 

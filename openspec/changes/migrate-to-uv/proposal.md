@@ -8,6 +8,7 @@ The toolchain is moving to Astral's tools: ruff is already in use, ty is next, a
 
 - Replace Poetry with uv: add a tracked `uv.lock`, remove `poetry.lock`, and leave the dependency tables in `pyproject.toml` as they are.
 - Widen the `pytest` and `pytest-cov` bounds so the advisory is fixed instead of ignored. The trial passed all 97 tests on pytest 9 with pytest-cov 7.
+- Adjust two existing hooks so the tracked lock passes them: exclude `uv.lock` from the large-file check (the lock is 518 KB against a 500 KB limit) and drop `toml` from the ruff hooks' file types, since ruff lints Python only.
 - Add the `uv-lock` and `uv-audit` hooks from `astral-sh/uv-pre-commit`, pinned to the uv version. Both run only when `uv.lock` or `pyproject.toml` change.
 - Run pre-commit through `uv run`, so the hooks use the lock-pinned pre-commit. The isolated ruff and mypy hook environments are unchanged.
 - Update the `Makefile`: `make install` runs `uv sync` and `make update` refreshes the lock.
