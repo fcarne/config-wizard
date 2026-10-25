@@ -1660,14 +1660,14 @@ files = [
 
 [[package]]
 name = "openapi-pydantic"
-version = "0.5.1"
-description = "Pydantic OpenAPI schema implementation"
+version = "0.6.0"
+description = "Modern, type-safe OpenAPI schemas in Python using Pydantic 1.8+ and 2.x"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "openapi_pydantic-0.5.1-py3-none-any.whl", hash = "sha256:a3a09ef4586f5bd760a8df7f43028b60cafb6d9f61de2acba9574766255ab146"},
-    {file = "openapi_pydantic-0.5.1.tar.gz", hash = "sha256:ff6835af6bde7a459fb93eb93bb92b8749b754fc6e51b2f1590a19dc3005ee0d"},
+    {file = "openapi_pydantic-0.6.0-py3-none-any.whl", hash = "sha256:8bd6d548a250da37db96f461bcd52b3468e8834ad7d6db14b00a6b2ebbd163a3"},
+    {file = "openapi_pydantic-0.6.0.tar.gz", hash = "sha256:11f3ac6ad41521fc156381ec587246b0c0ecea523bd9565ed74d3e7fac9d91cd"},
 ]
 
 [package.dependencies]
@@ -2310,7 +2310,7 @@ files = [
     {file = "pygments-2.21.0-py3-none-any.whl", hash = "sha256:2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9"},
     {file = "pygments-2.21.0.tar.gz", hash = "sha256:610ca751c9bc2492b38eb9a38a7fbc93edbbb2d7182edaf34e66ae493dee5c8c"},
 ]
-markers = {main = "extra == \"docs\" or extra == \"cli\" or extra == \"textual\""}
+markers = {main = "extra == \"cli\" or extra == \"textual\" or extra == \"docs\""}
 
 [package.extras]
 windows-terminal = ["colorama (>=0.4.6)"]
@@ -3227,4 +3227,4 @@ textual = ["textual"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "03f7bae12315c6575fe9ddf9ca19c4d802fcb46d25ae4c166eeed1246bd4618b"
+content-hash = "0b4a666a758ac19ae7374700fced83dd97f8dffd7a2e0adfeaec88cae1cdaaa2"
