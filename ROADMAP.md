@@ -6,6 +6,13 @@ How it is used: pick the next item and run `/opsx:explore <item>`. When its chan
 
 Known issue numbers refer to the table in the design of the archived `baseline-existing-capabilities` change.
 
+## Adding an item
+
+- Write it as `` `change-name`: what and why ``, adding the known issue numbers it covers when it fixes any.
+- Check it is not already covered by a spec in `openspec/specs/` or a change in `openspec/changes/`.
+- Place it by dependency. Do not reorder existing items without asking.
+- Leave requirements and design out. They belong to the change that implements the item.
+
 ## Next
 
 1. `add-ci-pipeline`: run lint, mypy, tests and `openspec validate --all --strict` on every pull request, with a pull request template that links the OpenSpec change (known issue 12).
