@@ -2,8 +2,8 @@
 
 ## 1. Python floor
 
-- [ ] 1.1 In `pyproject.toml`, set `requires-python = ">=3.11,<4.0"` and remove the `Programming Language :: Python :: 3.10` classifier, then run `poetry lock` to refresh the lock metadata without moving versions. Verify `poetry check --lock` passes and `grep -n "3\.10" pyproject.toml` prints nothing.
-- [ ] 1.2 Change the Python line in `CONSTITUTION.md` and the Python line in the `context:` of `openspec/config.yaml` to 3.11, leaving the pyupgrade clause for group 5. Verify `grep -n "3\.10" CONSTITUTION.md openspec/config.yaml` prints nothing and `openspec validate --all --strict` passes.
+- [x] 1.1 In `pyproject.toml`, set `requires-python = ">=3.11,<4.0"` and remove the `Programming Language :: Python :: 3.10` classifier, then run `poetry lock` to refresh the lock metadata without moving versions. Verify `poetry check --lock` passes and `grep -n "3\.10" pyproject.toml` prints nothing.
+- [x] 1.2 Change the Python line in `CONSTITUTION.md` and the Python line in the `context:` of `openspec/config.yaml` to 3.11, leaving the pyupgrade clause for group 5. Verify `grep -n "3\.10" CONSTITUTION.md openspec/config.yaml` prints nothing and `openspec validate --all --strict` passes.
 
 ## 2. Development dependency group and pytest settings
 
@@ -12,11 +12,12 @@
 - [ ] 2.3 Run `poetry install` and verify `poetry run ruff --version`, `poetry run pre-commit --version` and `poetry run mypy --version` all succeed, and that `poetry run mypy config_wizard` loads the Pydantic plugin. Any type errors it reports under Streamlit's real types are listed for `migrate-to-ty`, not fixed here.
 - [ ] 2.4 Update `CONSTITUTION.md` (the dependencies section no longer lists `dev` as an extra and names the dependency group) and the stack paragraph in `AGENTS.md` (`make install` installs the group). Verify `grep -n "dev" CONSTITUTION.md AGENTS.md` shows only the new wording and `.claude/settings.json` permissions for `poetry run ruff*` and `poetry run mypy*` now point at working commands.
 
-## 3. Lock refresh
+## 3. Tracked lock and refresh
 
-- [ ] 3.1 Back up `poetry.lock` to the session scratchpad, then run `poetry update`. Verify `poetry check --lock` passes, `poetry show pydantic` reports a version above 2.11.7, and no bound in `pyproject.toml` changed (`git diff pyproject.toml` is empty).
-- [ ] 3.2 Run `poetry install --all-extras` and `make test`. Verify 98 tests pass. If a schema test fails, record whether Pydantic's generated JSON Schema changed semantically and stop for a decision before touching any expectation.
-- [ ] 3.3 Run the README example under Streamlit's `AppTest` with the refreshed Streamlit. Verify it reports no exceptions and returns `{"host": "127.0.0.1", "port": 8000, "debug": false}`.
+- [ ] 3.1 Remove `poetry.lock` from `.gitignore`, keeping `poetry.toml` ignored, and add the current lock as a baseline commit, then note in the tooling paragraph of `AGENTS.md` that the lock is tracked and updated with `poetry update`. Verify `git check-ignore poetry.lock` prints nothing, `git ls-files poetry.lock` lists it and `poetry check --lock` passes.
+- [ ] 3.2 Run `poetry update` as its own change after the baseline. Verify `poetry check --lock` passes, `poetry show pydantic` reports a version above 2.11.7, `git diff pyproject.toml` is empty (no bound changed) and `git diff --stat poetry.lock` shows the refresh separate from the baseline.
+- [ ] 3.3 Run `poetry install --all-extras` and `make test`. Verify 98 tests pass. If a schema test fails, record whether Pydantic's generated JSON Schema changed semantically and stop for a decision before touching any expectation.
+- [ ] 3.4 Run the README example under Streamlit's `AppTest` with the refreshed Streamlit. Verify it reports no exceptions and returns `{"host": "127.0.0.1", "port": 8000, "debug": false}`.
 
 ## 4. Hook bumps
 
@@ -40,7 +41,7 @@
 - [ ] 7.1 Delete item 1 from `ROADMAP.md` and renumber the rest. Verify the numbering is consecutive from 1 and the `migrate-to-ty` item is now first.
 - [ ] 7.2 Run `openspec validate modernize-toolchain --strict`. Verify it reports the change as valid.
 - [ ] 7.3 Clone the branch into a new empty directory under the session scratchpad and run `make install` followed by `make test` there. Verify pytest runs and reports 97 passed, which confirms a fresh clone is a working development environment.
-- [ ] 7.4 Run `git status` and verify the only changes are `pyproject.toml`, `poetry.lock`, `.pre-commit-config.yaml`, `.github/dependabot.yml`, `CONSTITUTION.md`, `AGENTS.md`, `ROADMAP.md`, `openspec/config.yaml`, the change directory, and the source and test edits from group 5.
+- [ ] 7.4 Run `git status` and verify the only changes are `pyproject.toml`, `poetry.lock`, `.gitignore`, `.pre-commit-config.yaml`, `.github/dependabot.yml`, `CONSTITUTION.md`, `AGENTS.md`, `ROADMAP.md`, `openspec/config.yaml`, the change directory, and the source and test edits from group 5.
 
 ## Workflow follow-up
 

@@ -11,13 +11,14 @@ See `proposal.md` for motivation. Current state, with the evidence gathered whil
 | 3 | pytest options never apply | The table is `[tool.pytest.ini]`; plain `pytest tests` prints no coverage |
 | 4 | Python 3.10 is end of life | `endoflife.date`: 3.10 on 2026-10-01, 3.11 on 2027-10-31, 3.12 on 2028-10-31 |
 | 5 | Hook pins lag | ruff-pre-commit v0.12.5 (latest v0.17.2), mirrors-mypy v1.17.0 (v2.4.0), pre-commit-hooks v5.0.0 (v6.0.0), pyupgrade v3.20.0 (v3.22.0) |
-| 6 | The lock is stale | `poetry update --dry-run` moves pydantic 2.11.7 to 2.14.1, pydantic-core 2.33.2 to 2.50.1, typing-extensions 4.14.1 to 4.16.0, jsonschema 4.25.0 to 4.26.0, pydantic-settings 2.10.1 to 2.16.1; extras (Streamlit 1.48 to 1.66, pytest 8 to 9) also lag |
+| 6 | The lock is untracked and stale | `.gitignore` line 108 ignores `poetry.lock` and `git ls-files` lists no lock, so it was never committed; the local copy is old: `poetry update --dry-run` moves pydantic 2.11.7 to 2.14.1, pydantic-core 2.33.2 to 2.50.1, typing-extensions 4.14.1 to 4.16.0, jsonschema 4.25.0 to 4.26.0, pydantic-settings 2.10.1 to 2.16.1; extras (Streamlit 1.48 to 1.66, pytest 8 to 9) also lag |
 | 7 | Ruff's default rules are narrow | Default rules report 0 findings; `I,UP,B,SIM,PT` report 22 with ruff 0.12.5: 8 `I001`, 7 `PT006`, 1 `PT014`, 3 `SIM103`, 1 `SIM102`, 1 `SIM108`, 1 `UP038` |
 | 8 | No update bot | `.github/` is empty |
 
 Constraints that shape the approach:
 - `pre-commit` runs ruff and mypy from its own isolated environments, and its mypy hook passes `--ignore-missing-imports`, so the Streamlit backend is currently checked against untyped Streamlit.
 - The package is not published (PyPI returns 404), so removing an extra breaks no consumer.
+- `poetry.lock` is git-ignored, so a fresh clone resolves the newest versions inside the bounds instead of a known set.
 - The 98 tests cover the schema core only; the backends have none.
 - Poetry 2.5.1 is installed here; the devcontainer installs the latest Poetry through its feature.
 
@@ -64,9 +65,14 @@ The measured 22 findings are mostly mechanical: import order, parametrize argume
 Alternative: select the rules but ignore the awkward ones. Rejected by the project convention against silencing lint rules.
 
 ### Dependabot over Renovate
-GitHub's documentation lists Poetry v2, pre-commit hook revisions and devcontainers as supported ecosystems, and Dependabot needs no application install. Configure pip, pre-commit and devcontainers on a weekly schedule with a small pull request limit and grouped minor and patch updates. `github-actions` is added by `add-ci-pipeline` once workflows exist.
+GitHub's documentation lists Poetry v2, pre-commit hook revisions and devcontainers as supported ecosystems, and Dependabot needs no application install. With the lock tracked it updates the lock as well as the bounds. Configure pip, pre-commit and devcontainers on a weekly schedule with a small pull request limit and grouped minor and patch updates. `github-actions` is added by `add-ci-pipeline` once workflows exist.
 
 Alternative: Renovate. Rejected: it needs an application installed on the repository and offers nothing this project needs yet.
+
+### The lock is tracked
+Remove `poetry.lock` from `.gitignore` (leaving `poetry.toml` ignored) and commit the lock, so every clone and CI run installs the same versions and Dependabot can update the lock itself. The current lock is committed first as a baseline, then refreshed in a separate commit so the refresh diff is reviewable and revertible.
+
+Alternative: leave it untracked. Rejected: environments are not reproducible, new upstream releases only surface on a fresh install, and Dependabot could only bump the bounds in `pyproject.toml`. The cost of tracking is lock diffs in pull requests, and consumers of a library are unaffected by a lock.
 
 ### Lock refreshed within current bounds
 Run `poetry update`, which re-locks core and extras together. Bounds are not widened. The 98 tests assert exact resolved schemas, so a Pydantic change in generated JSON Schema would show up as a failure. Streamlit has no tests, so its refresh is checked by running the README example under Streamlit's `AppTest` with the refreshed version.
@@ -78,8 +84,9 @@ Run `poetry update`, which re-locks core and extras together. Bounds are not wid
 - [Ruff 0.17 reformats or flags more] -> Bump hooks in their own commit and review the diff size before applying rules.
 - [Streamlit 1.48 to 1.66 is covered only by a smoke test] -> Accepted; `test-streamlit-backend` is on the roadmap.
 - [Two version sources for ruff and mypy can drift between update pull requests] -> Accepted; Dependabot updates the lock and the hook revisions, and `migrate-to-ty` revisits it.
+- [Tracking the lock adds lock diffs to pull requests] -> Accepted for reproducibility; Dependabot groups limit the churn.
 - [Weekly Dependabot pull requests add review load] -> Small pull request limit and grouped updates.
 
 ## Migration Plan
 
-Land as separate commits in dependency order so each can be reverted alone: Python floor, dev group and pytest table, lock refresh, hook bumps, Ruff rules, Dependabot, documents. Back up `poetry.lock` before refreshing it. Rollback: revert the commits; the previous lock is restored with `git checkout` of the file from `main`.
+Land as separate commits in dependency order so each can be reverted alone: Python floor, dev group and pytest table, lock refresh, hook bumps, Ruff rules, Dependabot, documents. The lock is committed as a baseline before it is refreshed. Rollback: revert the commits; reverting the refresh commit restores the baseline lock.
