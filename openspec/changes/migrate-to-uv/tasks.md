@@ -21,7 +21,7 @@
 ## 4. Devcontainer
 
 - [x] 4.1 In `.devcontainer/devcontainer.json`, remove the Poetry feature and the `POETRY_VIRTUALENVS_IN_PROJECT` and `POETRY_NO_INTERACTION` variables, and remove the Poetry entry from `.devcontainer/devcontainer-lock.json`. Verify both files parse as JSON and neither mentions Poetry.
-- [ ] 4.2 In `.devcontainer/post-create.sh`, replace the Poetry and pre-commit lines with `pipx install uv==0.13.5`, `uv sync --all-extras` and `uv run pre-commit install --hook-type pre-commit --hook-type commit-msg`, keeping the ownership and npm lines. Verify `bash -n` passes, `grep -n -i poetry .devcontainer/*` prints nothing, and running the two uv lines in a fresh scratch clone gives a working environment (`uv run pytest tests` reports 97 passed and the `commit-msg` hook is installed). A container rebuild on your machine is the remaining check, and is recorded as such.
+- [x] 4.2 In `.devcontainer/post-create.sh`, replace the Poetry and pre-commit lines with `pipx install uv==0.13.5`, `uv sync --all-extras` and `uv run pre-commit install --hook-type pre-commit --hook-type commit-msg`, keeping the ownership and npm lines. Verify `bash -n` passes, `grep -n -i poetry .devcontainer/*` prints nothing, and running the two uv lines in a fresh scratch clone gives a working environment (`uv run pytest tests` reports 97 passed and the `commit-msg` hook is installed). A container rebuild on your machine is the remaining check, and is recorded as such.
 
 ## 5. Dependabot
 
