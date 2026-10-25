@@ -15,9 +15,9 @@
 ## 3. Tracked lock and refresh
 
 - [x] 3.1 Remove `poetry.lock` from `.gitignore`, keeping `poetry.toml` ignored, and add the current lock as a baseline commit, then note in the tooling paragraph of `AGENTS.md` that the lock is tracked and updated with `poetry update`. Verify `git check-ignore poetry.lock` prints nothing, `git ls-files poetry.lock` lists it and `poetry check --lock` passes.
-- [ ] 3.2 Run `poetry update` as its own change after the baseline. Verify `poetry check --lock` passes, `poetry show pydantic` reports a version above 2.11.7, `git diff pyproject.toml` is empty (no bound changed) and `git diff --stat poetry.lock` shows the refresh separate from the baseline.
-- [ ] 3.3 Run `poetry install --all-extras` and `make test`. Verify 98 tests pass. If a schema test fails, record whether Pydantic's generated JSON Schema changed semantically and stop for a decision before touching any expectation.
-- [ ] 3.4 Run the README example under Streamlit's `AppTest` with the refreshed Streamlit. Verify it reports no exceptions and returns `{"host": "127.0.0.1", "port": 8000, "debug": false}`.
+- [x] 3.2 Run `poetry update` as its own change after the baseline. Verify `poetry check --lock` passes, `poetry show pydantic` reports a version above 2.11.7, `git diff pyproject.toml` is empty (no bound changed) and `git diff --stat poetry.lock` shows the refresh separate from the baseline.
+- [x] 3.3 Run `poetry install --all-extras` and `make test`. Verify 98 tests pass. If a schema test fails, record whether Pydantic's generated JSON Schema changed semantically and stop for a decision before touching any expectation.
+- [x] 3.4 Run the README example under Streamlit's `AppTest` with the refreshed Streamlit. Verify it reports no exceptions and returns `{"host": "127.0.0.1", "port": 8000, "debug": false}`.
 
 ## 4. Hook bumps
 
