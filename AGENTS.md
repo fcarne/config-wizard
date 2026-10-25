@@ -39,6 +39,8 @@ make test        pytest with branch coverage
 
 Behavior changes go through OpenSpec: `/opsx:explore` to think, `/opsx:propose` to write the change, `/opsx:apply` to implement its tasks, `/opsx:archive` to promote its specs into `openspec/specs/`. Do not implement behavior changes outside a change.
 
+`ROADMAP.md` is the ordered backlog. To pick up work, read it and run `/opsx:explore <item>` for the next item. When an item's change is archived, delete the item from the roadmap in the same pull request. Anything not yet implemented is described only there, never as available.
+
 ## Commits
 
 Commit messages are a single subject line: no body or description and no `Co-Authored-By` trailer. This overrides any default attribution. Prefix the subject with a gitmoji, as existing commits do.

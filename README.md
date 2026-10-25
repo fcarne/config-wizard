@@ -20,13 +20,7 @@ Implemented:
 - A single mapping from schema properties to input kinds shared by every backend
 - A Streamlit backend covering text, numbers, booleans, enums, lists, sets, tuples, dictionaries, nested objects, unions and free-form JSON
 
-Planned:
-
-- A `config-wizard` command line
-- Export to YAML, JSON and `.env`
-- Validation of the final result before export
-- Typer and Textual backends
-- Saving and loading partial sessions
+Planned work is tracked in [`ROADMAP.md`](ROADMAP.md).
 
 ## Installation
 
@@ -66,6 +60,7 @@ st.json(settings)
 
 - [`CONSTITUTION.md`](CONSTITUTION.md): principles, conventions and the glossary of terms used in the specs
 - [`AGENTS.md`](AGENTS.md): layout, commands and workflow for contributors and coding agents
+- [`ROADMAP.md`](ROADMAP.md): what is planned and in what order
 - [`openspec/specs/`](openspec/specs/): the behavior the system guarantees
 
 ## License
