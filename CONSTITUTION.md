@@ -22,7 +22,7 @@ Take a configuration schema or class, walk the user through an interactive wizar
 
 ## Conventions
 
-- **Python:** 3.10 and newer. Code is upgraded with `pyupgrade --py310-plus`.
+- **Python:** 3.11 and newer. Code is upgraded with `pyupgrade --py310-plus`.
 - **Types:** full type hints, checked by mypy with the Pydantic plugin. Suppressions such as `type: ignore` are narrow and carry the error code.
 - **Style:** Ruff for linting and formatting at 120 columns, run through pre-commit. Lint rules are fixed in the code and are not ignored or disabled to make a change pass.
 - **Docstrings:** Google style on public and private functions, methods and classes, with `Args:`, `Returns:` and `Raises:` sections where they apply, written as `name (type): description`.

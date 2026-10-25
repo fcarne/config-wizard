@@ -2,7 +2,7 @@ schema: spec-driven
 
 context: |
   CONSTITUTION.md holds the project principles, conventions and glossary of behavior terms; follow it.
-  The codebase targets Python 3.10+.
+  The codebase targets Python 3.11+.
   Known issues found while baselining are listed in the design.md of the archived baseline-existing-capabilities change.
 
 rules:
