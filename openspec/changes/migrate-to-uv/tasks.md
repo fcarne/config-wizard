@@ -9,7 +9,7 @@
 
 ## 2. Dependency bounds for the audit
 
-- [ ] 2.1 In the `dev` group of `pyproject.toml`, set `pytest >=9.0.3,<10.0.0` and `pytest-cov >=7.0.0,<8.0.0`, then run `uv lock` and `uv sync --all-extras`. Verify `uv audit --preview-features audit-command` exits 0 and reports no vulnerabilities, `uv run pytest tests` reports 97 passed on pytest 9, and `uv lock --check` passes.
+- [x] 2.1 In the `dev` group of `pyproject.toml`, set `pytest >=9.0.3,<10.0.0` and `pytest-cov >=7.0.0,<8.0.0`, then run `uv lock` and `uv sync --all-extras`. Verify `uv audit --preview-features audit-command` exits 0 and reports no vulnerabilities, `uv run pytest tests` reports 97 passed on pytest 9, and `uv lock --check` passes.
 
 ## 3. Commands, hooks and documents
 
