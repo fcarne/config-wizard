@@ -12,9 +12,10 @@
 
 ## 3. Agent guidance
 
-- [ ] 3.1 Write `AGENTS.md` covering: project summary in two sentences, link to `CONSTITUTION.md`, repository layout as it exists (`config_wizard/schema.py`, `mapper.py`, `utils.py`, `backends/base.py`, `backends/streamlit.py`, empty `typer.py` and `textual.py`, `tests/`, `openspec/`), a "Stack and tooling" section naming the tools in use (Poetry, Ruff, mypy with the pydantic plugin, pytest with coverage, pre-commit, Streamlit, the optional Typer and Textual extras) and pointing to `pyproject.toml` and `.pre-commit-config.yaml` for versions without repeating them, commands (`make install`, `make format`, `make lint`, `make test`, `poetry run streamlit run test_wizard.py` for the manual harness), the OpenSpec workflow (`/opsx:explore`, `/opsx:propose`, `/opsx:apply`, `/opsx:archive`; specs in `openspec/specs/`), the commit rule (commit messages are a single subject line, no body or description, and no `Co-Authored-By` trailer; this overrides any default attribution), and the definition of done (lint and tests pass, spec scenarios covered by tests). Verify the commit rule appears verbatim in the file and each listed command runs successfully or, for the Streamlit harness, starts without import errors.
-- [ ] 3.2 Write `CLAUDE.md` containing only the line `@AGENTS.md`. Verify the file has exactly that one line.
-- [ ] 3.3 Add `.claude/settings.json` allowing `make` targets, `openspec *`, `poetry run pytest*`, `poetry run ruff*`, `poetry run mypy*`, and read-only git (`git status`, `git diff`, `git log`), with no blanket `poetry run *`. Add `.claude/settings.local.json` to `.gitignore`. Verify the JSON parses and `git check-ignore .claude/settings.local.json` succeeds.
+- [x] 3.1 Write `AGENTS.md` covering: project summary in two sentences, link to `CONSTITUTION.md`, repository layout as it exists (`config_wizard/schema.py`, `mapper.py`, `utils.py`, `backends/base.py`, `backends/streamlit.py`, empty `typer.py` and `textual.py`, `tests/`, `openspec/`), a "Stack and tooling" section naming the tools in use (Poetry, Ruff, mypy with the pydantic plugin, pytest with coverage, pre-commit, Streamlit, the optional Typer and Textual extras) and pointing to `pyproject.toml` and `.pre-commit-config.yaml` for versions without repeating them, commands (`make install`, `make format`, `make lint`, `make test`), the OpenSpec workflow (`/opsx:explore`, `/opsx:propose`, `/opsx:apply`, `/opsx:archive`; specs in `openspec/specs/`), the commit rule (commit messages are a single subject line, no body or description, and no `Co-Authored-By` trailer; this overrides any default attribution), and the definition of done (lint and tests pass, spec scenarios covered by tests). Verify the commit rule appears verbatim in the file and each listed command runs successfully.
+- [x] 3.2 Write `CLAUDE.md` containing only the line `@AGENTS.md`. Verify the file has exactly that one line.
+- [x] 3.3 Add `.claude/settings.json` allowing `make` targets, `openspec *`, `poetry run pytest*`, `poetry run ruff*`, `poetry run mypy*`, and read-only git (`git status`, `git diff`, `git log`), with no blanket `poetry run *`. Add `.claude/settings.local.json` to `.gitignore`. Verify the JSON parses and `git check-ignore .claude/settings.local.json` succeeds.
+- [x] 3.4 Fix the `format` and `lint` targets in `Makefile`, which pass two hook ids to a single `pre-commit run` and fail, so each hook runs in its own invocation. Verify `make format` and `make lint` both exit 0 and leave tracked files unchanged.
 
 ## 4. README
 
@@ -34,7 +35,7 @@
 
 - [ ] 7.1 Run `openspec validate baseline-existing-capabilities --strict` and verify it reports the change as valid.
 - [ ] 7.2 Run `make test` and verify the suite still passes with the same 98 tests, confirming no code was touched.
-- [ ] 7.3 Run `git status` and verify the only changes are `AGENTS.md`, `CLAUDE.md`, `CONSTITUTION.md`, `README.md`, `.gitignore`, `.claude/settings.json`, `openspec/config.yaml`, the change directory, and the removal of `DESIGN.md`.
+- [ ] 7.3 Run `git status` and verify the only changes are `AGENTS.md`, `CLAUDE.md`, `CONSTITUTION.md`, `README.md`, `.gitignore`, `Makefile`, `.claude/settings.json`, `openspec/config.yaml`, the change directory, and the removal of `DESIGN.md`.
 
 ## Workflow follow-up
 

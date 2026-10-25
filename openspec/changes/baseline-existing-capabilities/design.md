@@ -92,6 +92,7 @@ Each item below is a candidate follow-up change.
 | 10 | packaging | Console script points to the missing `config_wizard.cli:main` | `pyproject.toml` `[project.scripts]` |
 | 11 | testing | Backends have no automated tests; measured coverage is 30% (`base.py` and `streamlit.py` at 0%) while the README badge claims 100% | `pytest --cov` run |
 | 12 | tooling | No CI: lint, types, tests and `openspec validate` are not enforced on pull requests | `.github/` is empty |
+| 13 | tooling | `test_wizard.py`, the manual Streamlit harness, is untracked and fails on import because `pydantic_extra_types` is declared in no extra | `ModuleNotFoundError` under Streamlit's `AppTest` |
 
 ## Risks / Trade-offs
 
