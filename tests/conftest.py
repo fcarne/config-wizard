@@ -1,7 +1,8 @@
+from dataclasses import dataclass
+from typing import Any, TypedDict
+
 import pytest
 from pydantic import BaseModel
-from dataclasses import dataclass
-from typing import TypedDict, Any
 
 
 @pytest.fixture

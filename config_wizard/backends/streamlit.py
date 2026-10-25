@@ -1,20 +1,19 @@
 import json
 import re
+from collections.abc import Callable, Iterable, MutableMapping
 from copy import deepcopy
-from datetime import datetime, date, time
-from collections.abc import MutableMapping, Callable, Iterable
+from datetime import date, datetime, time
+from typing import Any, Concatenate, Literal
 
 import streamlit as st
-
 from openapi_pydantic.v3.v3_0 import DataType
 from streamlit.delta_generator import DeltaGenerator
-from typing_extensions import Any, TypedDict
-from typing import Concatenate, Literal
+from typing_extensions import TypedDict
 
-from config_wizard.backends.base import SettingsWizardBackend, P, T
-from config_wizard.mapper import property_to_input_type, InputType
-from config_wizard.schema import SettingsSchema, ResolvedSchema
-from config_wizard.utils import to_kebab_case, to_title_case, get_next_key, is_assignable
+from config_wizard.backends.base import P, SettingsWizardBackend, T
+from config_wizard.mapper import InputType, property_to_input_type
+from config_wizard.schema import ResolvedSchema, SettingsSchema
+from config_wizard.utils import get_next_key, is_assignable, to_kebab_case, to_title_case
 
 KEY_SEPARATOR = "."
 
@@ -65,18 +64,12 @@ def _is_add_button_disabled(property_schema: ResolvedSchema, current_length: int
     if property_schema.readOnly:
         return True
 
-    if property_schema.maxItems is not None and current_length >= property_schema.maxItems:
-        return True
-
-    return False
+    return property_schema.maxItems is not None and current_length >= property_schema.maxItems
 
 
 def _is_clear_button_disabled(property_schema: ResolvedSchema) -> bool:
     """Determine if the clear button should be displayed based on the schema."""
-    if property_schema.readOnly:
-        return False
-
-    return True
+    return not property_schema.readOnly
 
 
 def _is_remove_button_disabled(property_schema: ResolvedSchema, current_length: int) -> bool:
@@ -84,10 +77,7 @@ def _is_remove_button_disabled(property_schema: ResolvedSchema, current_length: 
     if property_schema.readOnly:
         return True
 
-    if property_schema.minItems is not None and current_length <= property_schema.minItems:
-        return True
-
-    return False
+    return property_schema.minItems is not None and current_length <= property_schema.minItems
 
 
 class StreamlitSettingsWizard(SettingsWizardBackend):
@@ -513,9 +503,8 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
             if item_input_type.is_complex and i != len(data_list) - 1:
                 container.markdown("---")
 
-        if input_type == InputType.SET:
-            if len(output_list) != len(set(output_list)):
-                st.error("Duplicate items found in the set. Please ensure all items are unique.")
+        if input_type == InputType.SET and len(output_list) != len(set(output_list)):
+            st.error("Duplicate items found in the set. Please ensure all items are unique.")
 
         container.markdown("---")
 

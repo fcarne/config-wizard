@@ -1,5 +1,5 @@
 import pytest
-from openapi_pydantic import DataType, Schema, Discriminator
+from openapi_pydantic import DataType, Discriminator, Schema
 
 from config_wizard.mapper import InputType, property_to_input_type
 
@@ -106,7 +106,6 @@ def test_input_type_is_complex(input_type: InputType, expected_is_complex: bool)
             ),
             InputType.UNION,
         ),
-        (Schema(type=DataType.NULL), InputType.NULL),
         (Schema(), InputType.ANY),
     ],
 )

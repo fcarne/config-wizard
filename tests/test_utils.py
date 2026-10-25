@@ -1,10 +1,10 @@
 from collections.abc import Iterable
+from typing import Any
 
 import pytest
-from typing_extensions import Any
+from openapi_pydantic import Schema
 
 from config_wizard import utils
-from openapi_pydantic import Schema
 
 
 @pytest.mark.parametrize(

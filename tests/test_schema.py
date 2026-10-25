@@ -1,8 +1,8 @@
 import pytest
 from openapi_pydantic import DataType
-from pydantic import ValidationError, BaseModel, TypeAdapter
+from pydantic import BaseModel, TypeAdapter, ValidationError
 
-from config_wizard.schema import SettingsSchema, ResolvedSettingsSchema
+from config_wizard.schema import ResolvedSettingsSchema, SettingsSchema
 
 
 class NestedSchema(BaseModel):
