@@ -33,7 +33,7 @@
 
 ## 6. Dependabot
 
-- [ ] 6.1 Add `.github/dependabot.yml` with the `pip`, `pre-commit` and `devcontainers` ecosystems on a weekly schedule, a small `open-pull-requests-limit`, and grouped minor and patch updates, and mention it in the tooling paragraph of `AGENTS.md`. Verify `pre-commit run check-yaml --files .github/dependabot.yml` passes and each `package-ecosystem` value appears in GitHub's supported ecosystems list.
+- [x] 6.1 Add `.github/dependabot.yml` with the `pip`, `pre-commit` and `devcontainers` ecosystems on a weekly schedule, a small `open-pull-requests-limit`, and grouped minor and patch updates, and mention it in the tooling paragraph of `AGENTS.md`. Verify `pre-commit run check-yaml --files .github/dependabot.yml` passes and each `package-ecosystem` value appears in GitHub's supported ecosystems list.
 
 ## 7. Integration checks
 
