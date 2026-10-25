@@ -81,6 +81,7 @@ Alternatives: a community devcontainer feature, rejected because I could not ver
 - [The audit needs the network when `uv.lock` or `pyproject.toml` change] -> Ordinary commits do not trigger it; a lock change made offline fails the hook and is retried online.
 - [A new advisory can fail the hook on an unrelated lock change] -> Treated as signal. Ignoring an advisory needs your approval each time.
 - [A lock-sized exclusion could hide a different oversized `uv.lock`] -> The exclusion is by exact path, and the lock is reviewed in every pull request that changes it.
+- [Dependabot documents `uv` support up to v0.11, while `uv.lock` is written by uv 0.13.5] -> Not testable before merge. The pull request test plan checks the Dependabot tab for configuration errors; if it reports one, the ecosystem line is the single thing to revert.
 - [Existing clones hold a Poetry `.venv`] -> Documented in the pull request: `rm -rf .venv && uv sync`, and uv must be installed locally.
 - [The `uv.lock` format can change across uv versions] -> uv is pinned in the hook revision and in the devcontainer install.
 - [The devcontainer cannot be rebuilt in this sandbox] -> The JSON files are validated, the script is syntax-checked, and its uv commands run in a scratch clone; a rebuild on your machine is the remaining check.
