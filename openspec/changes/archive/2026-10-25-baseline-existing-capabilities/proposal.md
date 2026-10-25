@@ -14,6 +14,7 @@ The project's only description of itself is `DESIGN.md`, an early vision documen
 - Add a short `context:` entry and per-artifact `rules:` to `openspec/config.yaml`, so the baseline policy (verified behavior only, defects in design, scenarios mapped to tests) is applied whenever artifacts are written.
 - Add a glossary to `CONSTITUTION.md` mapping the behavior vocabulary used in specs to the names used in code.
 - Add a shared `.claude/settings.json` with narrow pre-approved commands, and ignore `.claude/settings.local.json`.
+- Fix the `format` and `lint` Makefile targets, which fail today because they pass two hook ids to one `pre-commit run`.
 - Replace the hardcoded 100% coverage badge in `README.md` with the measured figure (30% at baseline), since the backends are untested.
 - **Remove `DESIGN.md`.** Its still-valid intent moves to `CONSTITUTION.md` and `README.md`; its outdated architecture is superseded by the specs and this change's `design.md`.
 
@@ -35,5 +36,5 @@ None. The project has no existing specs.
 
 - Code: none. `config_wizard/` and `tests/` are untouched.
 - Documentation: adds `AGENTS.md`, `CLAUDE.md`, `CONSTITUTION.md`; rewrites `README.md`; deletes `DESIGN.md`.
-- Tooling: `openspec/config.yaml` gains `context:` and `rules:`; `.claude/settings.json` is added and `.gitignore` gains one line; `openspec/specs/` is populated when this change is archived.
+- Tooling: `openspec/config.yaml` gains `context:` and `rules:`; `.claude/settings.json` is added, `.gitignore` gains one line and the `format` and `lint` Makefile targets are fixed; `openspec/specs/` is populated when this change is archived.
 - Out of scope: CI workflow and PR template (a separate `add-ci-pipeline` change), the CLI, exporter, final validation step, Typer and Textual backends, and fixes for the known gaps. Each becomes its own change.

@@ -71,8 +71,8 @@ Alternative considered: a separate `GLOSSARY.md`. Rejected as one more file to k
 ### Shared agent settings are narrow
 `.claude/settings.json` allows `make` targets, `openspec`, `poetry run pytest|ruff|mypy` and read-only git commands. It does not allow a blanket `poetry run *`, which would permit arbitrary code. Personal overrides go in `.claude/settings.local.json`, which is git-ignored.
 
-### `DESIGN.md` is deleted after a backup
-It is untracked, so git cannot restore it. Content mapping: overview and input formats go to `README.md`; vision, non-goals and the roadmap list go to `CONSTITUTION.md` and `README.md`; the architecture section is superseded by this document and the specs; the name-origin and authorship notes are dropped.
+### `DESIGN.md` is committed, then deleted
+It is untracked, so git cannot restore it. The apply branch commits it first and deletes it later, so history keeps it. Content mapping: overview and input formats go to `README.md`; vision, non-goals and the roadmap list go to `CONSTITUTION.md` and `README.md`; the architecture section is superseded by this document and the specs; the name-origin and authorship notes are dropped.
 
 ## Known Issues
 
@@ -92,18 +92,19 @@ Each item below is a candidate follow-up change.
 | 10 | packaging | Console script points to the missing `config_wizard.cli:main` | `pyproject.toml` `[project.scripts]` |
 | 11 | testing | Backends have no automated tests; measured coverage is 30% (`base.py` and `streamlit.py` at 0%) while the README badge claims 100% | `pytest --cov` run |
 | 12 | tooling | No CI: lint, types, tests and `openspec validate` are not enforced on pull requests | `.github/` is empty |
+| 13 | tooling | `test_wizard.py`, the manual Streamlit harness, is untracked and fails on import because `pydantic_extra_types` is declared in no extra | `ModuleNotFoundError` under Streamlit's `AppTest` |
 
 ## Risks / Trade-offs
 
 - [Specs encode limitations, so fixes appear as spec changes] -> Intended: each fix is a reviewable MODIFIED requirement with its own tests.
 - [Streamlit scenarios were verified manually, not by committed tests] -> Known Issue 11; the first Streamlit fix change adds an `AppTest`-based suite covering the existing scenarios.
-- [Deleting an untracked file] -> Backup is taken before deletion; recommend committing `DESIGN.md` first for a durable copy.
+- [Deleting an untracked file] -> It is committed before deletion, so history keeps it.
 - [Agent instructions drift from code] -> `AGENTS.md` lists only commands and paths that exist; tasks verify each command runs.
 
 ## Migration Plan
 
 1. Write the new documents and `config.yaml` context.
-2. Back up and delete `DESIGN.md`.
+2. Commit `DESIGN.md` as the branch's first commit, then delete it once its content has moved.
 3. Validate the change and archive it, which creates `openspec/specs/<capability>/spec.md` for all five capabilities.
 
-Rollback: restore `DESIGN.md` from the backup, delete the new root documents, revert `README.md` and `openspec/config.yaml` with git, and remove the archived specs directory entries.
+Rollback: restore `DESIGN.md` from the commit that preserved it, delete the new root documents, revert `README.md` and `openspec/config.yaml` with git, and remove the archived specs directory entries.
