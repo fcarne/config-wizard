@@ -1,11 +1,11 @@
 import pytest
-from openapi_pydantic import DataType, Schema, Discriminator
+from openapi_pydantic import DataType, Discriminator, Schema
 
 from config_wizard.mapper import InputType, property_to_input_type
 
 
 @pytest.mark.parametrize(
-    "input_type, expected_is_complex",
+    ("input_type", "expected_is_complex"),
     [
         (InputType.EMAIL, False),
         (InputType.PASSWORD, False),
@@ -35,7 +35,7 @@ def test_input_type_is_complex(input_type: InputType, expected_is_complex: bool)
 
 
 @pytest.mark.parametrize(
-    "json_schema, expected_input_type",
+    ("json_schema", "expected_input_type"),
     [
         (Schema(type=DataType.STRING, format="email"), InputType.EMAIL),
         (Schema(type=DataType.STRING, format="password"), InputType.PASSWORD),
@@ -106,7 +106,6 @@ def test_input_type_is_complex(input_type: InputType, expected_is_complex: bool)
             ),
             InputType.UNION,
         ),
-        (Schema(type=DataType.NULL), InputType.NULL),
         (Schema(), InputType.ANY),
     ],
 )

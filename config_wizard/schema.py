@@ -1,12 +1,10 @@
 from builtins import type as Type  # Developer notes: see https://github.com/python/mypy/issues/14205
-
 from dataclasses import is_dataclass
+from typing import Any, is_typeddict
 
 from openapi_pydantic import DataType
 from openapi_pydantic.v3.v3_1 import Schema
-from pydantic import TypeAdapter, BaseModel, Field
-from typing_extensions import Any
-from typing import is_typeddict
+from pydantic import BaseModel, Field, TypeAdapter
 
 
 class SettingsSchema(Schema):

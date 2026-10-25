@@ -17,12 +17,13 @@ Take a configuration schema or class, walk the user through an interactive wizar
 ## Dependencies
 
 - **Core:** Pydantic (with the email extra), `openapi-pydantic`, `jsonschema` and `typing-extensions`, all declared as `dependencies` in the `[project]` table. `pydantic-settings` is also declared there for the planned settings-class loading and is not imported yet.
-- **Optional:** every UI toolkit and tool group is an extra in `[project.optional-dependencies]`: `streamlit`, `cli` (Typer and Rich), `textual`, `dev` and `docs`. A UI toolkit is never added to the core dependencies.
+- **Optional:** every UI toolkit and the docs tooling is an extra in `[project.optional-dependencies]`: `streamlit`, `cli` (Typer and Rich), `textual` and `docs`. A UI toolkit is never added to the core dependencies.
+- **Development tools:** pytest, pytest-cov, pytest-mock, pre-commit, ruff and mypy are the `dev` group in `[dependency-groups]`, which `poetry install` installs by default.
 - Exact versions live in `pyproject.toml` and are not repeated in prose.
 
 ## Conventions
 
-- **Python:** 3.10 and newer. Code is upgraded with `pyupgrade --py310-plus`.
+- **Python:** 3.11 and newer. Ruff's `UP` rules keep code current for that version.
 - **Types:** full type hints, checked by mypy with the Pydantic plugin. Suppressions such as `type: ignore` are narrow and carry the error code.
 - **Style:** Ruff for linting and formatting at 120 columns, run through pre-commit. Lint rules are fixed in the code and are not ignored or disabled to make a change pass.
 - **Docstrings:** Google style on public and private functions, methods and classes, with `Args:`, `Returns:` and `Raises:` sections where they apply, written as `name (type): description`.

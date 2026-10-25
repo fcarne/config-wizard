@@ -1,6 +1,6 @@
 import re
 from collections.abc import Iterable
-from typing_extensions import Any
+from typing import Any
 
 import jsonschema
 from openapi_pydantic import Schema

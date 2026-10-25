@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from collections.abc import Callable, MutableMapping
+from typing import Any, Concatenate
 
-from typing_extensions import Any, ParamSpec, TypeVar
-from typing import Concatenate
+from typing_extensions import ParamSpec, TypeVar
 
-from config_wizard.schema import SettingsSchema, ResolvedSettingsSchema, ResolvedSchema
+from config_wizard.schema import ResolvedSchema, ResolvedSettingsSchema, SettingsSchema
 from config_wizard.utils import to_title_case, unpack_additional_properties
 
 P = ParamSpec("P")
