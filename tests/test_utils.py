@@ -8,7 +8,7 @@ from config_wizard import utils
 
 
 @pytest.mark.parametrize(
-    "input_str,expected",
+    ("input_str", "expected"),
     [
         ("simple_test", "Simple Test"),
         ("camelCaseTest", "Camel Case Test"),
@@ -29,7 +29,7 @@ def test_to_title_case(input_str: str, expected: str) -> None:
 
 
 @pytest.mark.parametrize(
-    "input_str,expected",
+    ("input_str", "expected"),
     [
         ("simpleTest", "simple-test"),
         ("camelCaseTest", "camel-case-test"),
@@ -50,7 +50,7 @@ def test_to_kebab_case(input_str: str, expected: str) -> None:
 
 
 @pytest.mark.parametrize(
-    "value,schema_dict,expected",
+    ("value", "schema_dict", "expected"),
     [
         (123, {"type": "integer"}, True),
         ("abc", {"type": "string"}, True),
@@ -66,7 +66,7 @@ def test_is_assignable(value: Any, schema_dict: dict[str, Any], expected: bool) 
 
 
 @pytest.mark.parametrize(
-    "data,additional_key,expected",
+    ("data", "additional_key", "expected"),
     [
         (  # flat
             {"a": 1, "_add": {"b": 2}},
@@ -116,7 +116,7 @@ def test_unpack_additional_properties(data: dict[str, Any], additional_key: str,
 
 
 @pytest.mark.parametrize(
-    "keys,expected",
+    ("keys", "expected"),
     [
         ([], "new_item_0"),
         (["new_item_0"], "new_item_1"),

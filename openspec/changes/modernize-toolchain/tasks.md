@@ -26,9 +26,9 @@
 
 ## 5. Ruff rules
 
-- [ ] 5.1 In `pyproject.toml`, add `[tool.ruff.lint]` with `extend-select = ["I", "UP", "B", "SIM", "PT"]` and run `ruff check --statistics`. Verify the findings are the nine measured ones (7 `PT006`, 1 `SIM108`, 1 `UP042`) or the difference is recorded.
-- [ ] 5.2 Fix the `PT006` findings in `tests/` (tuples for `parametrize` names) and the `SIM108` finding in `config_wizard/backends/streamlit.py` equivalently. Verify `ruff check --select PT006,SIM108` reports nothing and `make test` reports 97 passed.
-- [ ] 5.3 Convert `InputType` to `StrEnum` for `UP042`, as its own commit. Verify `ruff check --select UP042` reports nothing, `make test` reports 97 passed, `InputType.TEXT == "text"` and `InputType("text") is InputType.TEXT` still hold, and `f"{InputType.TEXT}"` now yields `text`, which is recorded as the accepted difference.
+- [x] 5.1 In `pyproject.toml`, add `[tool.ruff.lint]` with `extend-select = ["I", "UP", "B", "SIM", "PT"]` and run `ruff check --statistics`. Verify the findings are the nine measured ones (7 `PT006`, 1 `SIM108`, 1 `UP042`) or the difference is recorded.
+- [x] 5.2 Fix the `PT006` findings in `tests/` (tuples for `parametrize` names) and the `SIM108` finding in `config_wizard/backends/streamlit.py` equivalently. Verify `ruff check --select PT006,SIM108` reports nothing and `make test` reports 97 passed.
+- [x] 5.3 Convert `InputType` to `StrEnum` for `UP042`, as its own commit. Verify `ruff check --select UP042` reports nothing, `make test` reports 97 passed, `InputType.TEXT == "text"` and `InputType("text") is InputType.TEXT` still hold, and `f"{InputType.TEXT}"` now yields `text`, which is recorded as the accepted difference.
 - [ ] 5.4 Remove the pyupgrade hook from `.pre-commit-config.yaml` and change the pyupgrade clause in `CONSTITUTION.md` to say Ruff's `UP` rules keep code current. Verify `grep -rn "pyupgrade" . --include=*.yaml --include=*.md --exclude-dir=openspec --exclude-dir=.venv` prints nothing and `make lint` exits 0.
 
 ## 6. Dependabot

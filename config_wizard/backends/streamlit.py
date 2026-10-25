@@ -927,11 +927,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
         container.subheader("Additional Properties")
 
         # Default value handling
-        if (stored_value := self._get_value(key)) is not None:
-            data_dict = stored_value
-        else:
-            # Default to an empty dictionary if no default value is provided
-            data_dict = {}
+        data_dict = stored_value if (stored_value := self._get_value(key)) is not None else {}
 
         return self._render_dict_items(
             container=container,
