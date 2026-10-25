@@ -7,10 +7,10 @@
 
 ## 2. Development dependency group and pytest settings
 
-- [ ] 2.1 In `pyproject.toml`, add `[dependency-groups]` with a `dev` group holding pytest, pytest-cov and pytest-mock at their current bounds, plus `pre-commit >=4.7,<5`, `ruff >=0.17,<0.18` and `mypy >=2.4,<3`, and remove `dev` from `[project.optional-dependencies]`. Run `poetry lock`. Verify `poetry check --lock` passes and `poetry install --dry-run 2>&1 | grep -ciE "pytest|ruff|mypy|pre-commit"` is above zero.
-- [ ] 2.2 Rename `[tool.pytest.ini]` to `[tool.pytest.ini_options]`. Verify `poetry run pytest tests -q` now prints the coverage table and writes `htmlcov/`, and still reports 98 passed.
-- [ ] 2.3 Run `poetry install` and verify `poetry run ruff --version`, `poetry run pre-commit --version` and `poetry run mypy --version` all succeed, and that `poetry run mypy config_wizard` loads the Pydantic plugin. Any type errors it reports under Streamlit's real types are listed for `migrate-to-ty`, not fixed here.
-- [ ] 2.4 Update `CONSTITUTION.md` (the dependencies section no longer lists `dev` as an extra and names the dependency group) and the stack paragraph in `AGENTS.md` (`make install` installs the group). Verify `grep -n "dev" CONSTITUTION.md AGENTS.md` shows only the new wording and `.claude/settings.json` permissions for `poetry run ruff*` and `poetry run mypy*` now point at working commands.
+- [x] 2.1 In `pyproject.toml`, add `[dependency-groups]` with a `dev` group holding pytest, pytest-cov and pytest-mock at their current bounds, plus `pre-commit >=4.7,<5`, `ruff >=0.17,<0.18` and `mypy >=2.4,<3`, and remove `dev` from `[project.optional-dependencies]`. Run `poetry lock`. Verify `poetry check --lock` passes and `poetry install --dry-run 2>&1 | grep -ciE "pytest|ruff|mypy|pre-commit"` is above zero.
+- [x] 2.2 Rename `[tool.pytest.ini]` to `[tool.pytest.ini_options]`. Verify `poetry run pytest tests -q` now prints the coverage table and writes `htmlcov/`, and still reports 98 passed.
+- [x] 2.3 Run `poetry install` and verify `poetry run ruff --version`, `poetry run pre-commit --version` and `poetry run mypy --version` all succeed, and that `poetry run mypy config_wizard` loads the Pydantic plugin. Any type errors it reports under Streamlit's real types are listed for `migrate-to-ty`, not fixed here.
+- [x] 2.4 Update `CONSTITUTION.md` (the dependencies section no longer lists `dev` as an extra and names the dependency group) and the stack paragraph in `AGENTS.md` (`make install` installs the group). Verify `grep -n "dev" CONSTITUTION.md AGENTS.md` shows only the new wording and `.claude/settings.json` permissions for `poetry run ruff*` and `poetry run mypy*` now point at working commands.
 
 ## 3. Tracked lock and refresh
 

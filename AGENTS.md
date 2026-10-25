@@ -24,7 +24,7 @@ openspec/
 
 ## Stack and tooling
 
-Poetry manages dependencies, Ruff lints and formats, mypy (with the Pydantic plugin) checks types, pytest with coverage runs tests, and pre-commit runs the checks. Streamlit is an optional extra, as are the Typer and Textual extras. Versions live in `pyproject.toml` and `.pre-commit-config.yaml`.
+Poetry manages dependencies, Ruff lints and formats, mypy (with the Pydantic plugin) checks types, pytest with coverage runs tests, and pre-commit runs the checks. Streamlit is an optional extra, as are the Typer and Textual extras. `make install` installs the `dev` dependency group, so `poetry run pytest`, `poetry run ruff` and `poetry run mypy` work from a fresh clone. The pre-commit hooks run ruff and mypy from their own isolated environments. Versions live in `pyproject.toml` and `.pre-commit-config.yaml`.
 
 ## Commands
 
