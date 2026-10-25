@@ -2,7 +2,7 @@
 
 **config-wizard** is a framework-agnostic, interactive configuration generator that transforms structured configuration schemas into user-friendly wizards.
 
-[![Coverage](https://img.shields.io/badge/coverage-30%25-red)](#status)
+[![Coverage](https://img.shields.io/badge/coverage-31%25-red)](#status)
 [![PyPI Version](https://img.shields.io/pypi/v/config-wizard.svg)](https://pypi.org/project/config-wizard/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/config-wizard.svg)](https://pypi.org/project/config-wizard/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgray.svg)](LICENSE)
