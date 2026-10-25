@@ -24,8 +24,8 @@
 
 ## 5. OpenSpec configuration
 
-- [ ] 5.1 Add a `context:` entry to `openspec/config.yaml` stating that `CONSTITUTION.md` holds project principles and conventions, that the codebase targets Python 3.10+, and that baseline known issues are listed in the archived `baseline-existing-capabilities` design. Keep the existing commented examples. Verify with `openspec list --json` that the root still resolves and the YAML parses.
-- [ ] 5.2 Add `rules:` to `openspec/config.yaml`: proposal (state what is out of scope; link follow-ups instead of bundling them), specs (describe verified behavior only; use behavior vocabulary from the glossary, not code names; every scenario is test-ready; known defects go to design, not requirements), design (record evidence for each known issue), tasks (each task names its verification; tests and docs land in the group that needs them). Verify `openspec validate baseline-existing-capabilities --strict` still passes and `openspec instructions specs --change baseline-existing-capabilities --json` shows the rules.
+- [x] 5.1 Add a `context:` entry to `openspec/config.yaml` stating that `CONSTITUTION.md` holds project principles and conventions, that the codebase targets Python 3.10+, and that baseline known issues are listed in the archived `baseline-existing-capabilities` design. Keep the existing commented examples. Verify with `openspec list --json` that the root still resolves and the YAML parses.
+- [x] 5.2 Add `rules:` to `openspec/config.yaml`: proposal (state what is out of scope; link follow-ups instead of bundling them), specs (describe verified behavior only; use behavior vocabulary from the glossary, not code names; every scenario is test-ready; known defects go to design, not requirements), design (record evidence for each known issue), tasks (each task names its verification; tests and docs land in the group that needs them). Verify `openspec validate baseline-existing-capabilities --strict` still passes and `openspec instructions specs --change baseline-existing-capabilities --json` shows the rules.
 
 ## 6. Retire DESIGN.md
 

@@ -1,5 +1,24 @@
 schema: spec-driven
 
+context: |
+  CONSTITUTION.md holds the project principles, conventions and glossary of behavior terms; follow it.
+  The codebase targets Python 3.10+.
+  Known issues found while baselining are listed in the design.md of the archived baseline-existing-capabilities change.
+
+rules:
+  proposal:
+    - State what is out of scope and link follow-up changes instead of bundling them.
+  specs:
+    - Describe verified behavior only.
+    - Use the behavior vocabulary from the glossary in CONSTITUTION.md, not code names.
+    - Write every scenario so it can become a test.
+    - Record known defects in design.md, not as requirements.
+  design:
+    - Record evidence for each known issue.
+  tasks:
+    - Each task names its verification.
+    - Tests and docs land in the group that needs them.
+
 # Project context (optional)
 # Add only constraints that should guide OpenSpec artifacts and workflows.
 # Include constraints an agent cannot infer by reading the code.
