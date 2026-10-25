@@ -25,7 +25,7 @@
 
 ## 5. Dependabot
 
-- [ ] 5.1 In `.github/dependabot.yml`, replace the `pip` ecosystem with `uv`, keeping the weekly schedule, pull request limit and grouping. Verify `pre-commit run check-yaml --files .github/dependabot.yml` passes, the ecosystems are exactly `uv`, `pre-commit` and `devcontainers`, and `uv` appears in GitHub's supported ecosystems list.
+- [x] 5.1 In `.github/dependabot.yml`, replace the `pip` ecosystem with `uv`, keeping the weekly schedule, pull request limit and grouping. Verify `pre-commit run check-yaml --files .github/dependabot.yml` passes, the ecosystems are exactly `uv`, `pre-commit` and `devcontainers`, and `uv` appears in GitHub's supported ecosystems list.
 
 ## 6. Integration checks
 
