@@ -33,9 +33,9 @@
 
 ## 7. Integration checks
 
-- [ ] 7.1 Run `openspec validate baseline-existing-capabilities --strict` and verify it reports the change as valid.
-- [ ] 7.2 Run `make test` and verify the suite still passes with the same 98 tests, confirming no code was touched.
-- [ ] 7.3 Run `git status` and verify the only changes are `AGENTS.md`, `CLAUDE.md`, `CONSTITUTION.md`, `README.md`, `.gitignore`, `Makefile`, `.claude/settings.json`, `openspec/config.yaml`, the change directory, and the removal of `DESIGN.md`.
+- [x] 7.1 Run `openspec validate baseline-existing-capabilities --strict` and verify it reports the change as valid.
+- [x] 7.2 Run `make test` and verify the suite still passes with the same 98 tests, confirming no code was touched.
+- [x] 7.3 Run `git status` and verify the only changes are `AGENTS.md`, `CLAUDE.md`, `CONSTITUTION.md`, `README.md`, `.gitignore`, `Makefile`, `.claude/settings.json`, `openspec/config.yaml`, the change directory, and the removal of `DESIGN.md`.
 
 ## Workflow follow-up
 
