@@ -19,8 +19,8 @@
 
 ## 4. README
 
-- [ ] 4.1 Rewrite `README.md`: keep the one-line description and badges, list implemented features (Pydantic/dataclass/TypedDict and JSON Schema/OpenAPI input, `$ref` resolution, Streamlit backend) separately from planned ones, replace the `FormField` backend interface with a minimal working Python example using `SettingsSchema.from_schema` and `StreamlitSettingsWizard(...).render_schema()`, and link to `CONSTITUTION.md`, `AGENTS.md` and `openspec/specs/`. Verify the example runs with `poetry run streamlit run` on a scratch copy and that the README no longer mentions `FormField` or claims a working CLI.
-- [ ] 4.2 Replace the hardcoded 100% coverage badge in `README.md` with a static badge showing the measured total from `make test`. Verify the badge value equals the `TOTAL` line of the coverage report.
+- [x] 4.1 Rewrite `README.md`: keep the one-line description and badges, list implemented features (Pydantic/dataclass/TypedDict and JSON Schema/OpenAPI input, `$ref` resolution, Streamlit backend) separately from planned ones, replace the `FormField` backend interface with a minimal working Python example using `SettingsSchema.from_schema` and `StreamlitSettingsWizard(...).render_schema()`, and link to `CONSTITUTION.md`, `AGENTS.md` and `openspec/specs/`. Verify the example runs with `poetry run streamlit run` on a scratch copy and that the README no longer mentions `FormField` or claims a working CLI.
+- [x] 4.2 Replace the hardcoded 100% coverage badge in `README.md` with a static badge showing the measured total from `make test`. Verify the badge value equals the `TOTAL` line of the coverage report.
 
 ## 5. OpenSpec configuration
 
