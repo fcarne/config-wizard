@@ -3,9 +3,9 @@
     "allow": [
       "Bash(make *)",
       "Bash(openspec *)",
-      "Bash(poetry run pytest*)",
-      "Bash(poetry run ruff*)",
-      "Bash(poetry run mypy*)",
+      "Bash(uv run pytest*)",
+      "Bash(uv run ruff*)",
+      "Bash(uv run mypy*)",
       "Bash(git status*)",
       "Bash(git diff*)",
       "Bash(git log*)"

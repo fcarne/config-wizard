@@ -24,12 +24,13 @@ openspec/
 
 ## Stack and tooling
 
-Poetry manages dependencies, Ruff lints and formats, mypy (with the Pydantic plugin) checks types, pytest with coverage runs tests, and pre-commit runs the checks. Streamlit is an optional extra, as are the Typer and Textual extras. `make install` installs the `dev` dependency group, so `poetry run pytest`, `poetry run ruff` and `poetry run mypy` work from a fresh clone. The pre-commit hooks run ruff and mypy from their own isolated environments. `poetry.lock` is tracked and updated with `poetry update`. Dependabot opens weekly pull requests for the lock, the pre-commit hook revisions and the devcontainer features. Versions live in `pyproject.toml` and `.pre-commit-config.yaml`.
+uv manages dependencies, Ruff lints and formats, mypy (with the Pydantic plugin) checks types, pytest with coverage runs tests, and pre-commit runs the checks. Streamlit is an optional extra, as are the Typer and Textual extras. `make install` runs `uv sync`, which installs the `dev` dependency group, so `uv run pytest`, `uv run ruff` and `uv run mypy` work from a fresh clone; use `uv sync --all-extras` to also install the backends. `uv.lock` is tracked and updated with `uv lock --upgrade`. The pre-commit hooks run ruff and mypy from their own isolated environments, and the `uv-lock` and `uv-audit` hooks run when `uv.lock` or `pyproject.toml` change (`uv-audit` needs the network). Dependabot opens weekly pull requests for the lock, the pre-commit hook revisions and the devcontainer features. Versions live in `pyproject.toml` and `.pre-commit-config.yaml`.
 
 ## Commands
 
 ```
-make install     install dependencies with Poetry
+make install     install dependencies with uv
+make update      refresh uv.lock and the environment
 make pre-commit-install     install the pre-commit and commit-msg git hooks
 make format      Ruff format and end-of-file fixer through pre-commit
 make lint        Ruff check and mypy through pre-commit
