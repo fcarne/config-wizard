@@ -12,7 +12,7 @@ See `proposal.md` for motivation. Current state, with the evidence gathered whil
 | 4 | Python 3.10 is end of life | `endoflife.date`: 3.10 on 2026-10-01, 3.11 on 2027-10-31, 3.12 on 2028-10-31 |
 | 5 | Hook pins lag | ruff-pre-commit v0.12.5 (latest v0.17.2), mirrors-mypy v1.17.0 (v2.4.0), pre-commit-hooks v5.0.0 (v6.0.0), pyupgrade v3.20.0 (v3.22.0) |
 | 6 | The lock is untracked and stale | `.gitignore` line 108 ignores `poetry.lock` and `git ls-files` lists no lock, so it was never committed; the local copy is old: `poetry update --dry-run` moves pydantic 2.11.7 to 2.14.1, pydantic-core 2.33.2 to 2.50.1, typing-extensions 4.14.1 to 4.16.0, jsonschema 4.25.0 to 4.26.0, pydantic-settings 2.10.1 to 2.16.1; extras (Streamlit 1.48 to 1.66, pytest 8 to 9) also lag |
-| 7 | Ruff's default rules are narrow | Default rules report 0 findings; `I,UP,B,SIM,PT` report 22 with ruff 0.12.5: 8 `I001`, 7 `PT006`, 1 `PT014`, 3 `SIM103`, 1 `SIM102`, 1 `SIM108`, 1 `UP038` |
+| 7 | Ruff's default rule set depends on its version | ruff 0.12.5 defaults reported 0 findings; ruff 0.17.2 enables 407 rules by default, including parts of `I`, `UP`, `B`, `SIM` and `PT`, and reports 23 findings: 18 autofixed (import order and `typing_extensions.Any`) and 5 left (3 `SIM103`, 1 `SIM102`, 1 `PT014`); adding the whole families gives 14 findings in total, the extra 9 being 7 `PT006`, 1 `SIM108` and 1 `UP042` |
 | 8 | No update bot | `.github/` is empty |
 
 Constraints that shape the approach:
@@ -56,13 +56,14 @@ Alternative: local hooks that call `poetry run ruff` and `poetry run mypy`, givi
 
 Alternative: 3.12, matching the devcontainer. Rejected: 3.11 is supported until 2027-10-31 and nothing in the code needs 3.12.
 
-### Ruff selects `I, UP, B, SIM, PT` and findings are fixed, not ignored
-The measured 22 findings are mostly mechanical: import order, parametrize argument style, and simplifications. The count is re-measured after Ruff is bumped, because 0.12.5 to 0.17 can change both rules and formatting. Behavior preservation rules:
+### Ruff extends its defaults with `I, UP, B, SIM, PT` and findings are fixed, not ignored
+Ruff 0.17's own defaults are far wider than 0.12's, so selecting only the planned families would narrow coverage. `[tool.ruff.lint] extend-select = ["I", "UP", "B", "SIM", "PT"]` keeps the whole of those families enabled whatever the defaults do in later versions, and leaves every other default rule on. Behavior preservation rules:
 - `SIM103` on the three Streamlit button helpers is rewritten to the equivalent boolean expression. `_is_clear_button_disabled` stays inverted (known issue 7 in the archived baseline design) and is fixed by `fix-streamlit-collections`, not here.
 - `PT014` removes the second `(Schema(type=DataType.NULL), InputType.NULL)` case in `tests/test_mapper.py`, which is identical to an earlier one. The suite goes from 98 to 97 cases.
+- `UP042` converts `InputType(str, Enum)` to `StrEnum`. Equality with strings and construction from values are unchanged. In 3.11+, formatting changes: `f"{InputType.TEXT}"` yields `text` instead of `InputType.TEXT`. The only use is an f-string in an error path that normal use cannot reach, so the difference is accepted, and the conversion is its own commit so it can be reverted alone.
 - No rule is disabled to make a finding go away. A finding that cannot be fixed equivalently is reported and decided by the user.
 
-Alternative: select the rules but ignore the awkward ones. Rejected by the project convention against silencing lint rules.
+Alternatives: rely on the defaults alone, rejected because the policy would float with Ruff versions; or a fixed `select` of the defaults, rejected as a very long list that would still need maintaining.
 
 ### Dependabot over Renovate
 GitHub's documentation lists Poetry v2, pre-commit hook revisions and devcontainers as supported ecosystems, and Dependabot needs no application install. With the lock tracked it updates the lock as well as the bounds. Configure pip, pre-commit and devcontainers on a weekly schedule with a small pull request limit and grouped minor and patch updates. `github-actions` is added by `add-ci-pipeline` once workflows exist.
@@ -81,7 +82,8 @@ Run `poetry update`, which re-locks core and extras together. Bounds are not wid
 
 - [Pydantic 2.14 changes generated JSON Schema] -> The exact-dict tests fail; investigate whether the change is semantic before touching an expectation, and pause if it is.
 - [mypy 2.x reports new errors] -> Fix them equivalently; do not suppress. Pause if a fix would change behavior.
-- [Ruff 0.17 reformats or flags more] -> Bump hooks in their own commit and review the diff size before applying rules.
+- [Ruff 0.17 reformats or flags more] -> Bump hooks in their own commit and review the diff size before applying rules. Realized: the new defaults flagged 23 findings immediately.
+- [Ruff's other default rules can still shift with future bumps] -> `extend-select` pins the five families; changes in other defaults surface in the Dependabot pull request.
 - [Streamlit 1.48 to 1.66 is covered only by a smoke test] -> Accepted; `test-streamlit-backend` is on the roadmap.
 - [Two version sources for ruff and mypy can drift between update pull requests] -> Accepted; Dependabot updates the lock and the hook revisions, and `migrate-to-ty` revisits it.
 - [Tracking the lock adds lock diffs to pull requests] -> Accepted for reproducibility; Dependabot groups limit the churn.

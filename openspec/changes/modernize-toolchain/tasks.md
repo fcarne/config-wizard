@@ -21,16 +21,15 @@
 
 ## 4. Hook bumps
 
-- [ ] 4.1 In `.pre-commit-config.yaml`, set `pre-commit-hooks` to `v6.0.0`, `ruff-pre-commit` to `v0.17.2` and `mirrors-mypy` to `v2.4.0`, leaving pyupgrade for group 5. Verify `make lint` and `make format` exit 0, or list each new finding.
-- [ ] 4.2 Fix any new ruff or mypy findings with equivalent changes, with no suppressions, and record the size of any reformatting diff. Verify `make lint` exits 0 and `make test` reports 98 passed. Stop for a decision if a fix would change behavior.
+- [x] 4.1 In `.pre-commit-config.yaml`, set `pre-commit-hooks` to `v6.0.0`, `ruff-pre-commit` to `v0.17.2` and `mirrors-mypy` to `v2.4.0`, leaving pyupgrade for group 5. Verify `make lint` and `make format` exit 0, or list each new finding.
+- [x] 4.2 Fix the five findings Ruff 0.17's defaults leave after autofix, keeping the import-only autofixes the hook already applied: rewrite the three `SIM103` button helpers and the `SIM102` nested `if` in `config_wizard/backends/streamlit.py` equivalently, with `_is_clear_button_disabled` behaving exactly as before, and remove the duplicate `(Schema(type=DataType.NULL), InputType.NULL)` case in `tests/test_mapper.py`. Verify `make lint` exits 0, `make test` reports 97 passed, and the README example under `AppTest` returns the same dictionary as in 3.4.
 
 ## 5. Ruff rules
 
-- [ ] 5.1 In `pyproject.toml`, add `[tool.ruff.lint]` selecting `E4, E7, E9, F, I, UP, B, SIM, PT` (the existing defaults plus the new rules) and re-run `ruff check --statistics` with the bumped version. Verify the per-rule counts are recorded, since 0.12.5 reported 22.
-- [ ] 5.2 Apply the import-order autofixes. Verify `ruff check --select I` reports nothing and `make test` reports 98 passed.
-- [ ] 5.3 Fix the pytest findings in `tests/`: use tuples for `parametrize` names and remove the second `(Schema(type=DataType.NULL), InputType.NULL)` case in `tests/test_mapper.py`. Verify `ruff check tests --select PT` reports nothing and `make test` reports 97 passed.
-- [ ] 5.4 Fix the remaining `SIM` and `UP` findings in `config_wizard/` with equivalent rewrites, keeping `_is_clear_button_disabled` behaving exactly as before. Verify `make lint` exits 0, `make test` reports 97 passed, and the README example under `AppTest` returns the same dictionary as in 3.3.
-- [ ] 5.5 Remove the pyupgrade hook from `.pre-commit-config.yaml` and change the pyupgrade clause in `CONSTITUTION.md` to say Ruff's `UP` rules keep code current. Verify `grep -rn "pyupgrade" . --include=*.yaml --include=*.md --exclude-dir=openspec --exclude-dir=.venv` prints nothing and `make lint` exits 0.
+- [ ] 5.1 In `pyproject.toml`, add `[tool.ruff.lint]` with `extend-select = ["I", "UP", "B", "SIM", "PT"]` and run `ruff check --statistics`. Verify the findings are the nine measured ones (7 `PT006`, 1 `SIM108`, 1 `UP042`) or the difference is recorded.
+- [ ] 5.2 Fix the `PT006` findings in `tests/` (tuples for `parametrize` names) and the `SIM108` finding in `config_wizard/backends/streamlit.py` equivalently. Verify `ruff check --select PT006,SIM108` reports nothing and `make test` reports 97 passed.
+- [ ] 5.3 Convert `InputType` to `StrEnum` for `UP042`, as its own commit. Verify `ruff check --select UP042` reports nothing, `make test` reports 97 passed, `InputType.TEXT == "text"` and `InputType("text") is InputType.TEXT` still hold, and `f"{InputType.TEXT}"` now yields `text`, which is recorded as the accepted difference.
+- [ ] 5.4 Remove the pyupgrade hook from `.pre-commit-config.yaml` and change the pyupgrade clause in `CONSTITUTION.md` to say Ruff's `UP` rules keep code current. Verify `grep -rn "pyupgrade" . --include=*.yaml --include=*.md --exclude-dir=openspec --exclude-dir=.venv` prints nothing and `make lint` exits 0.
 
 ## 6. Dependabot
 
