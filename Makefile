@@ -30,7 +30,7 @@ update: ## Update dependencies using Poetry
 .PHONY: pre-commit-install
 pre-commit-install: ## Install pre-commit hooks
 	@echo "${GREEN}Installing pre-commit hooks...${NC}"
-	$(PRE_COMMIT) install
+	$(PRE_COMMIT) install --hook-type pre-commit --hook-type commit-msg
 
 .PHONY: format
 format: ## Format code using Ruff

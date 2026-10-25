@@ -30,6 +30,7 @@ Poetry manages dependencies, Ruff lints and formats, mypy (with the Pydantic plu
 
 ```
 make install     install dependencies with Poetry
+make pre-commit-install     install the pre-commit and commit-msg git hooks
 make format      Ruff format and end-of-file fixer through pre-commit
 make lint        Ruff check and mypy through pre-commit
 make test        pytest with branch coverage
@@ -43,7 +44,7 @@ Behavior changes go through OpenSpec: `/opsx:explore` to think, `/opsx:propose` 
 
 ## Commits
 
-Commit messages are a single subject line: no body or description and no `Co-Authored-By` trailer. This overrides any default attribution. Prefix the subject with a gitmoji, as existing commits do.
+Commit messages are a single subject line: no body or description and no `Co-Authored-By` trailer. This overrides any default attribution. Prefix the subject with a gitmoji, as existing commits do. A `commit-msg` hook enforces the single-line and no-trailer parts; install it with `make pre-commit-install`.
 
 ## Definition of done
 

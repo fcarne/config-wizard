@@ -31,3 +31,11 @@ repos:
         - pydantic[email]
         - pydantic-extra-types
         - openapi-pydantic
+
+-   repo: local
+    hooks:
+    -   id: commit-message-format
+        name: commit message is a single subject line
+        entry: python scripts/check_commit_msg.py
+        language: python
+        stages: [commit-msg]

@@ -4,5 +4,5 @@ set -euo pipefail
 sudo chown vscode:vscode /home/vscode/.claude /home/vscode/.config /home/vscode/.local /home/vscode/.local/share
 poetry install --all-extras
 pipx install pre-commit
-pre-commit install
+pre-commit install --hook-type pre-commit --hook-type commit-msg
 npm install -g @fission-ai/openspec@latest opencode-ai@latest
