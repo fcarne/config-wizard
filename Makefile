@@ -35,12 +35,14 @@ pre-commit-install: ## Install pre-commit hooks
 .PHONY: format
 format: ## Format code using Ruff
 	@echo "${GREEN}Formatting code...${NC}"
-	@${PRE_COMMIT} run --all-files ruff-format end-of-file-fixer
+	@${PRE_COMMIT} run --all-files ruff-format
+	@${PRE_COMMIT} run --all-files end-of-file-fixer
 
 .PHONY: lint
 lint: ## Lint code using Ruff
 	@echo "${GREEN}Linting code...${NC}"
-	@${PRE_COMMIT} run --all-files ruff-check mypy
+	@${PRE_COMMIT} run --all-files ruff-check
+	@${PRE_COMMIT} run --all-files mypy
 
 .PHONY: test
 test: ## Run tests using pytest with coverage
