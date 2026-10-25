@@ -1,9 +1,9 @@
-from enum import Enum
+from enum import StrEnum
 
 from openapi_pydantic import Schema
 
 
-class InputType(str, Enum):
+class InputType(StrEnum):
     """Enum for input types."""
 
     # Text input types
