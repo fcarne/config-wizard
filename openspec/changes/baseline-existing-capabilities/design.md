@@ -63,6 +63,14 @@ The `FormField` intermediate model from `DESIGN.md` is abandoned. Backends walk 
 ### `CONSTITUTION.md` holds principles, `AGENTS.md` holds procedure
 Constitution: purpose, architectural principles, conventions (Google-style docstrings, typing, 120-column Ruff, tests per behavior), non-goals, and how changes flow through OpenSpec. AGENTS.md: commands (`make install|format|lint|test`), layout, where specs live, how to verify work. `openspec/config.yaml` gets a short `context:` pointing at the constitution rather than copying it.
 
+### Glossary lives in `CONSTITUTION.md`, rules live in `config.yaml`
+Specs avoid code names on purpose, so the mapping from behavior vocabulary to code (input kind to `InputType`, settings schema to `SettingsSchema`, resolved schema to `ResolvedSettingsSchema`, backend to `SettingsWizardBackend`) is kept once, in the constitution, where agents already look. The baseline policy is encoded as `rules:` in `openspec/config.yaml` so it is applied at artifact-writing time instead of relying on memory.
+
+Alternative considered: a separate `GLOSSARY.md`. Rejected as one more file to keep in sync for about ten entries.
+
+### Shared agent settings are narrow
+`.claude/settings.json` allows `make` targets, `openspec`, `poetry run pytest|ruff|mypy` and read-only git commands. It does not allow a blanket `poetry run *`, which would permit arbitrary code. Personal overrides go in `.claude/settings.local.json`, which is git-ignored.
+
 ### `DESIGN.md` is deleted after a backup
 It is untracked, so git cannot restore it. Content mapping: overview and input formats go to `README.md`; vision, non-goals and the roadmap list go to `CONSTITUTION.md` and `README.md`; the architecture section is superseded by this document and the specs; the name-origin and authorship notes are dropped.
 
@@ -82,7 +90,8 @@ Each item below is a candidate follow-up change.
 | 8 | streamlit-backend | `required` is passed but never enforced; empty required fields return `None` | Unused parameter in `_render_property` |
 | 9 | schema-resolution | A schema document without `$defs` cannot be resolved even when it contains no `$ref`, so it cannot be given to a backend | `from_spec({"type":"object",...}).resolve_refs()` raises `ValueError` |
 | 10 | packaging | Console script points to the missing `config_wizard.cli:main` | `pyproject.toml` `[project.scripts]` |
-| 11 | testing | Backends have no automated tests | No `tests/test_backends*` |
+| 11 | testing | Backends have no automated tests; measured coverage is 30% (`base.py` and `streamlit.py` at 0%) while the README badge claims 100% | `pytest --cov` run |
+| 12 | tooling | No CI: lint, types, tests and `openspec validate` are not enforced on pull requests | `.github/` is empty |
 
 ## Risks / Trade-offs
 
