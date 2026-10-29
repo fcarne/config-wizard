@@ -13,12 +13,12 @@
 ## 3. Hook, Makefile and mypy removal
 
 - [x] 3.1 In `.pre-commit-config.yaml`, add a local hook `ty` running `uv run --all-extras ty check` with `pass_filenames: false` and Python file types, set `[tool.ty.src]` to include `config_wizard`, `scripts` and `tests`, remove the `mirrors-mypy` repository, point `make lint` at the `ruff-check` and `ty` hook ids, and remove `[tool.mypy]` and `mypy` from `pyproject.toml`, then run `uv lock`. Verify `make lint` and `make format` exit 0, `uv run pre-commit run ty --all-files` passes from a default `uv sync` environment even with the untracked `test_wizard.py` present, `grep -rn -i mypy pyproject.toml .pre-commit-config.yaml Makefile` prints nothing, and `uv lock --check` passes.
-- [ ] 3.2 Prove the gate in a scratch copy: introduce an obviously wrong-typed assignment in `config_wizard/utils.py` and run `uv run pre-commit run ty --all-files`. Verify the hook exits non-zero and names the error.
+- [x] 3.2 Prove the gate in a scratch copy: introduce an obviously wrong-typed assignment in `config_wizard/utils.py` and run `uv run pre-commit run ty --all-files`. Verify the hook exits non-zero and names the error.
 
 ## 4. Documents and devcontainer
 
-- [ ] 4.1 Update `AGENTS.md` (the stack paragraph names ty and says the `ty` hook installs the extras, and the `make lint` line), `CONSTITUTION.md` (the development tools line, and the types convention: checked by ty, suppressions are `# ty: ignore[rule]` naming the rule, and `config_wizard/schema.py` has one scoped override for `invalid-mutable-override` and `invalid-attribute-override` because `ResolvedSchema` narrows inherited fields), and `.claude/settings.json` (`uv run ty*` in place of `uv run mypy*`). Verify `grep -n -i mypy AGENTS.md CONSTITUTION.md .claude/settings.json` prints nothing and the JSON parses.
-- [ ] 4.2 In `.devcontainer/devcontainer.json`, replace `ms-python.mypy-type-checker` with `astral-sh.ty`. Verify the file parses as JSON, `astral-sh.ty` is listed, and `grep -n -i mypy .devcontainer/*` prints nothing. The extension itself can only be confirmed on a container rebuild, which is recorded as the remaining check.
+- [x] 4.1 Update `AGENTS.md` (the stack paragraph names ty and says the `ty` hook installs the extras, and the `make lint` line), `CONSTITUTION.md` (the development tools line, and the types convention: checked by ty, suppressions are `# ty: ignore[rule]` naming the rule, and `config_wizard/schema.py` has one scoped override for `invalid-mutable-override` and `invalid-attribute-override` because `ResolvedSchema` narrows inherited fields), and `.claude/settings.json` (`uv run ty*` in place of `uv run mypy*`). Verify `grep -n -i mypy AGENTS.md CONSTITUTION.md .claude/settings.json` prints nothing and the JSON parses.
+- [x] 4.2 In `.devcontainer/devcontainer.json`, replace `ms-python.mypy-type-checker` with `astral-sh.ty`. Verify the file parses as JSON, `astral-sh.ty` is listed, and `grep -n -i mypy .devcontainer/*` prints nothing. The extension itself can only be confirmed on a container rebuild, which is recorded as the remaining check.
 
 ## 5. Dependabot
 
