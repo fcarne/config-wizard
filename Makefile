@@ -6,9 +6,9 @@ GRAY := \033[0;37m
 BOLD := \033[1m
 NC := \033[0m
 
-POETRY := poetry
-PYTHON := poetry run python
-PRE_COMMIT := pre-commit
+UV := uv
+PYTHON := uv run python
+PRE_COMMIT := uv run pre-commit
 SRC_DIR := config_wizard
 
 # List all targets when running `make` or `make help`
@@ -18,14 +18,15 @@ help:
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / { printf "  ${CYAN}%-20s${NC} %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 .PHONY: install
-install: ## Install dependencies using Poetry
+install: ## Install dependencies using uv
 	@echo "${GREEN}Installing dependencies...${NC}"
-	$(POETRY) install
+	$(UV) sync
 
 .PHONY: update
-update: ## Update dependencies using Poetry
+update: ## Update dependencies using uv
 	@echo "${GREEN}Updating dependencies...${NC}"
-	$(POETRY) update
+	$(UV) lock --upgrade
+	$(UV) sync
 
 .PHONY: pre-commit-install
 pre-commit-install: ## Install pre-commit hooks

@@ -24,15 +24,15 @@ Planned work is tracked in [`ROADMAP.md`](ROADMAP.md).
 
 ## Installation
 
-From a clone of the repository, with the Streamlit extra:
+From a clone of the repository, with uv installed and the Streamlit extra:
 
 ```
-poetry install --extras streamlit
+uv sync --extra streamlit
 ```
 
 ## Example
 
-Save this as `app.py` and run `poetry run streamlit run app.py`:
+Save this as `app.py` and run `uv run streamlit run app.py`:
 
 ```python
 import streamlit as st

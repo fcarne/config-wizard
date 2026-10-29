@@ -7,12 +7,7 @@
     },
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers-extra/features/poetry:2": {},
     "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
-  },
-  "containerEnv": {
-    "POETRY_VIRTUALENVS_IN_PROJECT": "true",
-    "POETRY_NO_INTERACTION": "1"
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "forwardPorts": [8501],

@@ -3,6 +3,7 @@ repos:
     rev: v6.0.0
     hooks:
     -   id: check-added-large-files
+        exclude: ^uv\.lock$
     -   id: check-yaml
     -   id: check-toml
     -   id: end-of-file-fixer
@@ -11,9 +12,9 @@ repos:
     rev: v0.17.2
     hooks:
       - id: ruff-format # formatter
-        types_or: [python, pyi, jupyter, toml]
+        types_or: [python, pyi, jupyter]
       - id: ruff-check # linter
-        types_or: [python, pyi, jupyter, toml]
+        types_or: [python, pyi, jupyter]
         args: [--fix]
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
@@ -24,6 +25,13 @@ repos:
         - pydantic[email]
         - pydantic-extra-types
         - openapi-pydantic
+
+-   repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.13.5
+    hooks:
+      - id: uv-lock
+      - id: uv-audit
+        args: [--preview-features, audit-command]
 
 -   repo: local
     hooks:
