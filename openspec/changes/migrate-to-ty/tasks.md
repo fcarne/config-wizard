@@ -27,9 +27,9 @@
 ## 6. Integration checks
 
 - [x] 6.1 In `ROADMAP.md`, delete the `migrate-to-ty` item, renumber the rest, and change the `add-ci-pipeline` item to say `ty` instead of `mypy`, record on `fix-streamlit-collections` that its inline `# ty: ignore` comments go as each cause is fixed, and add a `redesign-resolved-schema` item for the `schema.py` override. Verify the numbering is consecutive from 1, `grep -n -i mypy ROADMAP.md` prints nothing, and `add-ci-pipeline` is first.
-- [ ] 6.2 Run `openspec validate migrate-to-ty --strict`. Verify it reports the change as valid.
-- [ ] 6.3 Clone the branch into a new empty directory under the session scratchpad and run `make install`, `make test`, `make lint`, `make format` and `uv build`. Verify pytest reports 97 passed, lint and format pass from the default sync environment (the hook installs the extras itself), and the build succeeds without warnings.
-- [ ] 6.4 Run `git diff --name-status origin/main..HEAD` and verify the only changes are `pyproject.toml`, `uv.lock`, `.pre-commit-config.yaml`, `Makefile`, `.github/dependabot.yml`, `AGENTS.md`, `CONSTITUTION.md`, `ROADMAP.md`, `.claude/settings.json`, `.devcontainer/devcontainer.json`, `config_wizard/schema.py`, `config_wizard/backends/streamlit.py`, `tests/test_schema.py` and the change directory.
+- [x] 6.2 Run `openspec validate migrate-to-ty --strict`. Verify it reports the change as valid.
+- [x] 6.3 Clone the branch into a new empty directory under the session scratchpad and run `make install`, `make test`, `make lint`, `make format` and `uv build`. Verify pytest reports 97 passed, lint and format pass from the default sync environment (the hook installs the extras itself), and the build succeeds without warnings.
+- [x] 6.4 Run `git diff --name-status origin/main..HEAD` and verify the only changes are `pyproject.toml`, `uv.lock`, `.pre-commit-config.yaml`, `Makefile`, `.github/dependabot.yml`, `AGENTS.md`, `CONSTITUTION.md`, `ROADMAP.md`, `.claude/settings.json`, `.devcontainer/devcontainer.json`, `config_wizard/schema.py`, `config_wizard/backends/streamlit.py`, `tests/test_schema.py` and the change directory.
 
 ## Workflow follow-up
 
