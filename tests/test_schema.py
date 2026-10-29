@@ -99,7 +99,7 @@ def test_ref_map__set_invalid_type__raises_type_error() -> None:
     schema = SettingsSchema()
 
     with pytest.raises(TypeError):
-        schema.ref_map = "invalid_type"  # type: ignore[assignment] # Should be a dict or None
+        schema.ref_map = "invalid_type"  # ty: ignore[invalid-assignment] # Should be a dict or None
 
 
 def test_resolve_ref__valid_ref__returns_correct_value() -> None:

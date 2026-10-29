@@ -61,6 +61,9 @@ This was chosen by you after the evidence in findings 4, 5 and 8.
 
 Alternatives: 36 inline comments, 19 of them identical; or refactoring the Streamlit calls now, rejected because that backend has no tests.
 
+### ty checks the maintained directories
+The hook runs `ty check` with no paths, which checks every non-ignored Python file in the project, tracked or not, while the other hooks only see tracked files (`pre-commit --all-files` uses `git ls-files`). In a working copy with the untracked, known-broken `test_wizard.py` harness the gate would fail on a file that is not in the repository, and pass on a fresh clone. `[tool.ty.src]` therefore sets `include = ["config_wizard", "scripts", "tests"]`, which is every tracked Python file and the scope the zero-diagnostics result was measured on. It is configuration, not a suppression, and it also governs CLI and editor runs; a new top-level Python directory has to be added to it.
+
 ### `unused-ignore-comment` is an error
 It replaces mypy's `warn_unused_ignores`, so a suppression cannot outlive its cause. The other `[tool.mypy]` settings need no equivalent: the Pydantic plugin is replaced by ty's built-in rules, and `follow_imports` and `no_implicit_reexport` have no counterpart in use.
 
@@ -78,4 +81,4 @@ The devcontainer swaps `ms-python.mypy-type-checker` for `astral-sh.ty`, with no
 
 ## Migration Plan
 
-Land as separate commits in dependency order so each can be reverted alone: add `ty` and re-lock, configuration and hook, suppressions, documents and devcontainer, Dependabot. The mypy configuration and the dead ignores remain recoverable from git history. Rollback: revert the commits.
+Land as separate commits in dependency order so each can be reverted alone: add `ty` and re-lock, configuration, then the suppressions together with the hook switch and mypy removal in one commit (deleting the mypy-coded ignores turns the mypy hook red until mypy itself is gone), then documents and devcontainer, then Dependabot. The mypy configuration and the dead ignores remain recoverable from git history. Rollback: revert the commits.

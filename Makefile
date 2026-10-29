@@ -43,7 +43,7 @@ format: ## Format code using Ruff
 lint: ## Lint code using Ruff
 	@echo "${GREEN}Linting code...${NC}"
 	@${PRE_COMMIT} run --all-files ruff-check
-	@${PRE_COMMIT} run --all-files mypy
+	@${PRE_COMMIT} run --all-files ty
 
 .PHONY: test
 test: ## Run tests using pytest with coverage
@@ -64,5 +64,5 @@ serve-docs: ## Serve documentation locally using mkdocs
 .PHONY: clean
 clean: ## Clean up Python cache files and directories
 	@echo "${YELLOW}Cleaning up...${NC}"
-	rm -rf .mypy_cache .pytest_cache .coverage .coverage.* .ruff-cache
+	rm -rf .pytest_cache .coverage .coverage.* .ruff-cache
 	@find . -type d -name "__pycache__" -exec rm -rf {} +

@@ -103,7 +103,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
         self,
         schema: SettingsSchema,
         key: str | None = None,
-        container: DeltaGenerator = st,
+        container: DeltaGenerator = st,  # ty: ignore[invalid-parameter-default]
     ):
         """
         Initialize the Streamlit settings wizard backend.
@@ -202,7 +202,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
             return options[0]
 
         kwargs["options"] = options
-        return container.selectbox(**(input_kwargs | kwargs))
+        return container.selectbox(**(input_kwargs | kwargs))  # ty: ignore[no-matching-overload]
 
     def _render_datetime_input(
         self,
@@ -219,9 +219,9 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
         input_kwargs = self._get_default_streamlit_input_kwargs(property_key, property_schema, is_item)
 
         if input_type == InputType.DATE:
-            return container.date_input(**input_kwargs)
+            return container.date_input(**input_kwargs)  # ty: ignore[no-matching-overload]
         if input_type == InputType.TIME:
-            return container.time_input(**input_kwargs)
+            return container.time_input(**input_kwargs)  # ty: ignore[no-matching-overload]
 
         # Streamlit does not have a dedicated datetime input,
         # see: https://github.com/streamlit/streamlit/issues/6089
@@ -234,11 +234,11 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
 
             date_col, time_col = container.columns(2)
             with date_col:
-                selected_date = date_col.date_input(
+                selected_date = date_col.date_input(  # ty: ignore[no-matching-overload]
                     **(input_kwargs | {"label": "Date", "key": f"{input_kwargs['key']}-date-input"})
                 )
             with time_col:
-                selected_time = time_col.time_input(
+                selected_time = time_col.time_input(  # ty: ignore[no-matching-overload]
                     **(input_kwargs | {"label": "Time", "key": f"{input_kwargs['key']}-time-input"})
                 )
 
@@ -262,7 +262,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
             container.markdown("##")
 
         return container.toggle(
-            **input_kwargs,
+            **input_kwargs,  # ty: ignore[invalid-argument-type, unknown-argument]
         )
 
     def _render_number_input(
@@ -304,7 +304,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
 
         if "min_value" in kwargs and "max_value" in kwargs:
             del input_kwargs["placeholder"]  # Streamlit slider does not support placeholder
-            return container.slider(**(input_kwargs | kwargs))
+            return container.slider(**(input_kwargs | kwargs))  # ty: ignore[no-matching-overload]
 
         return container.number_input(**(input_kwargs | kwargs))
 
@@ -482,8 +482,8 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
         #  Moreover, `i` will always be less than or equal to the length of `prefixItems` for tuples.
 
         for i, item in enumerate(data_list):
-            item_schema: ResolvedSchema = (
-                property_schema.prefixItems[i]  # type: ignore[index, assignment]
+            item_schema: ResolvedSchema = (  # ty: ignore[invalid-assignment]
+                property_schema.prefixItems[i]  # ty: ignore[not-subscriptable]
                 if input_type == InputType.TUPLE
                 else property_schema.items
             )
@@ -600,8 +600,8 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
 
         # Developer notes:
         #  For dicts, `additionalProperties` must be defined, and it can be a schema or a boolean.
-        item_schema: ResolvedSchema = (
-            property_schema.additionalProperties  # type: ignore[assignment]
+        item_schema: ResolvedSchema = (  # ty: ignore[invalid-assignment]
+            property_schema.additionalProperties
             if not isinstance(property_schema.additionalProperties, bool)
             else ResolvedSchema(  # `additionalProperties: true` case, fallback to ANY
                 type=DataType.OBJECT, title="Value"
@@ -682,7 +682,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
         # Developer notes:
         #  Schemas mapped to objects must have `properties` defined.
         property_schema: ResolvedSchema
-        for property_key, property_schema in parent_property_schema.properties.items():  # type: ignore[union-attr]
+        for property_key, property_schema in parent_property_schema.properties.items():  # ty: ignore[unresolved-attribute]
             if not property_schema.title:
                 property_schema.title = to_title_case(property_key)
             full_property_key = f"{parent_property_key}{KEY_SEPARATOR}{property_key}"
@@ -762,11 +762,11 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
 
                 # Developer notes:
                 #  Discriminated unions must have a `discriminator` property that must be in the `properties`.
-                discriminator = property_schema.discriminator.propertyName  # type: ignore[union-attr]
+                discriminator = property_schema.discriminator.propertyName  # ty: ignore[unresolved-attribute]
                 selected_index = next(
                     i
                     for i, schema in enumerate(union_schemas)
-                    if schema.properties[discriminator].const == value[discriminator]  # type: ignore[index]
+                    if schema.properties[discriminator].const == value[discriminator]  # ty: ignore[not-subscriptable]
                 )
 
             else:
@@ -793,7 +793,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
         kwargs["format_func"] = lambda x: schemas_mapping[x].title or x
 
         # Render a selectbox to choose the union type
-        selected_schema = container.selectbox(
+        selected_schema = container.selectbox(  # ty: ignore[no-matching-overload]
             **(
                 input_kwargs
                 | kwargs

@@ -63,7 +63,6 @@ dev = [
     "pytest-mock >=3.14.0,<4.0.0",
     "pre-commit >=4.7,<5.0",
     "ruff >=0.17,<0.18",
-    "mypy >=2.4,<3.0",
     "ty==0.0.95",
 ]
 
@@ -72,6 +71,9 @@ line-length = 120
 
 [tool.ruff.lint]
 extend-select = ["I", "UP", "B", "SIM", "PT"]
+
+[tool.ty.src]
+include = ["config_wizard", "scripts", "tests"]
 
 [[tool.ty.overrides]]
 include = ["config_wizard/schema.py"]
@@ -82,14 +84,6 @@ invalid-attribute-override = "ignore"
 
 [tool.ty.rules]
 unused-ignore-comment = "error"
-
-[tool.mypy]
-plugins = ["pydantic.mypy"]
-
-follow_imports = "silent"
-warn_redundant_casts = true
-warn_unused_ignores = true
-no_implicit_reexport = true
 
 [tool.pytest.ini_options]
 addopts = "-ra -q --cov=config_wizard --cov-report=html --cov-report=term-missing --cov-branch"
