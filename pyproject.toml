@@ -53,7 +53,7 @@ cli = [
     "rich >=14.0.0,<16.0.0",
 ]
 textual = [
-    "textual >=5.0.1,<6.0.0",
+    "textual>=5.0.1,<9.0.0",
 ]
 
 [dependency-groups]
