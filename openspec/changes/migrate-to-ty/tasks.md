@@ -2,7 +2,7 @@
 
 ## 1. Add ty to the dev group
 
-- [ ] 1.1 In the `dev` group of `pyproject.toml`, add `ty==0.0.95`, keeping `mypy` for now, and run `uv lock` and `uv sync --all-extras`. Verify `uv run ty --version` prints 0.0.95, `uv lock --check` passes, `uv audit --preview-features audit-command` exits 0, and `uv run pytest tests` reports 97 passed.
+- [x] 1.1 In the `dev` group of `pyproject.toml`, add `ty==0.0.95`, keeping `mypy` for now, and run `uv lock` and `uv sync --all-extras`. Verify `uv run ty --version` prints 0.0.95, `uv lock --check` passes, `uv audit --preview-features audit-command` exits 0, and `uv run pytest tests` reports 97 passed.
 
 ## 2. ty configuration and suppressions
 
