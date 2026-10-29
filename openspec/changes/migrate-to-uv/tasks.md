@@ -27,11 +27,17 @@
 
 - [x] 5.1 In `.github/dependabot.yml`, replace the `pip` ecosystem with `uv`, keeping the weekly schedule, pull request limit and grouping. Verify `pre-commit run check-yaml --files .github/dependabot.yml` passes, the ecosystems are exactly `uv`, `pre-commit` and `devcontainers`, and `uv` appears in GitHub's supported ecosystems list.
 
-## 6. Integration checks
+## 6. Build backend
 
-- [x] 6.1 Run `openspec validate migrate-to-uv --strict`. Verify it reports the change as valid.
-- [x] 6.2 Clone the branch into a new empty directory under the session scratchpad and, with the directory containing `poetry` removed from `PATH`, run `make install`, `make test` and `make lint`. Verify pytest reports 97 passed, lint passes, and no step needed Poetry.
-- [x] 6.3 Run `git status` and verify the only changes are `pyproject.toml`, `uv.lock`, the removal of `poetry.lock`, `.gitignore`, `Makefile`, `.pre-commit-config.yaml`, `.claude/settings.json`, `README.md`, `AGENTS.md`, `CONSTITUTION.md`, `.devcontainer/devcontainer.json`, `.devcontainer/devcontainer-lock.json`, `.devcontainer/post-create.sh`, `.github/dependabot.yml` and the change directory.
+- [ ] 6.1 In `pyproject.toml`, set `[build-system]` to `requires = ["uv_build>=0.13.5,<0.14.0"]` and `build-backend = "uv_build"`, add `[tool.uv.build-backend]` with `module-root = ""`, and change the license to `license = "MIT"` with `license-files = ["LICENSE"]`, removing the `License :: OSI Approved :: MIT License` classifier. Verify `uv build` succeeds with no warnings, `uv lock --check` passes, and after `uv sync --all-extras` (an editable install through the new backend) `uv run pytest tests` reports 97 passed.
+- [ ] 6.2 Compare the wheel and sdist from `uv build` with ones built from `main` with `poetry-core`. Verify every package file including `py.typed` is byte-identical, the `Requires-Dist`, extras, `Requires-Python` and `Project-URL` entries match, the `config-wizard` console script entry is unchanged, and the new wheel installs and imports in an empty virtual environment.
+- [ ] 6.3 In the stack paragraph of `AGENTS.md`, state that the build backend is `uv_build` and that its bound stays on the same minor series as the pinned uv. Verify `grep -n "uv_build" AGENTS.md` shows the sentence and `grep -rn -i "poetry" pyproject.toml` prints nothing.
+
+## 7. Integration checks
+
+- [ ] 7.1 Run `openspec validate migrate-to-uv --strict`. Verify it reports the change as valid.
+- [ ] 7.2 Clone the branch into a new empty directory under the session scratchpad and, with the directory containing `poetry` removed from `PATH`, run `make install`, `make test`, `make lint` and `uv build`. Verify pytest reports 97 passed, lint passes, the build succeeds without warnings, and no step needed Poetry.
+- [ ] 7.3 Run `git status` and verify the only changes are `pyproject.toml`, `uv.lock`, the removal of `poetry.lock`, `.gitignore`, `Makefile`, `.pre-commit-config.yaml`, `.claude/settings.json`, `README.md`, `AGENTS.md`, `CONSTITUTION.md`, `.devcontainer/devcontainer.json`, `.devcontainer/devcontainer-lock.json`, `.devcontainer/post-create.sh`, `.github/dependabot.yml` and the change directory.
 
 ## Workflow follow-up
 

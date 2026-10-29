@@ -14,6 +14,8 @@ See `proposal.md` for motivation. Evidence from a scratch clone of `main` with u
 | 6 | Dependabot supports uv | GitHub's ecosystem list includes `uv` next to `pre-commit` and `devcontainers` |
 | 7 | No official devcontainer feature | The `astral-sh` repositories include no devcontainer feature; the container already uses pipx for pre-commit |
 | 8 | The migration surface is small | Poetry appears in `Makefile`, the devcontainer (feature, two variables, install line), `.gitignore`, `AGENTS.md`, `CONSTITUTION.md`, `README.md`, three `.claude/settings.json` permissions, `pyproject.toml` (build backend only) and the lock |
+| 9 | `uv_build` can replace `poetry-core` | A build with `uv_build` 0.13.5 fails on the flat layout (`Expected a Python module at: src/config_wizard/__init__.py`) until `module-root = ""` is set; then every package file, including `py.typed`, is byte-identical to the `poetry-core` build; `METADATA` matches apart from formatting and the PEP 639 license fields; the console script entry is unchanged; the wheel gains directory entries and the sdist gains `pyproject.toml.orig` |
+| 10 | The license metadata uses deprecated forms | Poetry warned that `[project.license]` as a table and license classifiers are deprecated; `uv_build` warns about the classifier |
 
 Constraints that shape the approach:
 - The current `poetry.lock` is tracked and equals what uv resolves today, so switching loses nothing.
@@ -29,7 +31,7 @@ Constraints that shape the approach:
 
 **Non-Goals:**
 - Replacing mypy with ty, which is the next change.
-- Changing the build backend or adding a `.python-version` file.
+- Adding a `.python-version` file.
 - Adding CI, which has its own roadmap item.
 - Touching the `docs` extra, or the `openapi-pydantic` and `textual` bounds.
 
@@ -43,8 +45,10 @@ Alternative: stay on Poetry. Rejected: nothing is broken, but the official ty ho
 ### `uv.lock` is tracked and `poetry.lock` is removed
 Same reasoning as the earlier decision to track the lock: reproducible environments, a base for CI, and lock updates by Dependabot. Both locks resolve identically today (finding 1), so there is no version churn at the switch.
 
-### The build backend stays `poetry-core`
-uv builds with any PEP 517 backend, so the `[build-system]` table is not touched. Moving to `uv_build` is optional and unrelated to the package manager.
+### The build backend is `uv_build`
+`[build-system]` becomes `requires = ["uv_build>=0.13.5,<0.14.0"]` with `build-backend = "uv_build"`, bounded to the uv minor series in use, plus `[tool.uv.build-backend]` with `module-root = ""` because the package sits at the repository root, not under `src/` (finding 9). The license moves to the PEP 639 form, `license = "MIT"` and `license-files = ["LICENSE"]`, and the license classifier is removed (finding 10). With this, nothing in the project depends on Poetry.
+
+Alternatives: keep `poetry-core`, which works with uv but leaves a Poetry component in an otherwise Poetry-free project; hatchling or setuptools, rejected because they offer nothing here that `uv_build` does not.
 
 ### Pre-commit runs through `uv run`
 `PRE_COMMIT` becomes `uv run pre-commit`, so the hooks use the lock-pinned pre-commit. The ruff and mypy hooks keep their isolated environments.
@@ -82,6 +86,8 @@ Alternatives: a community devcontainer feature, rejected because I could not ver
 - [A new advisory can fail the hook on an unrelated lock change] -> Treated as signal. Ignoring an advisory needs your approval each time.
 - [A lock-sized exclusion could hide a different oversized `uv.lock`] -> The exclusion is by exact path, and the lock is reviewed in every pull request that changes it.
 - [Dependabot documents `uv` support up to v0.11, while `uv.lock` is written by uv 0.13.5] -> Not testable before merge. The pull request test plan checks the Dependabot tab for configuration errors; if it reports one, the ecosystem line is the single thing to revert.
+- [`uv_build` is newer and less common than `poetry-core`] -> The built wheel and sdist were compared with the `poetry-core` ones before switching, and reverting is one table.
+- [The `uv_build` bound must follow the pinned uv] -> `AGENTS.md` notes that the bound stays on the same minor series as the uv in the hook revision and `post-create.sh`.
 - [Existing clones hold a Poetry `.venv`] -> Documented in the pull request: `rm -rf .venv && uv sync`, and uv must be installed locally.
 - [The `uv.lock` format can change across uv versions] -> uv is pinned in the hook revision and in the devcontainer install.
 - [The devcontainer cannot be rebuilt in this sandbox] -> The JSON files are validated, the script is syntax-checked, and its uv commands run in a scratch clone; a rebuild on your machine is the remaining check.
@@ -89,4 +95,4 @@ Alternatives: a community devcontainer feature, rejected because I could not ver
 
 ## Migration Plan
 
-Land as separate commits in dependency order so each can be reverted alone: lock, bounds, commands and hooks, devcontainer, Dependabot. `poetry.lock` stays until the commands no longer use Poetry, and remains recoverable from git history afterwards. Rollback: revert the commits.
+Land as separate commits in dependency order so each can be reverted alone: lock, bounds, commands and hooks, devcontainer, Dependabot, build backend. `poetry.lock` stays until the commands no longer use Poetry, and remains recoverable from git history afterwards. Rollback: revert the commits.

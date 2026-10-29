@@ -15,7 +15,8 @@ The toolchain is moving to Astral's tools: ruff is already in use, ty is next, a
 - Update the devcontainer: drop the Poetry feature and its environment variables, and install uv with pipx.
 - Switch the Dependabot `pip` ecosystem to `uv`.
 - Update `README.md`, `AGENTS.md`, `CONSTITUTION.md` and `.claude/settings.json` to the uv commands.
-- No runtime behavior changes. The build backend stays `poetry-core`, which uv builds with unchanged.
+- Replace the `poetry-core` build backend with `uv_build`, configured for the flat layout, and move the license metadata to the PEP 639 form (`license = "MIT"`, `license-files`, no license classifier). Building both ways showed identical package files and the same dependency metadata.
+- No runtime behavior changes.
 
 ## Capabilities
 
@@ -29,8 +30,8 @@ None. No requirement in `openspec/specs/` mentions the toolchain.
 
 ## Impact
 
-- Configuration: `pyproject.toml` (two bounds), new `uv.lock`, removed `poetry.lock`, `.gitignore`, `.pre-commit-config.yaml`, `.github/dependabot.yml`, `Makefile`.
+- Configuration: `pyproject.toml` (two bounds, the build system and the license fields), new `uv.lock`, removed `poetry.lock`, `.gitignore`, `.pre-commit-config.yaml`, `.github/dependabot.yml`, `Makefile`.
 - Devcontainer: `devcontainer.json`, `devcontainer-lock.json`, `post-create.sh`.
 - Documents: `README.md`, `AGENTS.md`, `CONSTITUTION.md`, `.claude/settings.json`.
 - Contributors: existing clones need `rm -rf .venv && uv sync`, and need uv installed locally.
-- Out of scope, each its own change: replacing mypy with ty (`migrate-to-ty`, which comes next and will use uv), CI (`add-ci-pipeline`, which adds `setup-uv` and the `github-actions` ecosystem), switching the build backend to `uv_build`, a `.python-version` file, and the unused `docs` extra.
+- Out of scope, each its own change: replacing mypy with ty (`migrate-to-ty`, which comes next and will use uv), CI (`add-ci-pipeline`, which adds `setup-uv` and the `github-actions` ecosystem), a `.python-version` file, and the unused `docs` extra.
