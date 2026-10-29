@@ -22,7 +22,7 @@
 
 ## 5. Dependabot
 
-- [ ] 5.1 In `.github/dependabot.yml`, add a group named `ty` with `patterns: ["ty"]` to the `uv` ecosystem, listed before `python-minor-and-patch`. Verify `pre-commit run check-yaml --files .github/dependabot.yml` passes and the `ty` group comes first.
+- [x] 5.1 In `.github/dependabot.yml`, add a group named `ty` with `patterns: ["ty"]` to the `uv` ecosystem, listed before `python-minor-and-patch`. Verify `pre-commit run check-yaml --files .github/dependabot.yml` passes and the `ty` group comes first.
 
 ## 6. Integration checks
 
