@@ -16,9 +16,11 @@ Known issue numbers refer to the table in the design of the archived `baseline-e
 ## Next
 
 1. `add-ci-pipeline`: run lint, ty, tests and `openspec validate --all --strict` on every pull request, with a pull request template that links the OpenSpec change (known issue 12).
-2. `test-streamlit-backend`: an automated Streamlit test suite using Streamlit's `AppTest`, covering the scenarios in the `streamlit-backend` spec, and a tracked, working manual harness or its removal (known issues 11 and 13).
-3. `fix-streamlit-collections`: make `render_wizard` work for list, set, tuple, dict and additional-properties fields, and fix dict key renames, list defaults, `minItems` on remove and the clear button (known issues 3 to 7). Remove the matching inline `# ty: ignore` comments in `streamlit.py` as each cause is fixed.
-4. `fix-schema-edge-cases`: classify date, time, datetime, duration and path formats, treat a single-value `Literal` as fixed, and resolve schema documents that have no `$defs` (known issues 1, 2 and 9).
+2. `protect-main-branch`: require the `ci` check on `main` through branch protection and change the squash-merge message setting from `COMMIT_MESSAGES` to `BLANK`, so merge commits respect the single-line commit rule. Repository settings, applied after the first green CI run and recorded in `AGENTS.md`.
+3. `test-streamlit-backend`: an automated Streamlit test suite using Streamlit's `AppTest`, covering the scenarios in the `streamlit-backend` spec, and a tracked, working manual harness or its removal (known issues 11 and 13).
+4. `add-coverage-gate`: fail CI under a coverage floor set just below the measured coverage once the Streamlit backend has tests (31.52% today, with the backends at 0%), and raise it as coverage grows.
+5. `fix-streamlit-collections`: make `render_wizard` work for list, set, tuple, dict and additional-properties fields, and fix dict key renames, list defaults, `minItems` on remove and the clear button (known issues 3 to 7). Remove the matching inline `# ty: ignore` comments in `streamlit.py` as each cause is fixed.
+6. `fix-schema-edge-cases`: classify date, time, datetime, duration and path formats, treat a single-value `Literal` as fixed, and resolve schema documents that have no `$defs` (known issues 1, 2 and 9).
 
 ## Later
 
@@ -29,3 +31,7 @@ Known issue numbers refer to the table in the design of the archived `baseline-e
 - `add-typer-backend` and `add-textual-backend`: the two empty backend modules.
 - `add-session-save-load`: save and load partial sessions.
 - `add-plugin-system`: plugins for backends and serializers.
+- `lint-pull-request-titles`: check in CI that a pull request title is one gitmoji-prefixed subject line, since the squash commit takes the title.
+- `add-release-workflow`: build with `uv build` and publish to PyPI through trusted publishing once a first release is decided; the package is not on PyPI yet.
+- `add-documentation-site`: build and publish the documentation; the `docs` extra and an empty `docs/` directory exist, but the generator is still to be chosen.
+- `test-other-platforms`: add Windows and macOS runners to the CI matrix once a feature depends on file paths or terminal behavior, such as the command line or the Textual backend.
