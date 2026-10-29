@@ -29,9 +29,9 @@
 
 ## 6. Build backend
 
-- [ ] 6.1 In `pyproject.toml`, set `[build-system]` to `requires = ["uv_build>=0.13.5,<0.14.0"]` and `build-backend = "uv_build"`, add `[tool.uv.build-backend]` with `module-root = ""`, and change the license to `license = "MIT"` with `license-files = ["LICENSE"]`, removing the `License :: OSI Approved :: MIT License` classifier. Verify `uv build` succeeds with no warnings, `uv lock --check` passes, and after `uv sync --all-extras` (an editable install through the new backend) `uv run pytest tests` reports 97 passed.
-- [ ] 6.2 Compare the wheel and sdist from `uv build` with ones built from `main` with `poetry-core`. Verify every package file including `py.typed` is byte-identical, the `Requires-Dist`, extras, `Requires-Python` and `Project-URL` entries match, the `config-wizard` console script entry is unchanged, and the new wheel installs and imports in an empty virtual environment.
-- [ ] 6.3 In the stack paragraph of `AGENTS.md`, state that the build backend is `uv_build` and that its bound stays on the same minor series as the pinned uv. Verify `grep -n "uv_build" AGENTS.md` shows the sentence and `grep -rn -i "poetry" pyproject.toml` prints nothing.
+- [x] 6.1 In `pyproject.toml`, set `[build-system]` to `requires = ["uv_build>=0.13.5,<0.14.0"]` and `build-backend = "uv_build"`, add `[tool.uv.build-backend]` with `module-root = ""`, and change the license to `license = "MIT"` with `license-files = ["LICENSE"]`, removing the `License :: OSI Approved :: MIT License` classifier. Verify `uv build` succeeds with no warnings, `uv lock --check` passes, and after `uv sync --all-extras` (an editable install through the new backend) `uv run pytest tests` reports 97 passed.
+- [x] 6.2 Compare the wheel and sdist from `uv build` with ones built from `main` with `poetry-core`. Verify every package file including `py.typed` is byte-identical, the `Requires-Dist`, extras, `Requires-Python` and `Project-URL` entries match, the `config-wizard` console script entry is unchanged, and the new wheel installs and imports in an empty virtual environment.
+- [x] 6.3 In the stack paragraph of `AGENTS.md`, state that the build backend is `uv_build` and that its bound stays on the same minor series as the pinned uv. Verify `grep -n "uv_build" AGENTS.md` shows the sentence and `grep -rn -i "poetry" pyproject.toml` prints nothing.
 
 ## 7. Integration checks
 
