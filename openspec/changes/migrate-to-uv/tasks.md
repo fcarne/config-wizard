@@ -35,9 +35,9 @@
 
 ## 7. Integration checks
 
-- [ ] 7.1 Run `openspec validate migrate-to-uv --strict`. Verify it reports the change as valid.
-- [ ] 7.2 Clone the branch into a new empty directory under the session scratchpad and, with the directory containing `poetry` removed from `PATH`, run `make install`, `make test`, `make lint` and `uv build`. Verify pytest reports 97 passed, lint passes, the build succeeds without warnings, and no step needed Poetry.
-- [ ] 7.3 Run `git status` and verify the only changes are `pyproject.toml`, `uv.lock`, the removal of `poetry.lock`, `.gitignore`, `Makefile`, `.pre-commit-config.yaml`, `.claude/settings.json`, `README.md`, `AGENTS.md`, `CONSTITUTION.md`, `.devcontainer/devcontainer.json`, `.devcontainer/devcontainer-lock.json`, `.devcontainer/post-create.sh`, `.github/dependabot.yml` and the change directory.
+- [x] 7.1 Run `openspec validate migrate-to-uv --strict`. Verify it reports the change as valid.
+- [x] 7.2 Clone the branch into a new empty directory under the session scratchpad and, with the directory containing `poetry` removed from `PATH`, run `make install`, `make test`, `make lint` and `uv build`. Verify pytest reports 97 passed, lint passes, the build succeeds without warnings, and no step needed Poetry.
+- [x] 7.3 Run `git status` and verify the only changes are `pyproject.toml`, `uv.lock`, the removal of `poetry.lock`, `.gitignore`, `Makefile`, `.pre-commit-config.yaml`, `.claude/settings.json`, `README.md`, `AGENTS.md`, `CONSTITUTION.md`, `.devcontainer/devcontainer.json`, `.devcontainer/devcontainer-lock.json`, `.devcontainer/post-create.sh`, `.github/dependabot.yml` and the change directory.
 
 ## Workflow follow-up
 
