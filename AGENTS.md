@@ -24,7 +24,7 @@ openspec/
 
 ## Stack and tooling
 
-uv manages dependencies, Ruff lints and formats, mypy (with the Pydantic plugin) checks types, pytest with coverage runs tests, and pre-commit runs the checks. Streamlit is an optional extra, as are the Typer and Textual extras. `make install` runs `uv sync`, which installs the `dev` dependency group, so `uv run pytest`, `uv run ruff` and `uv run mypy` work from a fresh clone; use `uv sync --all-extras` to also install the backends. `uv.lock` is tracked and updated with `uv lock --upgrade`. The pre-commit hooks run ruff and mypy from their own isolated environments, and the `uv-lock` and `uv-audit` hooks run when `uv.lock` or `pyproject.toml` change (`uv-audit` needs the network). Dependabot opens weekly pull requests for the lock, the pre-commit hook revisions and the devcontainer features. The build backend is `uv_build`; keep its bound on the same minor series as the uv pinned in the `uv-pre-commit` revision and in `.devcontainer/post-create.sh`. Versions live in `pyproject.toml` and `.pre-commit-config.yaml`.
+uv manages dependencies, Ruff lints and formats, ty checks types, pytest with coverage runs tests, and pre-commit runs the checks. Streamlit is an optional extra, as are the Typer and Textual extras. `make install` runs `uv sync`, which installs the `dev` dependency group, so `uv run pytest`, `uv run ruff` and `uv run ty` work from a fresh clone; use `uv sync --all-extras` to also install the backends. `uv.lock` is tracked and updated with `uv lock --upgrade`. The ruff hooks run from their own isolated environment, while the `ty` hook runs `uv run --all-extras ty check` in the project environment and installs the extras if they are missing; ty checks `config_wizard`, `scripts` and `tests`, so a new top-level Python directory must be added to `[tool.ty.src]`. The `uv-lock` and `uv-audit` hooks run when `uv.lock` or `pyproject.toml` change (`uv-audit` needs the network). Dependabot opens weekly pull requests for the lock, the pre-commit hook revisions and the devcontainer features. The build backend is `uv_build`; keep its bound on the same minor series as the uv pinned in the `uv-pre-commit` revision and in `.devcontainer/post-create.sh`. Versions live in `pyproject.toml` and `.pre-commit-config.yaml`.
 
 ## Commands
 
@@ -33,7 +33,7 @@ make install     install dependencies with uv
 make update      refresh uv.lock and the environment
 make pre-commit-install     install the pre-commit and commit-msg git hooks
 make format      Ruff format and end-of-file fixer through pre-commit
-make lint        Ruff check and mypy through pre-commit
+make lint        Ruff check and ty through pre-commit
 make test        pytest with branch coverage
 ```
 

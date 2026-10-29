@@ -5,7 +5,7 @@
       "Bash(openspec *)",
       "Bash(uv run pytest*)",
       "Bash(uv run ruff*)",
-      "Bash(uv run mypy*)",
+      "Bash(uv run ty*)",
       "Bash(git status*)",
       "Bash(git diff*)",
       "Bash(git log*)"
