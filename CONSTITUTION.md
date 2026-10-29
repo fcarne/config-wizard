@@ -18,13 +18,13 @@ Take a configuration schema or class, walk the user through an interactive wizar
 
 - **Core:** Pydantic (with the email extra), `openapi-pydantic`, `jsonschema` and `typing-extensions`, all declared as `dependencies` in the `[project]` table. `pydantic-settings` is also declared there for the planned settings-class loading and is not imported yet.
 - **Optional:** every UI toolkit and the docs tooling is an extra in `[project.optional-dependencies]`: `streamlit`, `cli` (Typer and Rich), `textual` and `docs`. A UI toolkit is never added to the core dependencies.
-- **Development tools:** pytest, pytest-cov, pytest-mock, pre-commit, ruff and mypy are the `dev` group in `[dependency-groups]`, which `uv sync` installs by default.
+- **Development tools:** pytest, pytest-cov, pytest-mock, pre-commit, ruff and ty are the `dev` group in `[dependency-groups]`, which `uv sync` installs by default.
 - Exact versions live in `pyproject.toml` and are not repeated in prose.
 
 ## Conventions
 
 - **Python:** 3.11 and newer. Ruff's `UP` rules keep code current for that version.
-- **Types:** full type hints, checked by mypy with the Pydantic plugin. Suppressions such as `type: ignore` are narrow and carry the error code.
+- **Types:** full type hints, checked by ty. A suppression is an inline `# ty: ignore[rule]` naming the rule on the offending line, and `unused-ignore-comment` is an error, so a stale one fails the check. The one exception is `config_wizard/schema.py`, which has a single scoped override for `invalid-mutable-override` and `invalid-attribute-override` because `ResolvedSchema` narrows inherited fields.
 - **Style:** Ruff for linting and formatting at 120 columns, run through pre-commit. Lint rules are fixed in the code and are not ignored or disabled to make a change pass.
 - **Docstrings:** Google style on public and private functions, methods and classes, with `Args:`, `Returns:` and `Raises:` sections where they apply, written as `name (type): description`.
 - **Tests:** pytest, one test per spec scenario. Test names follow `test_<unit>__<condition>__<expected>` and every test has a one-line docstring. Parametrize instead of copying a test.

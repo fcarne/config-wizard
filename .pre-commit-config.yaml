@@ -17,15 +17,6 @@ repos:
         types_or: [python, pyi, jupyter]
         args: [--fix]
 
--   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v2.4.0
-    hooks:
-      - id: mypy
-        additional_dependencies:
-        - pydantic[email]
-        - pydantic-extra-types
-        - openapi-pydantic
-
 -   repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.13.5
     hooks:
@@ -40,3 +31,9 @@ repos:
         entry: python scripts/check_commit_msg.py
         language: python
         stages: [commit-msg]
+    -   id: ty
+        name: ty
+        entry: uv run --all-extras ty check
+        language: system
+        pass_filenames: false
+        types_or: [python, pyi]

@@ -132,23 +132,23 @@ class ResolvedSchema(Schema):
 
     type: DataType = DataType.OBJECT  # Default type is OBJECT, so that it resolves to Any
 
-    allOf: list["ResolvedSchema"] | None = None  # type: ignore[assignment]
-    anyOf: list["ResolvedSchema"] | None = None  # type: ignore[assignment]
-    oneOf: list["ResolvedSchema"] | None = None  # type: ignore[assignment]
+    allOf: list["ResolvedSchema"] | None = None
+    anyOf: list["ResolvedSchema"] | None = None
+    oneOf: list["ResolvedSchema"] | None = None
 
     schema_not: "ResolvedSchema | None" = Field(default=None, alias="not")
     schema_if: "ResolvedSchema | None" = Field(default=None, alias="if")
     then: "ResolvedSchema | None" = None
     schema_else: "ResolvedSchema | None" = Field(default=None, alias="else")
 
-    dependentSchemas: dict[str, "ResolvedSchema"] | None = None  # type: ignore[assignment]
+    dependentSchemas: dict[str, "ResolvedSchema"] | None = None
 
-    prefixItems: list["ResolvedSchema"] | None = None  # type: ignore[assignment]
+    prefixItems: list["ResolvedSchema"] | None = None
     items: "ResolvedSchema | None" = None
     contains: "ResolvedSchema | None " = None
 
-    properties: dict[str, "ResolvedSchema"] | None = None  # type: ignore[assignment]
-    patternProperties: dict[str, "ResolvedSchema"] | None = None  # type: ignore[assignment]
+    properties: dict[str, "ResolvedSchema"] | None = None
+    patternProperties: dict[str, "ResolvedSchema"] | None = None
 
     additionalProperties: "ResolvedSchema | bool | None" = None
     propertyNames: "ResolvedSchema | None" = None

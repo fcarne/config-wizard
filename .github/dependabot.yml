@@ -6,6 +6,9 @@ updates:
       interval: weekly
     open-pull-requests-limit: 3
     groups:
+      ty:
+        patterns:
+          - ty
       python-minor-and-patch:
         update-types:
           - minor
