@@ -15,11 +15,10 @@ Known issue numbers refer to the table in the design of the archived `baseline-e
 
 ## Next
 
-1. `protect-main-branch`: require the `ci` check on `main` through branch protection and change the squash-merge message setting from `COMMIT_MESSAGES` to `BLANK`, so merge commits respect the single-line commit rule. Repository settings, applied after the first green CI run and recorded in `AGENTS.md`.
-2. `test-streamlit-backend`: an automated Streamlit test suite using Streamlit's `AppTest`, covering the scenarios in the `streamlit-backend` spec, and a tracked, working manual harness or its removal (known issues 11 and 13).
-3. `add-coverage-gate`: fail CI under a coverage floor set just below the measured coverage once the Streamlit backend has tests (31.52% today, with the backends at 0%), and raise it as coverage grows.
-4. `fix-streamlit-collections`: make `render_wizard` work for list, set, tuple, dict and additional-properties fields, and fix dict key renames, list defaults, `minItems` on remove and the clear button (known issues 3 to 7). Remove the matching inline `# ty: ignore` comments in `streamlit.py` as each cause is fixed.
-5. `fix-schema-edge-cases`: classify date, time, datetime, duration and path formats, treat a single-value `Literal` as fixed, and resolve schema documents that have no `$defs` (known issues 1, 2 and 9).
+1. `test-streamlit-backend`: an automated Streamlit test suite using Streamlit's `AppTest`, covering the scenarios in the `streamlit-backend` spec, and a tracked, working manual harness or its removal (known issues 11 and 13).
+2. `add-coverage-gate`: fail CI under a coverage floor set just below the measured coverage once the Streamlit backend has tests (31.52% today, with the backends at 0%), and raise it as coverage grows.
+3. `fix-streamlit-collections`: make `render_wizard` work for list, set, tuple, dict and additional-properties fields, and fix dict key renames, list defaults, `minItems` on remove and the clear button (known issues 3 to 7). Remove the matching inline `# ty: ignore` comments in `streamlit.py` as each cause is fixed.
+4. `fix-schema-edge-cases`: classify date, time, datetime, duration and path formats, treat a single-value `Literal` as fixed, and resolve schema documents that have no `$defs` (known issues 1, 2 and 9).
 
 ## Later
 

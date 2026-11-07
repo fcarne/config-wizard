@@ -32,6 +32,10 @@ uv manages dependencies, Ruff lints and formats, ty checks types, pytest with co
 
 Actions are pinned to exact version tags and updated by Dependabot. The workflows pin uv to the same version as the `uv-pre-commit` revision, and the OpenSpec CLI to the version installed in the devcontainer.
 
+## Repository rules
+
+The ruleset `protect-main` on `main` has no bypass, so it binds the maintainer too: changes arrive through a pull request with no required approvals, the `ci` check must pass, and deleting or force-pushing `main` is blocked. Merges are squash-only, the commit subjects fill the squash body, and the branch of a merged pull request is deleted. `.github/rulesets/protect-main.json` is the source to reapply the ruleset with `gh api --method POST repos/fcarne/config-wizard/rulesets --input .github/rulesets/protect-main.json`; GitHub does not read it, so edit the live ruleset and the file together. To undo the rules, delete the ruleset from the repository settings, which works without a pull request, and turn merge commits and rebase merges back on.
+
 ## Commands
 
 ```
