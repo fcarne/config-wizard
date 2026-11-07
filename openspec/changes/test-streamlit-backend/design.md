@@ -41,13 +41,13 @@ Constraints that shape the approach:
 
 Alternative: one script per scenario. Rejected: it multiplies boilerplate and hides the schema from the test that uses it.
 
-### A `test-streamlit` group, included by `dev`
-`[dependency-groups]` gains `test-streamlit` holding `streamlit` with the same bounds as the extra, and `dev` includes it with `{include-group = "test-streamlit"}`, next to `pydantic-extra-types` (for the harness). `uv sync` therefore installs everything for tests, CI needs no `--all-extras`, and a future Typer or Textual backend gets its own group the same way. The bound is written in two places (the extra and the group), which is accepted; a self-reference from the group to the extra was not tried, because the layout turned out not to affect the resolution (finding 5).
+### `test` and `test-streamlit` groups, included by `dev`
+`[dependency-groups]` gains `test` (pytest, pytest-cov and pytest-mock, moved out of `dev`) and `test-streamlit` (`streamlit` with the same bounds as the extra), and `dev` includes both with `include-group`, next to `pydantic-extra-types` (for the harness) and the lint and type tools. `uv sync` therefore installs everything for tests, CI needs no `--all-extras`, and a future Typer or Textual backend gets its own group the same way. The bound is written in two places (the extra and the group), which is accepted; a self-reference from the group to the extra was not tried, because the layout turned out not to affect the resolution (finding 5).
 
 Alternatives: put `streamlit` straight into `dev` (simplest, but the core cannot be tested without it and each backend lengthens `dev`); pass `--all-extras` in CI and `make test` (easy to forget).
 
 ### Prove the core stands alone
-A core-only run (the `test-streamlit` group not installed, Streamlit not importable) must pass with the Streamlit tests skipped. Its exact command is found during the work (whether `--no-group` excludes a group that `dev` includes is unconfirmed) and then added as a CI job that `ci` waits for, so a stray Streamlit import in the core is caught. If no single command gives a clean environment, the CI job is dropped and recorded here, and the local verification stays.
+A core-only run (Streamlit not installed and not importable) must pass with the Streamlit tests skipped. With `dev` including `test-streamlit`, `--no-group test-streamlit` does not remove it, and `--no-dev` removes pytest as well; that is why pytest lives in its own `test` group. The command is `uv run --no-dev --group test pytest tests`: in a scratch copy it left Streamlit absent and pytest present and gave 107 passed and 29 skipped (the Streamlit tests). A CI job `core`, which `ci` waits for, runs it, so a stray Streamlit import in the core is caught.
 
 ### The Streamlit floor gets its own CI job
 A job `streamlit-floor` (Python 3.12) runs `uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends`, and the `ci` job waits for it. The lowest-direct cells keep running the Streamlit tests, against the newest Streamlit, so the floor is tested explicitly instead of through resolver behavior that could not be explained or relied on (finding 5). When the extra's floor is raised, the pin in this job is raised with it; the job's own check that the Streamlit it ran is 1.47.0 is part of its verification.

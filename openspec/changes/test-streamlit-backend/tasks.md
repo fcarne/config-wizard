@@ -20,8 +20,8 @@
 
 ## 4. The core without Streamlit and the Streamlit floor
 
-- [ ] 4.1 Find the command that runs the suite with the `test-streamlit` group absent (for example with `--no-group`), and run it in a clean environment. Verify `python -c "import streamlit"` fails there, `pytest tests` passes with the Streamlit module reported as skipped, and the command is recorded in `design.md`. If no single command gives a clean environment, record that instead and skip 4.2.
-- [ ] 4.2 In `.github/workflows/ci.yml`, add a job `core` (Python 3.12) running that command, and make the `ci` job wait for it and fail unless it succeeded. Verify `uvx --from actionlint-py actionlint .github/workflows/ci.yml` reports nothing and `uv run pre-commit run check-yaml --files .github/workflows/ci.yml` passes; the job itself is proven by the pull request's CI run.
+- [x] 4.1 In `pyproject.toml`, move pytest, pytest-cov and pytest-mock from `dev` into a new `test` group that `dev` includes (next to `test-streamlit`), and run `uv lock`. Verify `uv lock --check` passes, `uv sync` still installs pytest and Streamlit, and `uv run --isolated --no-dev --group test pytest tests` runs with Streamlit absent (`importlib.util.find_spec("streamlit")` is None) and reports 107 passed and 29 skipped.
+- [ ] 4.2 In `.github/workflows/ci.yml`, add a job `core` (Python 3.12) running `uv run --no-dev --group test pytest tests`, and make the `ci` job wait for it and fail unless it succeeded. Verify `uvx --from actionlint-py actionlint .github/workflows/ci.yml` reports nothing and `uv run pre-commit run check-yaml --files .github/workflows/ci.yml` passes; the job itself is proven by the pull request's CI run.
 
 - [ ] 4.3 In `.github/workflows/ci.yml`, add a job `streamlit-floor` (Python 3.12) running `uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends`, preceded by a step that fails unless the Streamlit imported in that environment is 1.47.0, and make the `ci` job wait for it. Verify the same two commands pass locally with Streamlit 1.47.0 reported, actionlint reports nothing and `check-yaml` passes; the job itself is proven by the pull request's CI run.
 

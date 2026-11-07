@@ -319,6 +319,11 @@ dev = [
     { name = "streamlit" },
     { name = "ty" },
 ]
+test = [
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "pytest-mock" },
+]
 test-streamlit = [
     { name = "streamlit" },
 ]
@@ -352,6 +357,11 @@ dev = [
     { name = "ruff", specifier = ">=0.17,<0.18" },
     { name = "streamlit", specifier = ">=1.47.0,<2.0.0" },
     { name = "ty", specifier = "==0.0.97" },
+]
+test = [
+    { name = "pytest", specifier = ">=9.0.3,<10.0.0" },
+    { name = "pytest-cov", specifier = ">=7.0.0,<8.0.0" },
+    { name = "pytest-mock", specifier = ">=3.14.0,<4.0.0" },
 ]
 test-streamlit = [{ name = "streamlit", specifier = ">=1.47.0,<2.0.0" }]
 

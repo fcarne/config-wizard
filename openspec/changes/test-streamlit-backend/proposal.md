@@ -9,7 +9,7 @@ Streamlit ships `AppTest` for exactly this. A spike on the current code showed i
 ## What Changes
 
 - Add `tests/backends/` with a test for every scenario of the `streamlit-backend` spec, driven through `AppTest`, and a test for every scenario of the `wizard-backend` spec: the nine the base class implements run through a small in-test backend, so they need no Streamlit, and the four on submission and messages, which each backend implements, run through the Streamlit backend.
-- Add a `test-streamlit` dependency group holding Streamlit's test needs and include it in `dev`, so `uv sync` and `make test` work from a fresh clone and CI needs no extra flag. The Streamlit tests skip when Streamlit is missing, and a core-only run proves the rest of the suite does not depend on it.
+- Add two dependency groups, `test` (pytest and its plugins, moved out of `dev`) and `test-streamlit` (Streamlit's test needs), and include both in `dev`, so `uv sync` and `make test` work from a fresh clone and CI needs no extra flag. The Streamlit tests skip when Streamlit is missing, and a core-only run proves the rest of the suite does not depend on it.
 - Add `pydantic-extra-types` to the `dev` group, for the harness.
 - Replace the untracked root `test_wizard.py` with a tracked, working manual harness at `scripts/streamlit_harness.py`, runnable with one command and passing `ty`.
 - Test the declared Streamlit floor on purpose: the lowest-direct cells resolve Streamlit 1.67.0, not the floor of 1.47.0, whatever the dependency layout (see the design), so a dedicated CI job runs the Streamlit tests against exactly 1.47.0.
