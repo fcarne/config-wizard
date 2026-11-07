@@ -59,10 +59,18 @@ textual = [
 ]
 
 [dependency-groups]
-dev = [
+test = [
     "pytest >=9.0.3,<10.0.0",
     "pytest-cov >=7.0.0,<8.0.0",
     "pytest-mock >=3.14.0,<4.0.0",
+]
+test-streamlit = [
+    "streamlit >=1.47.0,<2.0.0",
+]
+dev = [
+    {include-group = "test"},
+    {include-group = "test-streamlit"},
+    "pydantic-extra-types >=2.10.0,<3.0.0",
     "pre-commit >=4.7,<5.0",
     "ruff >=0.17,<0.18",
     "ty==0.0.97",
@@ -88,7 +96,10 @@ invalid-attribute-override = "ignore"
 unused-ignore-comment = "error"
 
 [tool.pytest.ini_options]
-addopts = "-ra -q --cov=config_wizard --cov-report=html --cov-report=term-missing --cov-branch"
+addopts = "-ra -q --cov=config_wizard --cov-report=html --cov-report=term-missing"
+
+[tool.coverage.run]
+branch = true
 
 [tool.coverage.report]
 exclude_also = [

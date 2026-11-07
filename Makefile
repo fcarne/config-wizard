@@ -48,7 +48,7 @@ lint: ## Lint code using Ruff
 .PHONY: test
 test: ## Run tests using pytest with coverage
 	@echo "${GREEN}Running tests...${NC}"
-	$(PYTHON) -m pytest tests/ --tb=short --disable-warnings -p no:warning --cov=${SRC_DIR} --cov-report=term-missing --cov-report=html --cov-branch
+	$(PYTHON) -m pytest tests/ --tb=short --disable-warnings -p no:warning --cov=${SRC_DIR} --cov-report=term-missing --cov-report=html
 
 .PHONY: docs
 docs: ## Build documentation using mkdocs
