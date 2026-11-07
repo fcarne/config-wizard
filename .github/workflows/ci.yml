@@ -52,10 +52,10 @@ jobs:
           enable-cache: true
       - name: Run the tests with the locked versions
         if: matrix.resolution == 'highest'
-        run: uv run --python ${{ matrix.python }} pytest
+        run: uv run --python ${{ matrix.python }} pytest tests
       - name: Run the tests with the lowest allowed direct versions
         if: matrix.resolution == 'lowest-direct'
-        run: uv run --isolated --resolution lowest-direct --python ${{ matrix.python }} pytest
+        run: uv run --isolated --resolution lowest-direct --python ${{ matrix.python }} pytest tests
       - name: Fail if a tracked file changed
         run: git diff --exit-code
 
