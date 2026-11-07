@@ -31,7 +31,7 @@
 - [x] 6.2 Run `openspec validate add-ci-pipeline --strict`. Verify it reports the change as valid.
 - [x] 6.3 Clone the branch into a new empty directory under the session scratchpad and run `make install`, `make test`, `make lint`, and actionlint on both workflows. Verify 98 passed, lint passes and actionlint reports nothing.
 - [x] 6.4 Run `git diff --name-status origin/main..HEAD` and verify the only changes are `.github/workflows/ci.yml`, `.github/workflows/audit.yml`, `.github/pull_request_template.md`, `.github/dependabot.yml`, `pyproject.toml`, `uv.lock`, `config_wizard/schema.py`, `tests/conftest.py`, `tests/test_schema.py`, `.devcontainer/post-create.sh`, `AGENTS.md`, `README.md`, `ROADMAP.md` and the change directory.
-- [ ] 6.5 Push the branch, open the pull request, and wait for its CI run. Verify `gh pr checks` shows `checks`, all eight `tests` cells and `ci` passing.
+- [x] 6.5 Push the branch, open the pull request, and wait for its CI run. Verify `gh pr checks` shows `checks`, all eight `tests` cells and `ci` passing.
 
 ## Workflow follow-up
 
