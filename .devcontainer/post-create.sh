@@ -2,7 +2,7 @@
 set -euo pipefail
 
 sudo chown vscode:vscode /home/vscode/.claude /home/vscode/.config /home/vscode/.local /home/vscode/.local/share
-pipx install uv==0.13.5
+pipx install uv==0.13.6
 uv sync --all-extras
 uv run pre-commit install --hook-type pre-commit --hook-type commit-msg
-npm install -g @fission-ai/openspec@latest opencode-ai@latest
+npm install -g @fission-ai/openspec@1.15.0 opencode-ai@latest

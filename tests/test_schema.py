@@ -1,3 +1,5 @@
+import sys
+
 import pytest
 from openapi_pydantic import DataType
 from pydantic import BaseModel, TypeAdapter, ValidationError
@@ -58,6 +60,12 @@ def test_from_spec__invalid_openapi_spec__raises_validation_error(
         "user_model",
         "user_dataclass",
         "user_typeddict",
+        pytest.param(
+            "user_typing_typeddict",
+            marks=pytest.mark.skipif(
+                sys.version_info < (3, 12), reason="pydantic requires typing_extensions.TypedDict below 3.12"
+            ),
+        ),
     ],
 )
 def test_from_schema__valid_types__returns_schema(user_type, request: pytest.FixtureRequest) -> None:

@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  checks:
+    name: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.6"
+          enable-cache: true
+      - run: uv sync --all-extras
+      - uses: actions/cache@v6.1.0
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+      - run: uv run pre-commit run --all-files
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 22
+      - run: npx --yes @fission-ai/openspec@1.15.0 validate --all --strict
+
+  tests:
+    name: tests (${{ matrix.python }}, ${{ matrix.resolution }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13", "3.14"]
+        resolution: [highest, lowest-direct]
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.6"
+          enable-cache: true
+      - name: Run the tests with the locked versions
+        if: matrix.resolution == 'highest'
+        run: uv run --python ${{ matrix.python }} pytest tests
+      - name: Run the tests with the lowest allowed direct versions
+        if: matrix.resolution == 'lowest-direct'
+        run: uv run --isolated --resolution lowest-direct --python ${{ matrix.python }} pytest tests
+      - name: Fail if a tracked file changed
+        run: git diff --exit-code
+
+  ci:
+    name: ci
+    if: always()
+    needs: [checks, tests]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every job to succeed
+        env:
+          CHECKS: ${{ needs.checks.result }}
+          TESTS: ${{ needs.tests.result }}
+        run: test "$CHECKS" = success && test "$TESTS" = success

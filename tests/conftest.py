@@ -1,8 +1,10 @@
+import typing
 from dataclasses import dataclass
-from typing import Any, TypedDict
+from typing import Any
 
 import pytest
 from pydantic import BaseModel
+from typing_extensions import TypedDict
 
 
 @pytest.fixture
@@ -49,6 +51,17 @@ def user_typeddict() -> type:
     """Fixture that provides a TypedDict for testing."""
 
     class UserDict(TypedDict):
+        name: str
+        age: int
+
+    return UserDict
+
+
+@pytest.fixture
+def user_typing_typeddict() -> type:
+    """Fixture that provides a typing.TypedDict for testing."""
+
+    class UserDict(typing.TypedDict):
         name: str
         age: int
 
