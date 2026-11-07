@@ -27,7 +27,7 @@
 
 ## 5. The manual harness
 
-- [ ] 5.1 Copy `test_wizard.py` to the session scratchpad, then create `scripts/streamlit_harness.py` with the same fields, replacing the `conint` and `constr` annotations with `Annotated[..., Field(...)]`. Verify `uv run ty check scripts` reports nothing, and `uv run streamlit run scripts/streamlit_harness.py --server.headless true` starts and serves `http://localhost:8501` with an HTTP 200 (stop it afterwards).
+- [x] 5.1 Copy `test_wizard.py` to the session scratchpad, then create `scripts/streamlit_harness.py` with the same fields, replacing the `conint` and `constr` annotations with `Annotated[..., Field(...)]`. Verify `uv run ty check scripts` reports nothing, and `uv run streamlit run scripts/streamlit_harness.py --server.headless true` starts and serves `http://localhost:8501` with an HTTP 200 (stop it afterwards).
 - [ ] 5.2 Remove the root `test_wizard.py`. Verify `git status --short` shows no untracked file, `pytest` run from the repository root with no path argument collects nothing from it, and the scratchpad copy still exists.
 
 ## 6. Documents and roadmap
