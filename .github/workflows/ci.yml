@@ -59,10 +59,44 @@ jobs:
       - name: Fail if a tracked file changed
         run: git diff --exit-code
 
+  core:
+    name: core
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.6"
+          enable-cache: true
+      - name: Fail if Streamlit is installed
+        run: uv run --isolated --python 3.12 --no-dev --group test python -c "import importlib.util; assert importlib.util.find_spec('streamlit') is None"
+      - name: Run the tests without any backend installed
+        run: uv run --isolated --python 3.12 --no-dev --group test pytest tests
+      - name: Fail if a tracked file changed
+        run: git diff --exit-code
+
+  streamlit-floor:
+    name: streamlit-floor
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.6"
+          enable-cache: true
+      - name: Fail unless Streamlit 1.47.0 is the one imported
+        run: uv run --python 3.12 --with "streamlit==1.47.0" python -c "import streamlit; assert streamlit.__version__ == '1.47.0'"
+      - name: Run the Streamlit tests against the lowest supported Streamlit
+        run: uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends
+      - name: Fail if a tracked file changed
+        run: git diff --exit-code
+
   ci:
     name: ci
     if: always()
-    needs: [checks, tests]
+    needs: [checks, tests, core, streamlit-floor]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -70,4 +104,6 @@ jobs:
         env:
           CHECKS: ${{ needs.checks.result }}
           TESTS: ${{ needs.tests.result }}
-        run: test "$CHECKS" = success && test "$TESTS" = success
+          CORE: ${{ needs.core.result }}
+          STREAMLIT_FLOOR: ${{ needs.streamlit-floor.result }}
+        run: test "$CHECKS" = success && test "$TESTS" = success && test "$CORE" = success && test "$STREAMLIT_FLOOR" = success
