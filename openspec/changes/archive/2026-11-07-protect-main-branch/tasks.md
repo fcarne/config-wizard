@@ -23,7 +23,7 @@ Ask the user for confirmation before each step in this group; the commands chang
 
 - [x] 4.1 Run `gh api repos/fcarne/config-wizard/rules/branches/main`. Verify it lists `deletion`, `non_fast_forward`, `pull_request` and `required_status_checks`, and that the `ci` check run's app id on the pull request's head commit is 15368.
 - [x] 4.2 With the user's confirmation, in a scratch clone push one empty commit straight to `main`. Verify the push is rejected with a ruleset violation and `git ls-remote origin main` still shows the commit it showed before the push. If the push lands, report it, revert nothing (an empty commit changes no file) and treat the ruleset as not enforcing.
-- [ ] 4.3 Verify `gh pr view <number> --json mergeStateStatus` reports `CLEAN` for the green pull request, then merge it with `gh pr merge --squash`. Verify the merge succeeds, `git log -1 origin/main` shows one commit whose body lists commit subjects, the head branch is gone (`gh api repos/fcarne/config-wizard/branches --jq '.[].name'` prints only `main`), and `gh pr merge --merge` on a scratch pull request is refused.
+- [x] 4.3 Verify `gh pr view <number> --json mergeStateStatus` reports `CLEAN` for the green pull request, then merge it with `gh pr merge --squash`. Verify the merge succeeds, `git log -1 origin/main` shows one commit whose body lists commit subjects, the head branch is gone (`gh api repos/fcarne/config-wizard/branches --jq '.[].name'` prints only `main`), and `gh pr merge --merge` on a scratch pull request is refused.
 
 ## Workflow follow-up
 
