@@ -73,7 +73,7 @@ Alternatives: full commit SHAs with a trailing version comment, the strongest op
 `setup-uv` installs uv 0.13.6, the version now pinned in the hook revision, and caches by `uv.lock`; the devcontainer pin moves to 0.13.6 in this change so all three agree. `actions/cache` keeps `~/.cache/pre-commit` keyed on the hook configuration. Node comes from `setup-node` and the OpenSpec CLI from `npx` at 1.15.0; the devcontainer pins the same version instead of `@latest`.
 
 ### The audit runs on a schedule
-`audit.yml` runs `uv audit --preview-features audit-command` weekly and on demand. A failure reaches you through GitHub's normal workflow notification. It does not block pull requests.
+`audit.yml` runs `uv audit --locked --preview-features audit-command` weekly and on demand; `--locked` makes it audit the committed lock and fail if the lock is stale. A failure reaches you through GitHub's normal workflow notification. It does not block pull requests.
 
 ### Coverage is not gated yet
 A floor at today's 31% would fail any pull request that adds untested backend code, and the backends are 0% until `test-streamlit-backend`. The follow-up is the roadmap item `add-coverage-gate`.
