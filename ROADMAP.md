@@ -33,3 +33,4 @@ Known issue numbers refer to the table in the design of the archived `baseline-e
 - `add-release-workflow`: build with `uv build` and publish to PyPI through trusted publishing once a first release is decided; the package is not on PyPI yet.
 - `add-documentation-site`: build and publish the documentation; the `docs` extra and an empty `docs/` directory exist, but the generator is still to be chosen.
 - `test-other-platforms`: add Windows and macOS runners to the CI matrix once a feature depends on file paths or terminal behavior, such as the command line or the Textual backend.
+- `migrate-to-prek`: replace pre-commit with prek, a Rust reimplementation that reads the same `.pre-commit-config.yaml` and uses uv for Python environments, in the Makefile, devcontainer, CI and Dependabot configuration; first check that every hook in use works under it.
