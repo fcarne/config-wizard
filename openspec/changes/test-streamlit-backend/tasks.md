@@ -32,8 +32,8 @@
 
 ## 6. Documents and roadmap
 
-- [ ] 6.1 Run `uv run pytest tests` and record the total coverage and the coverage of `base.py` and `streamlit.py`. Update the README status paragraph (the backends now have tests) and the coverage badge with the measured total, in `AGENTS.md` update the layout (`tests/backends/`, `scripts/`), the tests description and the mention of dependency groups, and in `ROADMAP.md` delete the `test-streamlit-backend` item, renumber the rest, and replace the coverage figure in `add-coverage-gate`, and add the set-row defect (finding 10) and the ignored union default values (finding 11) to the `fix-streamlit-collections` item. Verify the numbers in the three files equal the recorded ones, the roadmap numbering is consecutive from 1, and `uv run pre-commit run --all-files` passes.
-- [ ] 6.2 Run `openspec validate test-streamlit-backend --strict` and `openspec validate --all --strict`. Verify both report valid and the change shows one MODIFIED requirement for `streamlit-backend`.
+- [x] 6.1 Run `uv run pytest tests` and record the total coverage and the coverage of `base.py` and `streamlit.py`. Update the README status paragraph (the backends now have tests) and the coverage badge with the measured total, in `AGENTS.md` update the layout (`tests/backends/`, `scripts/`), the tests description and the mention of dependency groups, and in `ROADMAP.md` delete the `test-streamlit-backend` item, renumber the rest, and replace the coverage figure in `add-coverage-gate`, and add the set-row defect (finding 10) and the ignored union default values (finding 11) to the `fix-streamlit-collections` item. Verify the numbers in the three files equal the recorded ones, the roadmap numbering is consecutive from 1, and `uv run pre-commit run --all-files` passes.
+- [x] 6.2 Run `openspec validate test-streamlit-backend --strict` and `openspec validate --all --strict`. Verify both report valid and the change shows one MODIFIED requirement for `streamlit-backend`.
 
 ## 7. Integration checks
 

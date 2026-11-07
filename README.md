@@ -3,14 +3,14 @@
 **config-wizard** is a framework-agnostic, interactive configuration generator that transforms structured configuration schemas into user-friendly wizards.
 
 [![CI](https://github.com/fcarne/config-wizard/actions/workflows/ci.yml/badge.svg)](https://github.com/fcarne/config-wizard/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-31%25-red)](#status)
+[![Coverage](https://img.shields.io/badge/coverage-85%25-yellowgreen)](#status)
 [![PyPI Version](https://img.shields.io/pypi/v/config-wizard.svg)](https://pypi.org/project/config-wizard/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/config-wizard.svg)](https://pypi.org/project/config-wizard/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgray.svg)](LICENSE)
 
 ## Status
 
-Alpha. The schema core and the Streamlit backend are implemented. The command line, export to files and the other backends are planned, not available. The coverage figure covers the core only; the backends have no automated tests yet.
+Alpha. The schema core and the Streamlit backend are implemented. The command line, export to files and the other backends are planned, not available. The coverage figure is the branch coverage of `config_wizard` measured by the test suite, which covers every scenario of the backend specs.
 
 ## Features
 
