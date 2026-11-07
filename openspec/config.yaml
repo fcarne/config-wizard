@@ -15,6 +15,7 @@ rules:
     - Record known defects in design.md, not as requirements.
   design:
     - Record evidence for each known issue.
+    - Record each decision with the alternatives considered and why they were rejected.
   tasks:
     - Each task names its verification.
     - Tests and docs land in the group that needs them.
