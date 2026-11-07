@@ -22,7 +22,7 @@
 ## 5. Metadata, devcontainer and documents
 
 - [x] 5.1 In `pyproject.toml`, add the `Programming Language :: Python :: 3.14` classifier. Verify `uv lock --check` passes, `uv build` prints no warnings and the wheel metadata lists 3.14, and `uv run --python 3.14 pytest tests` reports 98 passed.
-- [ ] 5.2 In `.devcontainer/post-create.sh`, pin uv with `pipx install uv==0.13.6` (it says 0.13.5 while the hook revision is 0.13.6) and install `@fission-ai/openspec@1.15.0` instead of `@latest`, leaving `opencode-ai@latest` unchanged. Verify `bash -n` passes, and `grep -n "uv==\|openspec" .devcontainer/post-create.sh` shows both pins with the uv one matching the `uv-pre-commit` `rev:` in `.pre-commit-config.yaml`.
+- [x] 5.2 In `.devcontainer/post-create.sh`, pin uv with `pipx install uv==0.13.6` (it says 0.13.5 while the hook revision is 0.13.6) and install `@fission-ai/openspec@1.15.0` instead of `@latest`, leaving `opencode-ai@latest` unchanged. Verify `bash -n` passes, and `grep -n "uv==\|openspec" .devcontainer/post-create.sh` shows both pins with the uv one matching the `uv-pre-commit` `rev:` in `.pre-commit-config.yaml`.
 - [ ] 5.3 In `AGENTS.md`, add a short CI section (what each job runs, that a green `make lint` and `make test` predict a green run, that `ci` is the status to require, and that actions are pinned to exact tags and updated by Dependabot), and add a CI status badge for `ci.yml` to `README.md`. Verify `grep -n "ci.yml" README.md` shows the badge and the new `AGENTS.md` section is present.
 
 ## 6. Integration checks
