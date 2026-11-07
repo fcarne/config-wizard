@@ -16,6 +16,7 @@ See `proposal.md` for motivation. Evidence from scratch clones of `main` (commit
 | 8 | The squash setting bypasses the commit rule | The repository squashes with `squash_merge_commit_message: COMMIT_MESSAGES`, so each of the four pull requests merged so far carries a 10 to 19 line body on `main` |
 | 9 | The actions are current and tags exist | `astral-sh/setup-uv` v10.3.3, `actions/checkout` v7.0.1, `actions/cache` v6.1.0 and `actions/setup-node` v7.1.0 all exist as exact tags; `setup-uv` takes `version`, `python-version` and `enable-cache`, and by default keys its cache on `uv.lock` |
 | 10 | Workflows can be linted locally | `actionlint-py` 1.7.12 wraps the `actionlint` binary |
+| 11 | The lowest pydantic cannot run on 3.14 | The lowest-direct resolution picks pydantic 2.11.7, whose pydantic-core 2.33.2 ships no cp314 wheel, so uv tries to build it from source with maturin and fails; the earliest pydantic-core with cp314 wheels is 2.35.0, and pydantic first supports 3.14 in 2.12.0 (pydantic-core 2.41.1). With the requirement split by environment marker, a scratch run resolved 2.11.7 on 3.11 to 3.13 and 2.12.0 on 3.14, all four lowest-direct runs passed, the lock kept a single pydantic entry, and the built metadata kept both `Requires-Dist` lines with their markers |
 
 Constraints that shape the approach:
 - Workflows cannot run locally, so they are linted locally and proven by their own run on this change's pull request.
@@ -46,9 +47,14 @@ One job on Python 3.12: install uv, `uv sync --all-extras`, restore the pre-comm
 Alternative: skip `uv-audit` in pull requests and rely on the schedule. Rejected: skipping a hook is a bypass, and the audit is the point of tracking the lock.
 
 ### `tests` is a version and resolution matrix
-Python 3.11, 3.12, 3.13 and 3.14, each with the highest and the lowest-direct resolution, eight cells. Highest runs `uv run --python <version> pytest`. Lowest runs `uv run --isolated --resolution lowest-direct --python <version> pytest`, where `--isolated` stops it rewriting `uv.lock` (finding 4). Every cell ends by failing if it changed a tracked file. The suite takes seconds, so the matrix costs setup time, not test time.
+Python 3.11, 3.12, 3.13 and 3.14, each with the highest and the lowest-direct resolution, eight cells. Highest runs `uv run --python <version> pytest tests`. Lowest runs `uv run --isolated --resolution lowest-direct --python <version> pytest tests`, where `--isolated` stops it rewriting `uv.lock` (finding 4). Every cell ends by failing if it changed a tracked file. Both name the `tests` directory, as `make test` does, so stray `test_*.py` files elsewhere are never collected. The suite takes seconds, so the matrix costs setup time, not test time.
 
 Alternative: test only 3.12. Rejected: that is how 3.11 broke unnoticed (finding 2).
+
+### The pydantic floor depends on the Python version
+`pydantic[email]` is declared twice with environment markers: `>=2.11.7,<3.0.0` below Python 3.14 and `>=2.12.0,<3.0.0` from 3.14. Every allowed pydantic then supports the Python it is installed on, all eight matrix cells run, and the lock still holds one pydantic entry (finding 11). This is the approach packages that depend on numpy took to span numpy 1.26 and 2.
+
+Alternatives: exclude the 3.14 lowest-direct cell, rejected because it would leave the floor misleading on 3.14; raise the floor to 2.12 everywhere, rejected because it would drop pydantic 2.11 users for no reason.
 
 ### The 3.11 failure is a library bug and is fixed there
 `schema.py` imports `is_typeddict` from `typing_extensions`, a core dependency, which accepts both kinds of TypedDict, so the change is a strict superset: nothing accepted before is rejected. The fixture builds its TypedDict from `typing_extensions`, and a new test case covers the `typing` kind, skipped below 3.12 where pydantic itself rejects it. On Python below 3.12 a caller must still hand `from_schema` a `typing_extensions.TypedDict`, which is pydantic's own rule.
@@ -82,6 +88,7 @@ A floor at today's 31% would fail any pull request that adds untested backend co
 - [Python 3.14 is the newest version and dependencies may lag] -> It is in the matrix, so a lag fails visibly and the job can be reconsidered then.
 - [Exact tags can in principle move] -> Small exposure here, and Dependabot reviews every bump; commit SHAs remain an option later.
 - [The workflows cannot run locally] -> `actionlint` plus the change's own pull request run, which must be green before archive.
+- [Dependabot may bump only one of the two pydantic lines] -> The lock remains the source of truth, and a lowest-direct cell fails visibly if a floor stops being installable.
 - [The commit-message hook does not run in CI] -> The squash-merge setting is the real gate and is recorded as out of scope.
 
 ## Migration Plan
