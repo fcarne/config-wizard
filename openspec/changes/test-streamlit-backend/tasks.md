@@ -37,9 +37,9 @@
 
 ## 7. Integration checks
 
-- [ ] 7.1 Clone the branch into an empty directory under the session scratchpad and run `make install`, `make test`, `make lint` and `uv run --isolated --resolution lowest-direct --python 3.14 pytest tests`. Verify all pass and `git status --short` is empty afterwards, and that `uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends` passes there too.
-- [ ] 7.2 Run `git diff --name-status origin/main..HEAD` and verify the only changes are `tests/backends/*`, `scripts/streamlit_harness.py`, `pyproject.toml`, `uv.lock`, `.github/workflows/ci.yml` (only if 4.2 applied), `AGENTS.md`, `README.md`, `ROADMAP.md` and the change directory.
-- [ ] 7.3 Push the branch, open the pull request, and wait for its CI run. Verify `gh pr checks` shows `checks`, `core` (if added), `streamlit-floor`, all eight `tests` cells and `ci` passing.
+- [x] 7.1 Clone the branch into an empty directory under the session scratchpad and run `make install`, `make test`, `make lint` and `uv run --isolated --resolution lowest-direct --python 3.14 pytest tests`. Verify all pass and `git status --short` is empty afterwards, and that `uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends` passes there too.
+- [x] 7.2 Run `git diff --name-status origin/main..HEAD` and verify the only changes are `tests/backends/*`, `scripts/streamlit_harness.py`, `pyproject.toml`, `uv.lock`, `.github/workflows/ci.yml` (only if 4.2 applied), `AGENTS.md`, `README.md`, `ROADMAP.md` and the change directory.
+- [x] 7.3 Push the branch, open the pull request, and wait for its CI run. Verify `gh pr checks` shows `checks`, `core` (if added), `streamlit-floor`, all eight `tests` cells and `ci` passing.
 
 ## Workflow follow-up
 
