@@ -2,7 +2,7 @@
 
 ## 1. Fix the Python 3.11 test failure
 
-- [ ] 1.1 In `tests/conftest.py`, import `TypedDict` from `typing_extensions` and keep `Any` from `typing`. Verify `uv run --python 3.11 pytest tests` and `uv run --python 3.12 pytest tests` both report 97 passed, and `make lint` and `make format` pass.
+- [x] 1.1 In `config_wizard/schema.py`, import `is_typeddict` from `typing_extensions` instead of `typing`. In `tests/conftest.py`, import `TypedDict` from `typing_extensions`, keep `Any` from `typing`, and add a fixture for a `typing.TypedDict`; in `tests/test_schema.py`, add it as a case of the loading test, skipped below Python 3.12. Verify `uv run --python 3.11 pytest tests` reports 97 passed and 1 skipped, `uv run --python 3.12 pytest tests` reports 98 passed, and `make lint` and `make format` pass.
 
 ## 2. The CI workflow
 
@@ -20,7 +20,7 @@
 
 ## 5. Metadata, devcontainer and documents
 
-- [ ] 5.1 In `pyproject.toml`, add the `Programming Language :: Python :: 3.14` classifier. Verify `uv lock --check` passes, `uv build` prints no warnings and the wheel metadata lists 3.14, and `uv run --python 3.14 pytest tests` reports 97 passed.
+- [ ] 5.1 In `pyproject.toml`, add the `Programming Language :: Python :: 3.14` classifier. Verify `uv lock --check` passes, `uv build` prints no warnings and the wheel metadata lists 3.14, and `uv run --python 3.14 pytest tests` reports 98 passed.
 - [ ] 5.2 In `.devcontainer/post-create.sh`, pin uv with `pipx install uv==0.13.6` (it says 0.13.5 while the hook revision is 0.13.6) and install `@fission-ai/openspec@1.15.0` instead of `@latest`, leaving `opencode-ai@latest` unchanged. Verify `bash -n` passes, and `grep -n "uv==\|openspec" .devcontainer/post-create.sh` shows both pins with the uv one matching the `uv-pre-commit` `rev:` in `.pre-commit-config.yaml`.
 - [ ] 5.3 In `AGENTS.md`, add a short CI section (what each job runs, that a green `make lint` and `make test` predict a green run, that `ci` is the status to require, and that actions are pinned to exact tags and updated by Dependabot), and add a CI status badge for `ci.yml` to `README.md`. Verify `grep -n "ci.yml" README.md` shows the badge and the new `AGENTS.md` section is present.
 
@@ -28,7 +28,7 @@
 
 - [ ] 6.1 In `ROADMAP.md`, delete the `add-ci-pipeline` item and renumber the rest; the follow-ups `protect-main-branch`, `add-coverage-gate`, `lint-pull-request-titles`, `add-release-workflow`, `add-documentation-site` and `test-other-platforms` are already on the roadmap. Verify the numbering is consecutive from 1, `protect-main-branch` is first, and those six items are present.
 - [ ] 6.2 Run `openspec validate add-ci-pipeline --strict`. Verify it reports the change as valid.
-- [ ] 6.3 Clone the branch into a new empty directory under the session scratchpad and run `make install`, `make test`, `make lint`, and actionlint on both workflows. Verify 97 passed, lint passes and actionlint reports nothing.
+- [ ] 6.3 Clone the branch into a new empty directory under the session scratchpad and run `make install`, `make test`, `make lint`, and actionlint on both workflows. Verify 98 passed, lint passes and actionlint reports nothing.
 - [ ] 6.4 Run `git diff --name-status origin/main..HEAD` and verify the only changes are `.github/workflows/ci.yml`, `.github/workflows/audit.yml`, `.github/pull_request_template.md`, `.github/dependabot.yml`, `pyproject.toml`, `tests/conftest.py`, `.devcontainer/post-create.sh`, `AGENTS.md`, `README.md`, `ROADMAP.md` and the change directory.
 - [ ] 6.5 Push the branch, open the pull request, and wait for its CI run. Verify `gh pr checks` shows `checks`, all eight `tests` cells and `ci` passing.
 

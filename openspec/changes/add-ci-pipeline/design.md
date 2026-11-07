@@ -7,7 +7,7 @@ See `proposal.md` for motivation. Evidence from scratch clones of `main` (commit
 | # | Finding | Evidence |
 |---|---------|----------|
 | 1 | There is no CI | `.github/` holds only `dependabot.yml`; the 12 workflow runs on record are GitHub's own "Dependabot Updates"; Actions is enabled with all actions allowed, read-only default token permissions and no SHA-pinning requirement; `main` has no protection or rulesets; the repository is public |
-| 2 | Python 3.11 fails one test | `test_from_schema__valid_types__returns_schema[user_typeddict]` fails with pydantic's `typed-dict-version` error: the fixture in `tests/conftest.py` builds its TypedDict from `typing.TypedDict`, which pydantic rejects below 3.12; `streamlit.py` already uses `typing_extensions.TypedDict` |
+| 2 | Python 3.11 fails one test, and the cause is a library bug | `test_from_schema__valid_types__returns_schema[user_typeddict]` fails on 3.11 with pydantic's `typed-dict-version` error because the fixture uses `typing.TypedDict`. Switching the fixture to `typing_extensions.TypedDict`, which pydantic requires below 3.12, then fails on 3.12 too with `TypeError: The schema must be a Pydantic model, TypedDict, or dataclass`: `schema.py` detects TypedDicts with `typing.is_typeddict`, which returns False for a class built from `typing_extensions.TypedDict`, while `typing_extensions.is_typeddict` returns True for both kinds. So a TypedDict could not be loaded at all on 3.11, and on 3.12 and later only the `typing` kind worked; `streamlit.py` already uses `typing_extensions.TypedDict` |
 | 3 | 3.12, 3.13 and 3.14 pass | 97 passed on each, in 3 to 12 s |
 | 4 | The lower bounds hold | With the lowest allowed direct versions (pydantic 2.11.7, jsonschema 4.25.0, openapi-pydantic 0.5.1, typing-extensions 4.14.1, pytest 9.0.3) all 97 pass on 3.12; on 3.11 only the same TypedDict test fails. Running `uv run --resolution lowest-direct` without `--isolated` rewrote `uv.lock` in the scratch clone |
 | 5 | The hook set is CI-sized | `pre-commit run --all-files` passes in 44 s with warm hook environments, and includes `uv-audit`, which needs the network; the `commit-msg` hook is not part of it |
@@ -28,7 +28,7 @@ Constraints that shape the approach:
 - Every check the project already defines runs on every pull request and on `main`, and one status summarizes them.
 - Each Python version the package claims, and the lowest dependencies it allows, are tested.
 - A new advisory is noticed within a week without a pull request.
-- No runtime behavior change.
+- No runtime behavior change beyond the TypedDict detection fix.
 
 **Non-Goals:**
 - Branch protection, the squash-merge setting, coverage gating, pull request title linting, releases, documentation builds and other operating systems, each now a roadmap item (see `proposal.md`).
@@ -50,8 +50,10 @@ Python 3.11, 3.12, 3.13 and 3.14, each with the highest and the lowest-direct re
 
 Alternative: test only 3.12. Rejected: that is how 3.11 broke unnoticed (finding 2).
 
-### The 3.11 failure is fixed in the fixture
-`tests/conftest.py` imports `TypedDict` from `typing_extensions`, a core dependency, and keeps `Any` from `typing`. The library code is unchanged. On Python below 3.12 a caller must hand `from_schema` a `typing_extensions.TypedDict`, which is pydantic's own rule.
+### The 3.11 failure is a library bug and is fixed there
+`schema.py` imports `is_typeddict` from `typing_extensions`, a core dependency, which accepts both kinds of TypedDict, so the change is a strict superset: nothing accepted before is rejected. The fixture builds its TypedDict from `typing_extensions`, and a new test case covers the `typing` kind, skipped below 3.12 where pydantic itself rejects it. On Python below 3.12 a caller must still hand `from_schema` a `typing_extensions.TypedDict`, which is pydantic's own rule.
+
+Alternatives: skip the test on 3.11, rejected because the package would claim 3.11 support while TypedDict input cannot work there; drop 3.11 from the matrix, rejected because it contradicts `requires-python`.
 
 ### Python 3.14 joins the classifiers
 CI now tests it and it passes (finding 3), so the classifier is added in the same change.
