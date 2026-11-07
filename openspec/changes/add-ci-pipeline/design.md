@@ -20,7 +20,7 @@ See `proposal.md` for motivation. Evidence from scratch clones of `main` (commit
 Constraints that shape the approach:
 - Workflows cannot run locally, so they are linted locally and proven by their own run on this change's pull request.
 - The project rules forbid explanatory comments, which rules out the common `# vX.Y.Z` annotation beside a commit SHA.
-- The dev container and the hooks already pin uv to 0.13.5, and the lock is the only dependency source.
+- The hooks pin uv to 0.13.6 (Dependabot bumped the hook revision) while `post-create.sh` still says 0.13.5, and the lock is the only dependency source.
 
 ## Goals / Non-Goals
 
@@ -62,7 +62,7 @@ CI now tests it and it passes (finding 3), so the classifier is added in the sam
 Alternatives: full commit SHAs with a trailing version comment, the strongest option but it needs a comment the project rules forbid; major tags such as `@v10`, rejected as the least pinned.
 
 ### Tool versions are pinned and cached
-`setup-uv` installs uv 0.13.5, the version already pinned in the hook revision and the devcontainer, and caches by `uv.lock`. `actions/cache` keeps `~/.cache/pre-commit` keyed on the hook configuration. Node comes from `setup-node` and the OpenSpec CLI from `npx` at 1.15.0; the devcontainer pins the same version instead of `@latest`.
+`setup-uv` installs uv 0.13.6, the version now pinned in the hook revision, and caches by `uv.lock`; the devcontainer pin moves to 0.13.6 in this change so all three agree. `actions/cache` keeps `~/.cache/pre-commit` keyed on the hook configuration. Node comes from `setup-node` and the OpenSpec CLI from `npx` at 1.15.0; the devcontainer pins the same version instead of `@latest`.
 
 ### The audit runs on a schedule
 `audit.yml` runs `uv audit --preview-features audit-command` weekly and on demand. A failure reaches you through GitHub's normal workflow notification. It does not block pull requests.

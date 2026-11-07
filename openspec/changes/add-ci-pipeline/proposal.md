@@ -11,7 +11,7 @@ Nothing enforces the project's checks on a pull request. Lint, types, tests, Ope
 - Fix the Python 3.11 failure: the test fixture builds its TypedDict from `typing_extensions`, which pydantic requires below 3.12.
 - Add the Python 3.14 classifier now that CI tests it.
 - Add a pull request template that links the OpenSpec change, and a `github-actions` ecosystem to Dependabot.
-- Pin third-party actions to exact version tags (no comments, no SHAs) and pin the OpenSpec CLI to 1.15.0 in CI and in the devcontainer, which currently installs `@latest`.
+- Pin third-party actions to exact version tags (no comments, no SHAs) and pin the OpenSpec CLI to 1.15.0 in CI and in the devcontainer, which currently installs `@latest`. Align the devcontainer's uv pin with the hook revision, which Dependabot moved to 0.13.6.
 - Update `AGENTS.md` with a CI section, add a CI status badge to `README.md`, and update the roadmap.
 - No runtime behavior changes.
 

@@ -6,12 +6,12 @@
 
 ## 2. The CI workflow
 
-- [ ] 2.1 Create `.github/workflows/ci.yml` as designed: triggers `pull_request`, `push` to `main` and `workflow_dispatch`; `permissions: contents: read`; a concurrency group that cancels superseded pull request runs; a timeout on every job; a `checks` job (checkout, setup-uv at 0.13.5 with caching, `uv sync --all-extras`, the pre-commit environment cache, `uv run pre-commit run --all-files`, setup-node 22, and `npx --yes @fission-ai/openspec@1.15.0 validate --all --strict`); a `tests` job matrixed over Python 3.11, 3.12, 3.13 and 3.14 by highest and lowest-direct resolution, each cell ending with a step that fails if a tracked file changed; and a `ci` job that needs both, always runs, and fails unless both succeeded. Use the exact action tags from the design. Verify `uvx --from actionlint-py actionlint .github/workflows/ci.yml` reports nothing and `uv run pre-commit run check-yaml --files .github/workflows/ci.yml` passes.
+- [ ] 2.1 Create `.github/workflows/ci.yml` as designed: triggers `pull_request`, `push` to `main` and `workflow_dispatch`; `permissions: contents: read`; a concurrency group that cancels superseded pull request runs; a timeout on every job; a `checks` job (checkout, setup-uv at 0.13.6 with caching, `uv sync --all-extras`, the pre-commit environment cache, `uv run pre-commit run --all-files`, setup-node 22, and `npx --yes @fission-ai/openspec@1.15.0 validate --all --strict`); a `tests` job matrixed over Python 3.11, 3.12, 3.13 and 3.14 by highest and lowest-direct resolution, each cell ending with a step that fails if a tracked file changed; and a `ci` job that needs both, always runs, and fails unless both succeeded. Use the exact action tags from the design. Verify `uvx --from actionlint-py actionlint .github/workflows/ci.yml` reports nothing and `uv run pre-commit run check-yaml --files .github/workflows/ci.yml` passes.
 - [ ] 2.2 In a fresh scratch clone, run every command the workflow runs: for `checks`, `uv sync --all-extras`, `uv run pre-commit run --all-files` and the pinned `npx` validation; for `tests`, the highest command (`uv run --python <version> pytest`) and the lowest-direct command (`uv run --isolated --resolution lowest-direct --python <version> pytest`) on Python 3.11 and 3.14. Verify every command exits 0, `git status --short` is empty afterwards in each case, and the lowest-direct run leaves `uv.lock` untouched.
 
 ## 3. The audit workflow
 
-- [ ] 3.1 Create `.github/workflows/audit.yml` triggered by a weekly `schedule` and by `workflow_dispatch`, with `permissions: contents: read`, a timeout, setup-uv at 0.13.5, and one step running `uv audit --preview-features audit-command`. Verify actionlint and `check-yaml` pass and the audit command exits 0 on the current lock.
+- [ ] 3.1 Create `.github/workflows/audit.yml` triggered by a weekly `schedule` and by `workflow_dispatch`, with `permissions: contents: read`, a timeout, setup-uv at 0.13.6, and one step running `uv audit --preview-features audit-command`. Verify actionlint and `check-yaml` pass and the audit command exits 0 on the current lock.
 
 ## 4. Pull request template and Dependabot
 
@@ -21,7 +21,7 @@
 ## 5. Metadata, devcontainer and documents
 
 - [ ] 5.1 In `pyproject.toml`, add the `Programming Language :: Python :: 3.14` classifier. Verify `uv lock --check` passes, `uv build` prints no warnings and the wheel metadata lists 3.14, and `uv run --python 3.14 pytest tests` reports 97 passed.
-- [ ] 5.2 In `.devcontainer/post-create.sh`, install `@fission-ai/openspec@1.15.0` instead of `@latest`, leaving `opencode-ai@latest` unchanged. Verify `bash -n` passes and `grep -n "openspec" .devcontainer/post-create.sh` shows the pinned version.
+- [ ] 5.2 In `.devcontainer/post-create.sh`, pin uv with `pipx install uv==0.13.6` (it says 0.13.5 while the hook revision is 0.13.6) and install `@fission-ai/openspec@1.15.0` instead of `@latest`, leaving `opencode-ai@latest` unchanged. Verify `bash -n` passes, and `grep -n "uv==\|openspec" .devcontainer/post-create.sh` shows both pins with the uv one matching the `uv-pre-commit` `rev:` in `.pre-commit-config.yaml`.
 - [ ] 5.3 In `AGENTS.md`, add a short CI section (what each job runs, that a green `make lint` and `make test` predict a green run, that `ci` is the status to require, and that actions are pinned to exact tags and updated by Dependabot), and add a CI status badge for `ci.yml` to `README.md`. Verify `grep -n "ci.yml" README.md` shows the badge and the new `AGENTS.md` section is present.
 
 ## 6. Integration checks
