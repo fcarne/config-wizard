@@ -16,7 +16,7 @@
 
 ## 4. Pull request template and Dependabot
 
-- [ ] 4.1 Create `.github/pull_request_template.md` with a line for the OpenSpec change (or none), a short summary, and a verification checklist covering `make lint`, `make test`, `openspec validate --all --strict`, a test for each touched spec scenario, and removing the roadmap item. Verify the file exists, is under 25 lines, and `uv run pre-commit run --all-files` still passes.
+- [x] 4.1 Create `.github/pull_request_template.md` with a line for the OpenSpec change (or none), a short summary, and a verification checklist covering `make lint`, `make test`, `openspec validate --all --strict`, a test for each touched spec scenario, and removing the roadmap item. Verify the file exists, is under 25 lines, and `uv run pre-commit run --all-files` still passes.
 - [ ] 4.2 In `.github/dependabot.yml`, add a `github-actions` ecosystem on a weekly schedule with a pull request limit of 3 and grouped minor and patch updates. Verify `check-yaml` passes, the ecosystems are exactly `uv`, `pre-commit`, `devcontainers` and `github-actions`, and `github-actions` appears in GitHub's supported ecosystems list.
 
 ## 5. Metadata, devcontainer and documents
