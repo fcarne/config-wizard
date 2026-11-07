@@ -38,7 +38,7 @@ Take a configuration schema or class, walk the user through an interactive wizar
 
 ## Change workflow
 
-Behavior changes go through an OpenSpec change: explore, propose, apply, archive. The change's specs are the contract and its tasks name how each step is verified. Known defects are recorded in a change's `design.md` and fixed by their own change, not folded into unrelated work. What is planned is tracked in `ROADMAP.md`; each item becomes a change when it is started.
+Behavior changes go through an OpenSpec change: explore, propose, apply, archive. The change's specs are the contract and its tasks name how each step is verified. Known defects are recorded in a change's `design.md` and fixed by their own change, not folded into unrelated work. Design decisions are recorded in a change's `design.md` and stay in `openspec/changes/archive/` after archiving; there is no separate ADR directory. What is planned is tracked in `ROADMAP.md`; each item becomes a change when it is started.
 
 ## Glossary
 
