@@ -72,7 +72,7 @@ jobs:
       - name: Fail if Streamlit is installed
         run: uv run --isolated --python 3.12 --no-dev --group test python -c "import importlib.util; assert importlib.util.find_spec('streamlit') is None"
       - name: Run the tests without any backend installed
-        run: uv run --isolated --python 3.12 --no-dev --group test pytest tests
+        run: uv run --isolated --python 3.12 --no-dev --group test pytest tests --no-cov
       - name: Fail if a tracked file changed
         run: git diff --exit-code
 
@@ -89,9 +89,36 @@ jobs:
       - name: Fail unless Streamlit 1.47.0 is the one imported
         run: uv run --python 3.12 --with "streamlit==1.47.0" python -c "import streamlit; assert streamlit.__version__ == '1.47.0'"
       - name: Run the Streamlit tests against the lowest supported Streamlit
-        run: uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends
+        run: uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends --no-cov
       - name: Fail if a tracked file changed
         run: git diff --exit-code
+
+  coverage-badge:
+    name: coverage-badge
+    needs: tests
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.6"
+          enable-cache: true
+      - name: Measure the coverage
+        run: |
+          uv run --python 3.12 pytest tests
+          uv run --python 3.12 coverage json -o "$RUNNER_TEMP/coverage-report.json"
+          python3 scripts/coverage_badge.py "$RUNNER_TEMP/coverage-report.json" "$RUNNER_TEMP/coverage.json"
+      - name: Publish the badge file
+        run: |
+          git switch --orphan badges
+          cp "$RUNNER_TEMP/coverage.json" coverage.json
+          git add coverage.json
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit --message ":bar_chart: Update the coverage badge"
+          git push --force origin badges
 
   ci:
     name: ci
