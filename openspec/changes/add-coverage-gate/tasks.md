@@ -21,8 +21,8 @@
 
 ## 5. Integration checks
 
-- [ ] 5.1 Clone the branch into an empty directory under the session scratchpad and run `make install`, `make test`, `make lint`, `uv run --isolated --resolution lowest-direct --python 3.14 pytest tests`, the `core` and `streamlit-floor` commands with `--no-cov`, and the badge script on a fresh `coverage json` from `uv run --python 3.12 pytest tests`. Verify everything passes, the script prints `85%` for Python 3.12, and `git status --short` is empty afterwards.
-- [ ] 5.2 Run `git diff --name-status origin/main..HEAD` and verify the only changes are `pyproject.toml`, `.github/workflows/ci.yml`, `scripts/coverage_badge.py`, `README.md`, `AGENTS.md`, `ROADMAP.md` and the change directory.
+- [x] 5.1 Clone the branch into an empty directory under the session scratchpad and run `make install`, `make test`, `make lint`, `uv run --isolated --resolution lowest-direct --python 3.14 pytest tests`, the `core` and `streamlit-floor` commands with `--no-cov`, and the badge script on a fresh `coverage json` from `uv run --python 3.12 pytest tests`. Verify everything passes, the script prints `85%` for Python 3.12, and `git status --short` is empty afterwards.
+- [x] 5.2 Run `git diff --name-status origin/main..HEAD` and verify the only changes are `pyproject.toml`, `.github/workflows/ci.yml`, `scripts/coverage_badge.py`, `README.md`, `AGENTS.md`, `ROADMAP.md` and the change directory.
 - [ ] 5.3 Push the branch, open the pull request, and wait for its CI run. Verify `gh pr checks` shows `checks`, `core`, `streamlit-floor`, all eight `tests` cells and `ci` passing, and the `coverage-badge` job skipped.
 
 ## 6. After the merge
