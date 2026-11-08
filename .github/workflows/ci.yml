@@ -72,7 +72,7 @@ jobs:
       - name: Fail if Streamlit is installed
         run: uv run --isolated --python 3.12 --no-dev --group test python -c "import importlib.util; assert importlib.util.find_spec('streamlit') is None"
       - name: Run the tests without any backend installed
-        run: uv run --isolated --python 3.12 --no-dev --group test pytest tests
+        run: uv run --isolated --python 3.12 --no-dev --group test pytest tests --no-cov
       - name: Fail if a tracked file changed
         run: git diff --exit-code
 
@@ -89,7 +89,7 @@ jobs:
       - name: Fail unless Streamlit 1.47.0 is the one imported
         run: uv run --python 3.12 --with "streamlit==1.47.0" python -c "import streamlit; assert streamlit.__version__ == '1.47.0'"
       - name: Run the Streamlit tests against the lowest supported Streamlit
-        run: uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends
+        run: uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends --no-cov
       - name: Fail if a tracked file changed
         run: git diff --exit-code
 

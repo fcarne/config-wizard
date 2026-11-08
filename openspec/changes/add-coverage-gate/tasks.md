@@ -3,7 +3,7 @@
 ## 1. The coverage floor
 
 - [x] 1.1 In `pyproject.toml`, add `fail_under = 84` to `[tool.coverage.report]`. Verify `uv run pytest tests` prints "Required test coverage of 84.0% reached" and exits 0, `uv run pytest tests --cov-fail-under=99` exits 1 with "FAIL Required test coverage of 99.0% not reached", `make test` prints the same "reached" line, and the full suite passes the floor with both resolutions on Python 3.11, 3.12, 3.13 and 3.14 (`uv run --isolated [--resolution lowest-direct] --python <version> pytest tests` exits 0 in all eight cases).
-- [ ] 1.2 In `.github/workflows/ci.yml`, add `--no-cov` to the pytest commands of the `core` and `streamlit-floor` jobs. Verify `uv run --isolated --python 3.12 --no-dev --group test pytest tests --no-cov` and `uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends --no-cov` exit 0 and print no coverage table, `uvx --from actionlint-py actionlint .github/workflows/ci.yml` reports nothing, and `uv run pre-commit run check-yaml --files .github/workflows/ci.yml` passes.
+- [x] 1.2 In `.github/workflows/ci.yml`, add `--no-cov` to the pytest commands of the `core` and `streamlit-floor` jobs. Verify `uv run --isolated --python 3.12 --no-dev --group test pytest tests --no-cov` and `uv run --python 3.12 --with "streamlit==1.47.0" pytest tests/backends --no-cov` exit 0 and print no coverage table, `uvx --from actionlint-py actionlint .github/workflows/ci.yml` reports nothing, and `uv run pre-commit run check-yaml --files .github/workflows/ci.yml` passes.
 
 ## 2. The badge script
 
