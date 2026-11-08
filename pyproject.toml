@@ -73,7 +73,7 @@ dev = [
     "pydantic-extra-types >=2.10.0,<3.0.0",
     "pre-commit >=4.7,<5.0",
     "ruff >=0.17,<0.18",
-    "ty==0.0.97",
+    "ty==0.0.98",
 ]
 
 [tool.ruff]
