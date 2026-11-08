@@ -102,6 +102,7 @@ addopts = "-ra -q --cov=config_wizard --cov-report=html --cov-report=term-missin
 branch = true
 
 [tool.coverage.report]
+fail_under = 84
 exclude_also = [
     'def __repr__',
     'raise NotImplementedError',
