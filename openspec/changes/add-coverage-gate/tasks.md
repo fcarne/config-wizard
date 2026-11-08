@@ -7,7 +7,7 @@
 
 ## 2. The badge script
 
-- [ ] 2.1 Create `scripts/coverage_badge.py`: a function that turns a percentage into the endpoint mapping (`schemaVersion` 1, label `coverage`, message the rounded percentage with `%`, color `brightgreen` from 90, `yellowgreen` from 80, `yellow` from 70, otherwise `red`) and a command line entry taking the coverage.py JSON path and the output path. Verify by running it on sample coverage JSON files holding 95, 85, 75 and 50 percent that the outputs are `brightgreen`/`95%`, `yellowgreen`/`85%`, `yellow`/`75%` and `red`/`50%`, that a real `uv run coverage json` file after `uv run pytest tests` gives `85%`, and that `uv run ruff check scripts`, `uv run ruff format --check scripts` and `uv run --all-extras ty check` pass.
+- [x] 2.1 Create `scripts/coverage_badge.py`: a function that turns a percentage into the endpoint mapping (`schemaVersion` 1, label `coverage`, message the rounded percentage with `%`, color `brightgreen` from 90, `yellowgreen` from 80, `yellow` from 70, otherwise `red`) and a command line entry taking the coverage.py JSON path and the output path. Verify by running it on sample coverage JSON files holding 95, 85, 75 and 50 percent that the outputs are `brightgreen`/`95%`, `yellowgreen`/`85%`, `yellow`/`75%` and `red`/`50%`, that a real `uv run coverage json` file after `uv run pytest tests` gives `85%`, and that `uv run ruff check scripts`, `uv run ruff format --check scripts` and `uv run --all-extras ty check` pass.
 
 ## 3. The badge job
 

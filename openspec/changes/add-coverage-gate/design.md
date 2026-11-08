@@ -54,7 +54,7 @@ Why force-push one orphan commit: no history to grow, no fetch or merge logic, a
 Alternatives: Codecov or Coveralls (rejected: a third-party app and a secret, with features this project does not need yet); a gist updated by a community action (rejected: needs a gist-scope token secret); committing an SVG to `main` (impossible under `protect-main`); typing the badge by hand (the current problem).
 
 ### The color follows fixed thresholds
-`scripts/coverage_badge.py` reads coverage.py's JSON and writes the endpoint file: message the rounded percentage with `%`, color `brightgreen` from 90, `yellowgreen` from 80, `yellow` from 70, otherwise `red`. 85 therefore stays `yellowgreen`, as today. The script is a pure function plus a small command line entry, in `scripts/` so `ruff` and `ty` check it.
+`scripts/coverage_badge.py` reads coverage.py's JSON and writes the endpoint file: message the rounded percentage with `%`, color `brightgreen` from 90, `yellowgreen` from 80, `yellow` from 70, otherwise `red`, chosen from the rounded number that is shown so the color never disagrees with it (89.6 shows as 90% and is `brightgreen`). 85 therefore stays `yellowgreen`, as today. The script is a pure function plus a small command line entry, in `scripts/` so `ruff` and `ty` check it.
 
 ### Raising the floor is manual
 When coverage grows, a pull request raises `fail_under`. A ratchet that raises it automatically would need state; the `badges` file could hold it, but that couples the gate to a publishing job and is left out.
