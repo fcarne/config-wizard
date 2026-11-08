@@ -11,8 +11,8 @@
 
 ## 3. The badge job
 
-- [ ] 3.1 In `.github/workflows/ci.yml`, add the job `coverage-badge` as designed: `needs: tests`, a condition that it runs only on `main` for pushes and manual runs, `permissions: contents: write` on the job, a timeout, checkout, setup-uv at 0.13.6, the suite and `coverage json` on Python 3.12, the script writing the endpoint file outside the working tree, and a publish step that switches to an orphan `badges` branch, adds only `coverage.json`, commits as `github-actions[bot]` with a single-line subject, and force-pushes. Leave the `ci` job's `needs` unchanged. Verify actionlint reports nothing and `check-yaml` passes.
-- [ ] 3.2 Rehearse the publish step: in a scratch clone with a local bare repository as `origin`, run its exact commands twice with different sample files. Verify `badges` exists on the remote after each run with exactly one commit that contains only `coverage.json`, the second run replaces the first without error, and the working branch is untouched.
+- [x] 3.1 In `.github/workflows/ci.yml`, add the job `coverage-badge` as designed: `needs: tests`, a condition that it runs only on `main` for pushes and manual runs, `permissions: contents: write` on the job, a timeout, checkout, setup-uv at 0.13.6, the suite and `coverage json` on Python 3.12, the script writing the endpoint file outside the working tree, and a publish step that switches to an orphan `badges` branch, adds only `coverage.json`, commits as `github-actions[bot]` with a single-line subject, and force-pushes. Leave the `ci` job's `needs` unchanged. Verify actionlint reports nothing and `check-yaml` passes.
+- [x] 3.2 Rehearse the publish step: in a scratch clone with a local bare repository as `origin`, run its exact commands twice with different sample files. Verify `badges` exists on the remote after each run with exactly one commit that contains only `coverage.json`, the second run replaces the first without error, and the working branch is untouched.
 
 ## 4. Documents and roadmap
 
