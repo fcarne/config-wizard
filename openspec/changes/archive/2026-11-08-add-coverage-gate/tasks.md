@@ -23,12 +23,12 @@
 
 - [x] 5.1 Clone the branch into an empty directory under the session scratchpad and run `make install`, `make test`, `make lint`, `uv run --isolated --resolution lowest-direct --python 3.14 pytest tests`, the `core` and `streamlit-floor` commands with `--no-cov`, and the badge script on a fresh `coverage json` from `uv run --python 3.12 pytest tests`. Verify everything passes, the script prints `85%` for Python 3.12, and `git status --short` is empty afterwards.
 - [x] 5.2 Run `git diff --name-status origin/main..HEAD` and verify the only changes are `pyproject.toml`, `.github/workflows/ci.yml`, `scripts/coverage_badge.py`, `README.md`, `AGENTS.md`, `ROADMAP.md` and the change directory.
-- [ ] 5.3 Push the branch, open the pull request, and wait for its CI run. Verify `gh pr checks` shows `checks`, `core`, `streamlit-floor`, all eight `tests` cells and `ci` passing, and the `coverage-badge` job skipped.
+- [x] 5.3 Push the branch, open the pull request, and wait for its CI run. Verify `gh pr checks` shows `checks`, `core`, `streamlit-floor`, all eight `tests` cells and `ci` passing, and the `coverage-badge` job skipped.
 
 ## 6. After the merge
 
-- [ ] 6.1 Run `gh workflow run ci.yml --ref main` and wait for the run. Verify the `coverage-badge` job succeeded, `git ls-remote origin badges` shows the branch, `https://raw.githubusercontent.com/fcarne/config-wizard/badges/coverage.json` returns JSON with `schemaVersion` 1, label `coverage` and a message matching `^[0-9]+%$`, and the badge URL from the README returns an SVG containing `coverage` and that percentage.
-- [ ] 6.2 If any check in 6.1 fails (most likely the job's `contents: write` permission), diagnose it from the run log and fix it in a follow-up pull request before archiving. Verify by repeating 6.1.
+- [x] 6.1 Run `gh workflow run ci.yml --ref main` and wait for the run. Verify the `coverage-badge` job succeeded, `git ls-remote origin badges` shows the branch, `https://raw.githubusercontent.com/fcarne/config-wizard/badges/coverage.json` returns JSON with `schemaVersion` 1, label `coverage` and a message matching `^[0-9]+%$`, and the badge URL from the README returns an SVG containing `coverage` and that percentage.
+- [x] 6.2 If any check in 6.1 fails (most likely the job's `contents: write` permission), diagnose it from the run log and fix it in a follow-up pull request before archiving. Verify by repeating 6.1.
 
 ## Workflow follow-up
 
