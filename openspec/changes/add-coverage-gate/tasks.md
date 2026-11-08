@@ -16,8 +16,8 @@
 
 ## 4. Documents and roadmap
 
-- [ ] 4.1 In `README.md`, replace the static coverage badge with `https://img.shields.io/endpoint?url=` followed by the percent-encoded raw URL of `badges/coverage.json` and adjust the status sentence to say the figure is measured on `main` and gated in CI. In `AGENTS.md`, add the floor (`fail_under` in `[tool.coverage.report]`, raised by pull request), the `--no-cov` exceptions, the `coverage-badge` job and the `badges` branch. In `ROADMAP.md`, delete the `add-coverage-gate` item and renumber the rest. Verify decoding the README URL gives `https://raw.githubusercontent.com/fcarne/config-wizard/badges/coverage.json`, the roadmap numbering is consecutive from 1, and `uv run pre-commit run --all-files` passes.
-- [ ] 4.2 Run `openspec validate add-coverage-gate --strict` and `openspec validate --all --strict`. Verify both report valid.
+- [x] 4.1 In `README.md`, replace the static coverage badge with `https://img.shields.io/endpoint?url=` followed by the percent-encoded raw URL of `badges/coverage.json` and adjust the status sentence to say the figure is measured on `main` and gated in CI. In `AGENTS.md`, add the floor (`fail_under` in `[tool.coverage.report]`, raised by pull request), the `--no-cov` exceptions, the `coverage-badge` job and the `badges` branch. In `ROADMAP.md`, delete the `add-coverage-gate` item and renumber the rest. Verify decoding the README URL gives `https://raw.githubusercontent.com/fcarne/config-wizard/badges/coverage.json`, the roadmap numbering is consecutive from 1, and `uv run pre-commit run --all-files` passes.
+- [x] 4.2 Run `openspec validate add-coverage-gate --strict` and `openspec validate --all --strict`. Verify both report valid.
 
 ## 5. Integration checks
 
