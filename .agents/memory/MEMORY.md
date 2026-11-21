@@ -1,0 +1,2 @@
+- [Commit messages](feedback-commit-messages.md) — subject line only, no body, no Co-Authored-By
+- [OpenSpec baseline](project-openspec-baseline.md) — baseline change merged in PR #1, apply and retire DESIGN.md next
