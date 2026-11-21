@@ -1,5 +1,6 @@
 import json
 import re
+import uuid
 from collections.abc import Callable, Iterable, MutableMapping
 from copy import deepcopy
 from datetime import date, datetime, time
@@ -64,12 +65,13 @@ def _is_add_button_disabled(property_schema: ResolvedSchema, current_length: int
     if property_schema.readOnly:
         return True
 
-    return property_schema.maxItems is not None and current_length >= property_schema.maxItems
+    max_entries = property_schema.maxProperties if property_schema.type == DataType.OBJECT else property_schema.maxItems
+    return max_entries is not None and current_length >= max_entries
 
 
 def _is_clear_button_disabled(property_schema: ResolvedSchema) -> bool:
     """Determine if the clear button should be displayed based on the schema."""
-    return not property_schema.readOnly
+    return bool(property_schema.readOnly)
 
 
 def _is_remove_button_disabled(property_schema: ResolvedSchema, current_length: int) -> bool:
@@ -77,7 +79,8 @@ def _is_remove_button_disabled(property_schema: ResolvedSchema, current_length: 
     if property_schema.readOnly:
         return True
 
-    return property_schema.minItems is not None and current_length <= property_schema.minItems
+    min_entries = property_schema.minProperties if property_schema.type == DataType.OBJECT else property_schema.minItems
+    return min_entries is not None and current_length <= min_entries
 
 
 class StreamlitSettingsWizard(SettingsWizardBackend):
@@ -97,6 +100,8 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
     container: DeltaGenerator
 
     _state_key: str
+    _row_ids_key: str
+    _row_ids: dict[str, list[str]]
     _run_id: int
 
     def __init__(
@@ -121,8 +126,36 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
     def _init_state(self) -> MutableMapping[str, Any]:
         self._run_id = st.session_state.setdefault("run_id", 0)
         self._state_key = f"{self.key}-data"
+        self._row_ids_key = f"{self.key}-row-ids"
+        self._row_ids = st.session_state.setdefault(self._row_ids_key, {})
 
         return st.session_state.setdefault(self._state_key, {})
+
+    def _new_row_id(self) -> str:
+        """
+        Allocate a new stable row id for a collection row.
+
+        Returns:
+            str: The new row id.
+        """
+        return uuid.uuid4().hex
+
+    def _tracked_row_ids_for(self, property_key: str, count: int) -> list[str]:
+        """
+        Get the ordered row ids of a collection, allocating ids for new rows as needed.
+
+        Args:
+            property_key (str): The key of the collection property.
+            count (int): The number of row ids needed.
+
+        Returns:
+            list[str]: The ordered row ids of length `count`.
+        """
+        row_ids = self._row_ids.setdefault(property_key, [])
+        while len(row_ids) < count:
+            row_ids.append(self._new_row_id())
+
+        return row_ids
 
     def _store_value(self, key: str, value: Any) -> None:
         state = self.state
@@ -393,10 +426,23 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
         property_key: str,
         property_schema: ResolvedSchema,
         container: DeltaGenerator,
+        collection_property_schema: ResolvedSchema,
     ) -> tuple[Any | None, bool]:
         """
         Render an input widget for an item in a list.
         Returns a tuple of (value, False) or (None, True) if the item was removed.
+
+        Args:
+            index (int): The position of the item in the collection.
+            current_length (int): The number of items in the collection.
+            value (Any): The current value of the item.
+            property_key (str): The key of the item, including its stable row id.
+            property_schema (ResolvedSchema): The schema of the item.
+            container (DeltaGenerator): The Streamlit container to render the item in.
+            collection_property_schema (ResolvedSchema): The schema of the collection holding the item.
+
+        Returns:
+            tuple[Any | None, bool]: The tuple of (value, False) or (None, True) if the item was removed.
         """
 
         item_property_schema = deepcopy(property_schema)
@@ -413,7 +459,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
                 if remove_item_col.button(
                     "Remove",
                     key=f"{property_key}-remove",
-                    disabled=_is_remove_button_disabled(property_schema, current_length),
+                    disabled=_is_remove_button_disabled(collection_property_schema, current_length),
                 ):
                     # Remove the item from the list
                     item_placeholder.empty()
@@ -423,7 +469,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
                 return (
                     self._render_property(
                         property_key=property_key,
-                        property_schema=property_schema,
+                        property_schema=item_property_schema,
                         required=False,  # Items in a list are not required by default
                         is_item=True,
                         container=input_item_col,
@@ -458,7 +504,13 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
             # Default to a list with as many items as the minimum items specified in the schema
             data_list = [None] * (property_schema.minItems if property_schema.minItems is not None else 0)
 
+        row_ids = self._tracked_row_ids_for(property_key, len(data_list))
+        # The stored value of a set is de-duplicated, while the tracked rows keep the duplicates.
+        while len(data_list) < len(row_ids):
+            data_list.append(None)
+
         output_list = []
+        removed: list[int] = []
 
         add_item_col, clear_item_col, _ = container.columns(3)
         with add_item_col:
@@ -468,6 +520,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
                 disabled=_is_add_button_disabled(property_schema, len(data_list)),
             ):
                 data_list.append(None)
+                row_ids.append(self._new_row_id())
 
         with clear_item_col:
             if clear_item_col.button(
@@ -476,12 +529,14 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
                 disabled=_is_clear_button_disabled(property_schema),
             ):
                 data_list = [None] * (property_schema.minItems if property_schema.minItems is not None else 0)
+                row_ids = [self._new_row_id() for _ in range(len(data_list))]
+                self._row_ids[property_key] = row_ids
 
         # Developer notes:
         #  For tuples, `prefixItems` must be defined, while for other collections, `items` is used.
         #  Moreover, `i` will always be less than or equal to the length of `prefixItems` for tuples.
 
-        for i, item in enumerate(data_list):
+        for i, (row_id, item) in enumerate(zip(row_ids, data_list, strict=False)):
             item_schema: ResolvedSchema = (  # ty: ignore[invalid-assignment]
                 property_schema.prefixItems[i]  # ty: ignore[not-subscriptable]
                 if input_type == InputType.TUPLE
@@ -491,17 +546,24 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
 
             output_item, is_removed = self._render_list_item_input(
                 index=i,
-                current_length=len(data_list),
+                current_length=len(row_ids),
                 value=item,
-                property_key=f"{property_key}{KEY_SEPARATOR}{i}",
+                property_key=f"{property_key}{KEY_SEPARATOR}{row_id}",
                 property_schema=item_schema,
                 container=container,
+                collection_property_schema=property_schema,
             )
-            if not is_removed:
+            if is_removed:
+                removed.append(i)
+            else:
                 output_list.append(output_item)
 
-            if item_input_type.is_complex and i != len(data_list) - 1:
+            if item_input_type.is_complex and i != len(row_ids) - 1:
                 container.markdown("---")
+
+        for i in sorted(removed, reverse=True):
+            del row_ids[i]
+            del data_list[i]
 
         if input_type == InputType.SET and len(output_list) != len(set(output_list)):
             st.error("Duplicate items found in the set. Please ensure all items are unique.")
@@ -524,10 +586,23 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
         property_key: str,
         property_schema: ResolvedSchema,
         container: DeltaGenerator,
+        collection_property_schema: ResolvedSchema,
     ) -> tuple[str, Any | None, bool]:
         """
         Render an input widget for an item in a dictionary.
         Returns a tuple of (key, value, False) or (None, None, True) if the item was removed.
+
+        Args:
+            current_length (int): The number of items in the dictionary.
+            key (str): The key of the item.
+            value (Any | None): The current value of the item.
+            property_key (str): The key of the item, including its key.
+            property_schema (ResolvedSchema): The schema of the dictionary values.
+            container (DeltaGenerator): The Streamlit container to render the item in.
+            collection_property_schema (ResolvedSchema): The schema of the dictionary holding the item.
+
+        Returns:
+            tuple[str, Any | None, bool]: The tuple of (key, value, False) or (None, None, True) if the item was removed.
         """
         value_schema = deepcopy(property_schema)
         if value is not None:
@@ -542,7 +617,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
                 if remove_item_col.button(
                     "Remove",
                     key=f"{property_key}-remove",
-                    disabled=_is_remove_button_disabled(property_schema, current_length),
+                    disabled=_is_remove_button_disabled(collection_property_schema, current_length),
                 ):
                     # Remove the item from the dictionary
                     item_placeholder.empty()
@@ -553,7 +628,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
                     label="Key",
                     key=f"{property_key}-key",
                     value=key,
-                    disabled=property_schema.readOnly or False,
+                    disabled=collection_property_schema.readOnly or False,
                 )
 
             with item_value_col:
@@ -618,18 +693,13 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
                 property_key=item_property_key,
                 property_schema=item_schema,
                 container=container,
+                collection_property_schema=property_schema,
             )
 
-            # TODO:
-            #  Should we store a dict like {"key": output_item_key, "value": output_item_value} instead?
-            #  This would help us avoid overwriting keys in the output_dict and more easily deal with duplicate keys.
-
             if not is_removed:
-                # Check if the new key is not overwriting another existing key
-                if len(set(output_dict.keys())) != len(set(output_dict.keys()).union({output_item_key})):
-                    output_dict[key] = output_item_value
-                else:
-                    output_dict[output_item_key] = output_item_value
+                # Rows of a dict are keyed by their key, so a rename writes the value under the new key,
+                # and a rename onto an existing key overwrites that row.
+                output_dict[output_item_key] = output_item_value
 
             if item_input_type.is_complex and index != len(data_dict) - 1:
                 container.markdown("---")
