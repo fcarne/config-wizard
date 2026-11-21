@@ -682,7 +682,7 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
         # Developer notes:
         #  Schemas mapped to objects must have `properties` defined.
         property_schema: ResolvedSchema
-        for property_key, property_schema in parent_property_schema.properties.items():  # ty: ignore[unresolved-attribute]
+        for property_key, property_schema in parent_property_schema.properties.items():  # ty: ignore[missing-union-attribute]
             if not property_schema.title:
                 property_schema.title = to_title_case(property_key)
             full_property_key = f"{parent_property_key}{KEY_SEPARATOR}{property_key}"
@@ -762,7 +762,9 @@ class StreamlitSettingsWizard(SettingsWizardBackend):
 
                 # Developer notes:
                 #  Discriminated unions must have a `discriminator` property that must be in the `properties`.
-                discriminator = property_schema.discriminator.propertyName  # ty: ignore[unresolved-attribute]
+                if property_schema.discriminator is None:
+                    raise ValueError(f"Discriminated union '{property_key}' is missing a discriminator.")
+                discriminator = property_schema.discriminator.propertyName
                 selected_index = next(
                     i
                     for i, schema in enumerate(union_schemas)

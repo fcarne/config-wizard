@@ -89,8 +89,8 @@ include = ["config_wizard", "scripts", "tests"]
 include = ["config_wizard/schema.py"]
 
 [tool.ty.overrides.rules]
-invalid-mutable-override = "ignore"
-invalid-attribute-override = "ignore"
+incompatible-mutable-override = "ignore"
+incompatible-attribute-override = "ignore"
 
 [tool.ty.rules]
 unused-ignore-comment = "error"
